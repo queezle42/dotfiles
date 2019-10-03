@@ -1,0 +1,37 @@
+{
+    "workbench.settings.editor": "json",
+    "workbench.settings.useSplitJSON": true,
+    "workbench.colorTheme": "Monokai Dimmed",
+    "window.zoomLevel": 0,
+    "vim.disableExtension": false,
+    "vim.leader": "-",
+    "vim.sneak": true,
+    "vim.easymotion": true,
+    "vim.useSystemClipboard": true,
+    "vim.smartcase": true,
+    "vim.handleKeys": {
+        "<C-d>": false
+    },
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["f", "d"],
+            "after": ["<Esc>"]
+        }
+    ],
+    "vim.highlightedyank.enable": true,
+    "explorer.openEditors.visible": 0,
+    
+    "terminal.integrated.shell.windows": "cmd.exe",
+    "terminal.integrated.shellArgs.windows": [
+        "/k", "%userprofile%\\cmder\\vendor\\init.bat"
+    ],
+    "editor.cursorSmoothCaretAnimation": true,
+    "editor.fontFamily": "Fira Code Light",
+    "editor.fontLigatures": true,
+    "search.smartCase": true,
+
+    // Windows:
+    // %userprofile% seems to have no effect, test again and then maybe report as bug
+    "terminal.external.windowsExec": "C:\\Users\\Jens\\cmder\\cmder.exe",
+    "powershell.powerShellExePath": "C:\\Program Files\\PowerShell\\6\\pwsh.exe"
+}
