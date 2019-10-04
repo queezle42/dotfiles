@@ -26,7 +26,8 @@ fi
 
   environment.shellAliases = {
     # 'root' gives a proper root login session
-    root = "machinectl shell root@";
+    #root = "machinectl shell root@";
+    root = "sudo su";
 
     ls = "ls --color=auto";
     l = "ls -l";
@@ -76,6 +77,10 @@ then
 	kitty + complete setup zsh | source /dev/stdin
 	alias icat="kitty +kitten icat"
 fi
+
+# "The time the shell waits, in hundredths of seconds, for another key to be pressed when reading bound multi-character sequences."
+# This is for vim-style multi-letter commands (<f><d> is mapped to <Esc>)
+KEYTIMEOUT=10
 
 HISTSIZE=100000
 SAVEHIST=100000
