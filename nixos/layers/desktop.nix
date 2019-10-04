@@ -10,7 +10,6 @@
     gnome3.gnome-disk-utility
     vscode
     acpilight
-    pavucontrol
   ];
 
   fonts.fonts = [ pkgs.fira-code ];
@@ -26,7 +25,9 @@
         chromium
         tdesktop
         spotify
+        pavucontrol
         playerctl
+        xdg_utils
       ];
       extraGroups = [
         "video"
