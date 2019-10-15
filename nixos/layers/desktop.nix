@@ -32,7 +32,7 @@
       extraGroups = [
         "video"
       ];
-      dotfiles.profiles = [ "kitty" "vscode" ];
+      dotfiles.profiles = [ "kitty" "vscode" "desktop" ];
     };
   };
 }
