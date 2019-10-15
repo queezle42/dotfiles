@@ -8,9 +8,6 @@
     ./zsh.nix
   ];
   
-  # You need to set up the channel `<nixpkgs-jens>` or point `nixpkgs-jens.location` to a checkout of `https://git.c3pb.de/jens/nixpkgs-jens` 
-  nixpkgs-jens.enable = true;
-
   # Is it worth to specify this where it is needed instead of configuring it globally? Not sure yet.
   nixpkgs.config.allowUnfree = true;
 
