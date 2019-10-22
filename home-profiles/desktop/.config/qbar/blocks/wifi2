@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+if [[ -n "${1}" ]]
+then
+	INTERFACE="${1}"
+else
+	INTERFACE="${BLOCK_INSTANCE:-wlan0}"
+fi
+
+SSID=$(iwgetid -r)
+
+# don't display if there is no active wifi adapter
+[[ ! -d /sys/class/net/${INTERFACE}/wireless ]] ||
+  [[ "$(cat /sys/class/net/$INTERFACE/operstate)" = 'down' ]] && exit
+
+QUALITY=$(grep $INTERFACE /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
+
+# color
+if (( $QUALITY <= 20 )); then
+    QUALITY="<span color='#ff0000'>$QUALITY%</span>"
+elif (( $QUALITY <= 30 )); then
+    QUALITY="<span color='#ffae00'>$QUALITY%</span>"
+elif (( $QUALITY <= 40 )); then
+    QUALITY="<span color='#fff600'>$QUALITY%</span>"
+else
+    QUALITY="$QUALITY%"
+fi
+
+# color-code specific ssids
+[[ "$SSID" = 100111010110 ]] && SSID="<span color='#44ccff'>$SSID</span>"
+
+echo "${SSID} $QUALITY" # full text
+echo "${SSID} $QUALITY" # short text
