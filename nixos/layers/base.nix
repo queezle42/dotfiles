@@ -52,6 +52,7 @@
     lm_sensors
     acpi
     pwgen
+    mosquitto
   ];
 
   users = {
