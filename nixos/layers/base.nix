@@ -43,14 +43,16 @@
   environment.systemPackages = with pkgs; [
     neovim
     kitty
+    git
+    lf
+    fzf
+    tree
     htop
     gotop
-    fzf
-    git
     inxi
     lm_sensors
     acpi
-    tree
+    pwgen
   ];
 
   users = {
