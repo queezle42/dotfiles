@@ -1,11 +1,17 @@
 # Basic configuration for all machines
 
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   imports = [
     ./zsh.nix
   ];
+
+  # This value determines the NixOS release with which your system is to be
+  # compatible, in order to avoid breaking some software such as database
+  # servers. You should change this only after NixOS release notes say you
+  # should.
+  system.stateVersion = lib.mkDefault "19.09"; # Did you read the comment?
   
   # Is it worth to specify this where it is needed instead of configuring it globally? Not sure yet.
   nixpkgs.config.allowUnfree = true;
