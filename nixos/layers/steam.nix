@@ -16,7 +16,7 @@ in
   users.users.steam = {
     isNormalUser = true;
     uid = 1100;
-    passwordFile = "/q/passwords/steam";
+    passwordFile = "/secrets/passwords/steam";
     extraGroups = [ "audio" "input" ];
     packages = [
       customSteam
