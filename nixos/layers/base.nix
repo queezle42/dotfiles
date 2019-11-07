@@ -43,6 +43,11 @@
   # I have some machines where the power key can be easily pressed on accident
   services.logind.extraConfig = "HandlePowerKey=ignore";
 
+  services.openssh.enable = true;
+  services.openssh.passwordAuthentication = false;
+
+  programs.ssh.startAgent = true;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
