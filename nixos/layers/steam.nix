@@ -20,6 +20,7 @@ in
     extraGroups = [ "audio" "input" ];
     packages = [
       customSteam
+      pkgs.steam-run-native
     ];
   };
 }
