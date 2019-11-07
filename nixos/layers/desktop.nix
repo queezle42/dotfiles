@@ -1,3 +1,4 @@
+# Basic desktop functionality (window manager, terminal emulator, browser and a few utilities)
 { pkgs, ... }:
 
 let
@@ -25,7 +26,7 @@ in
   ];
 
   environment.systemPackages = with pkgs; [
-    # desktop programs
+    # desktop environment programs
     glxinfo
     gnome3.gnome-disk-utility
     vscode
@@ -60,8 +61,6 @@ in
     users.jens = {
       packages = with pkgs; [
         chromium
-        tdesktop
-        spotify
         pavucontrol
         playerctl
         xdg_utils
