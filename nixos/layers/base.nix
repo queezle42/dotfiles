@@ -49,6 +49,7 @@
     neovim
     kitty
     git
+    gitAndTools.tig
     lf
     fzf
     tree
@@ -57,8 +58,11 @@
     inxi
     lm_sensors
     acpi
+    ldns
     pwgen
     mosquitto
+    pass-wayland
+    gopass
   ];
 
   users = {
