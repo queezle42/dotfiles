@@ -59,12 +59,12 @@
     mutableUsers = false;
     defaultUserShell = pkgs.zsh;
     users.root = {
-      passwordFile = "/q/passwords/root";
+      passwordFile = "/secrets/passwords/root";
     };
     users.jens = {
       uid = 1000;
       isNormalUser = true;
-      passwordFile = "/q/passwords/jens";
+      passwordFile = "/secrets/passwords/jens";
       extraGroups = [ "wheel" "audio" ];
     };
   };
