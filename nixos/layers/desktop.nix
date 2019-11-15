@@ -51,7 +51,7 @@ in
     jq
   ];
 
-  fonts.fonts = [ pkgs.fira-code ];
+  fonts.fonts = with pkgs; [ fira-code ];
 
   sound.enable = true;
   hardware.pulseaudio.enable = true;
