@@ -23,7 +23,7 @@ set $active #51c9ff
 
 set $wallpaper ~/pictures/retrowave.png
 
-set $terminal PROMPT_NO_INITIAL_NEWLINE=1 KITTY_ENABLE_WAYLAND=1 kitty
+set $terminal PROMPT_NO_INITIAL_NEWLINE=1 kitty
 
 set $workspace_q 0:q
 set $workspace_irc 11:irc
