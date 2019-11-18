@@ -1,5 +1,4 @@
-#!/usr/bin/env nix-shell
-#!nix-shell --pure -i sh -p jq lm_sensors
+#!/usr/bin/env zsh
 
 echo -n "🔥 "
 
