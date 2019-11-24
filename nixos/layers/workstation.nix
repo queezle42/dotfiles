@@ -10,5 +10,7 @@
 
     tdesktop
     spotify
+    gimp
   ];
 }
+
