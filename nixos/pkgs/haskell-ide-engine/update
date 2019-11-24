@@ -1,4 +1,4 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i zsh -p zsh nix-prefetch-github
+#!nix-shell -i zsh -p zsh nix-prefetch-github git
 
 nix-prefetch-github Infinisil all-hies > all-hies.json
