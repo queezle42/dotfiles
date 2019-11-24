@@ -2,5 +2,5 @@
 
 echo -n "🔥 "
 
-sensors -j | jq --join-output '."coretemp-isa-0000"."Package id 0".temp1_input'
+sensors -j "coretemp-isa-0000" | jq --join-output '."coretemp-isa-0000"."Package id 0".temp1_input'
 echo °C
