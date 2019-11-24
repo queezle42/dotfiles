@@ -1,13 +1,5 @@
 #!/usr/bin/env zsh
 
-if [[ $BLOCK_BUTTON == "1" ]]
-then
-	notify "TODO"
-elif [[ $BLOCK_BUTTON == "3" ]]
-then
-	notify "Rechnung"
-fi
-
 TIME=$(date "+%H%M")
 
 if (($TIME > 0100 && $TIME < 0800))
@@ -25,6 +17,6 @@ then
 	exit
 fi
 
-echo "⭕ <span color='#ffffff'>start</span>"
+echo ""
 #echo "⭕ <span color='#ffffff'>todo</span> (0/1)"
 #echo "✅ <span color='#ffffff'>done</span> (0/1)"
