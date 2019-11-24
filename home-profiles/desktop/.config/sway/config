@@ -184,7 +184,8 @@ bindsym $mod+Return exec $terminal
 bindsym $mod+Shift+Return exec cool-retro-term --fullscreen --profile "Default Amber"
 
 # start an edi shell
-bindsym $mod+o exec cool-retro-term --fullscreen -e run/edi/edish/edish --profile "Monochrome Green"
+#bindsym $mod+o exec cool-retro-term --fullscreen --profile "Monochrome Green" -e run/edi/edish/edish
+bindsym $mod+o exec cool-retro-term --fullscreen --profile "Monochrome Green" -e ssh edi
 
 # start an ipython terminal
 bindsym $mod+p exec $terminal ipython
