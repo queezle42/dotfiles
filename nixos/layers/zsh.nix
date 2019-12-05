@@ -35,6 +35,8 @@ fi
     la = "ls -la";
     lah = "ls -lah";
 
+    nix-zsh = "nix-shell --packages zsh --command \"exec zsh\"";
+
     cal = "cal --monday";
 
     copy = "xclip -selection c -i";
