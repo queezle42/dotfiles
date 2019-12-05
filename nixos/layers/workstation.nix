@@ -12,5 +12,10 @@
     spotify
     gimp
   ];
+
+  users.users.jens = {
+    packages = with pkgs; [ direnv ];
+  };
+
 }
 

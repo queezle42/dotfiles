@@ -78,6 +78,11 @@ then
 	alias icat="kitty +kitten icat"
 fi
 
+if (( $+commands[direnv] ))
+then
+  eval "$(direnv hook zsh)"
+fi
+
 # "The time the shell waits, in hundredths of seconds, for another key to be pressed when reading bound multi-character sequences."
 # This is for vim-style multi-letter commands (<f><d> is mapped to <Esc>)
 KEYTIMEOUT=10
