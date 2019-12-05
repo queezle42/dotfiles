@@ -42,8 +42,8 @@ fi
     copy = "xclip -selection c -i";
     paste = "xclip -selection c -o";
 
-    mqtt_sub = "mosquitto_sub";
-    mqtt_pub = "mosquitto_pub";
+    msub = "mosquitto_sub";
+    mpub = "mosquitto_pub";
 
     myip = "drill @resolver1.opendns.com any myip.opendns.com";
     myipv4 = "drill -4 @resolver1.opendns.com any myip.opendns.com";
