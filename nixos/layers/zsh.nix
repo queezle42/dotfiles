@@ -48,6 +48,8 @@ fi
     myip = "drill @resolver1.opendns.com any myip.opendns.com";
     myipv4 = "drill -4 @resolver1.opendns.com any myip.opendns.com";
     myipv6 = "drill -6 @resolver1.opendns.com any myip.opendns.com";
+
+    visual-hostkey = "ssh-keygen -lvf /etc/ssh/ssh_host_ed25519_key.pub";
   };
 
   environment.shellInit = ''
