@@ -1,0 +1,147 @@
+#!/usr/bin/env zsh
+
+set -e
+# fail on undeclared variable
+set -u
+set -o pipefail
+
+readonly cmdname=$(basename $0)
+
+
+nixos_system_file=$MACHINES_PATH/nixos.nix
+
+# This script cannot run without the nixos configuration entry point
+if [[ ! -f "$nixos_system_file" ]]
+then
+  print -P "%B%F{red}Error: %F{orange}nixos.nix%F{red} not found%b%f" >&2
+  exit 2
+fi
+
+
+source $DOTFILES_PATH/bin/util.zsh
+
+usage() {
+  print "Usage: $cmdname [--via via_hostname] <hostname> [switch|boot|reboot|test|dry-activate|build]" >&2
+}
+
+positional=()
+via_hostname=""
+while [[ $# -gt 0 ]]
+do
+  case "$1" in
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    --via)
+      via_hostname="$2"
+      shift
+      ;;
+    *)
+      positional+=("$1")
+      ;;
+  esac
+  shift
+done
+
+if [[ ${#positional[@]} -ne 1 && ${#positional[@]} -ne 2 ]]
+then
+  print "Invalid number of arguments." >&2
+  usage
+  exit 2
+fi
+
+readonly hostname="${positional[1]}"
+if [[ ${#positional[@]} -ge 2 ]]
+then
+  readonly original_operation="${positional[2]}"
+else
+  # default operation
+  readonly original_operation=switch
+fi
+
+if [[ -z "$via_hostname" ]]
+then
+  via_hostname="$hostname"
+fi
+
+operation=$original_operation
+set_profile=""
+reboot=""
+
+if [[ "$operation" = "switch" || "$operation" = "boot" ]]
+then
+  set_profile=1
+elif [[ "$operation" = "reboot" ]]
+then
+  operation="boot"
+  set_profile=1
+  reboot=1
+elif [[ "$operation" = "test" || "$operation" = "dry-activate" || "$operation" = "build" ]]
+then
+  # pass
+else
+  print_error "Invalid operation: $operation"
+  usage
+  exit 2
+fi
+
+if [[ "$(hostname)" = "$hostname" ]]
+then
+  readonly is_target_host=1
+else
+  readonly is_target_host=""
+fi
+
+
+readonly local_temp_dir=$(mktemp --tmpdir --directory phoenix-deploy.XXXXXXXXXX)
+trap "rm -rf $local_temp_dir" EXIT INT HUP TERM
+
+print_info "Building target system configuration"
+nix build --file "$nixos_system_file" --argstr hostname "$hostname" --out-link "$local_temp_dir/nixos-config-$hostname"
+readonly nixos_config_path=$(realpath "$local_temp_dir/nixos-config-$hostname")
+
+if [[ "$operation" = "build" ]]
+then
+  print_info "Build completed"
+  print $nixos_config_path
+  exit 0
+fi
+
+print_info "Deploying target system configuration"
+if [[ "$is_target_host" ]]
+then
+  # local deploy
+
+  if [[ -n "$set_profile" ]]
+  then
+    sudo nix-env --profile /nix/var/nix/profiles/system --set $nixos_config_path
+  fi
+  sudo $nixos_config_path/bin/switch-to-configuration $operation
+  sync
+
+  if [[ -n "$reboot" ]]
+  then
+    sudo systemctl reboot
+  fi
+else
+  # remote deploy
+
+  nix copy --file "$nixos_system_file" --argstr hostname "$hostname" --to "ssh://root@$via_hostname"
+
+  # The manual way to do it (this is in theory also supported by nixos-rebuild by using '-I')
+
+  if [[ -n "$set_profile" ]]
+  then
+    ssh root@$via_hostname "nix-env --profile /nix/var/nix/profiles/system --set $nixos_config_path"
+  fi
+  ssh root@$via_hostname "$nixos_config_path/bin/switch-to-configuration $operation && sync"
+
+  if [[ -n "$reboot" ]]
+  then
+    ssh root@$via_hostname "systemctl reboot"
+  fi
+fi
+
+
+print_info "Update completed"

@@ -1,0 +1,243 @@
+# This script formats a host, mounts the partitions, runs nixos-generate-config
+# and then returns a summary that can be used to specialize the system
+# configuration for the machine.
+
+{ pkgs ? import <nixpkgs> {}, hostname, template }:
+
+with builtins; with pkgs;
+let
+  zsh-bin = "${zsh}/bin/zsh";
+  realpath-bin = "${coreutils}/bin/realpath";
+  lsblk-bin = "${utillinux}/bin/lsblk";
+  blkid-bin = "${utillinux}/bin/blkid";
+  blkdiscard-bin = "${utillinux}/bin/blkdiscard";
+  sfdisk-bin = "${utillinux}/bin/sfdisk";
+  mkswap-bin = "${utillinux}/bin/mkswap";
+  swapon-bin = "${utillinux}/bin/swapon";
+  mount-bin = "${utillinux}/bin/mount";
+  umount-bin = "${utillinux}/bin/umount";
+  cryptsetup-bin = "${cryptsetup}/bin/cryptsetup";
+  pvcreate-bin = "${lvm2}/bin/pvcreate";
+  lvcreate-bin = "${lvm2}/bin/lvcreate";
+  vgcreate-bin = "${lvm2}/bin/vgcreate";
+  mkfs-fat-bin = "${dosfstools}/bin/mkfs.fat";
+  mkfs-ext4-bin = "${e2fsprogs}/bin/mkfs.ext4";
+  mkfs-btrfs-bin = "${btrfsProgs}/bin/mkfs.btrfs";
+  btrfs-bin = "${btrfsProgs}/bin/btrfs";
+  fzf-bin = "${fzf}/bin/fzf";
+  jq-bin = "${jq}/bin/jq";
+
+  swap = (if template ? swap then template.swap else "8G");
+  luks = template.luks;
+
+in
+assert (typeOf luks) == "bool";
+assert (typeOf swap) == "string";
+{
+  format = writeScriptBin "format_${hostname}" ''
+    #!${zsh-bin}
+    set -e
+    set -u
+    set -o pipefail
+    set -x
+
+    source ${./util.zsh}
+
+    cmdname=$0
+    usage() {
+      print "Usage: $cmdname <CONFIG_FILE> <OUTPUT_FILE> [<MESSAGE_PROGRAM>]" >&2
+    }
+
+    print_info() {
+      if [[ $# -ge 1 ]]
+      then
+        print -P "%B%F{blue}$1%b%f" >&2
+      else
+        print >&2
+      fi
+    }
+
+    print_warning() {
+      print -P "%B%F{yellow}$1%b%f" >&2
+    }
+
+    print_error() {
+      print -P "%B%F{red}$1%b%f" >&2
+    }
+
+    if [ "$1" = "--help" -o "$1" = "-h" ]
+    then
+        usage
+        exit 0
+    fi
+
+    if [ $# -ne 2 -a $# -ne 3 ]
+    then
+      print "Invalid number of arguments." >&2
+      usage
+      exit 2
+    fi
+
+    config_file="$1"
+    output_file="$2"
+    message_program="$3"
+
+    # Before doing anything that could fail:
+    # Set up tmpdir controlled by this script (and trap to remove it) and move the
+    # installation config there to make sure it is deleted if the script fails in
+    # any way.
+    temp_dir=$(mktemp --tmpdir --directory install.nix.XXXXXXXXXX)
+    trap "rm -rf $temp_dir" EXIT INT HUP TERM
+    mv $config_file $temp_dir/config
+    config_file=$temp_dir/config
+
+    block_device=$(${jq-bin} --raw-output .blockDevice $config_file)
+    if [ "$block_device" = null ]
+    then
+      block_device=$(${lsblk-bin} --nodeps --output PATH,NAME,SIZE,TYPE,MODEL,VENDOR | ${fzf-bin} --layout=reverse --header-lines=1 --nth=1 | awk '{print $1;}')
+    fi
+
+    ${if luks then ''
+      luks_keyfile=$temp_dir/luksKey
+      luks_key=$(${jq-bin} -e --raw-output .luksKey $config_file)
+      print -n "$luks_key" > $luks_keyfile
+    '' else "" }
+
+    if [ ! -b "$block_device" ]
+    then
+      print_info "error: $block_device is not a block device."
+      exit 1
+    fi
+
+    print_info "Selected block device: $block_device"
+
+    stable_block_device=$(for i in /dev/disk/by-id/*; do [ "$(${realpath-bin} "$i")" = "$(${realpath-bin} "$block_device")" ] && echo "$i" && return; done)
+
+    print_info "Stable block device name is: $stable_block_device"
+    print_info
+
+    print_info "Printing current layout:"
+    print_info "$(${lsblk-bin} --output name,size,type,mountpoint,model,vendor "$block_device")"
+    print_info
+
+
+    print_info "You are about to install the configuration for host '${hostname}' to $block_device (this is executed on host '$(hostname)')."
+    if read -q "?Do you want to wipe all data on $block_device? (y/n) "
+    then
+      print >&2
+    else
+      print >&2
+      exit 3
+    fi
+
+    if [ -x $message_program ]
+    then
+      $message_program &
+    fi
+
+    print_info "Discarding disk contents..."
+    if ${blkdiscard-bin} $block_device
+    then
+      ssd=true
+    else
+      ssd=false
+      print_warning "Discard failed"
+    fi
+
+    print_info "Creating partition table for bootloader ${template.bootloader}"
+
+    ${if template.bootloader == "efi" then ''
+      ${sfdisk-bin} "$block_device" <<EOF
+        label: gpt
+        start=2048, size=512MiB, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, name="esp"
+        type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="system"
+      EOF
+      esp_partition="$block_device"1
+      system_partition="$block_device"2
+    '' else if template.bootloader == "bios" then ''
+      ${sfdisk-bin} "$block_device" <<EOF
+        label: gpt
+        size=1MiB, type=21686148-6449-6E6F-744E-656564454649, name="bios_grub"
+        size=512MiB, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="boot"
+        type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="system"
+      EOF
+      esp_partition="$block_device"2
+      system_partition="$block_device"3
+    '' else abort "Invalid bootloader configured in template: ${template.bootloader}" }
+
+    print_info "Creating partitions..."
+
+    ${mkfs-fat-bin} -F32 -n ESP "$esp_partition"
+
+    ${if luks then ''
+      ${cryptsetup-bin} --batch-mode --key-file $luks_keyfile luksFormat --type luks2 $system_partition
+
+      luks_partition_uuid=$(${blkid-bin} --match-tag UUID --output value $system_partition)
+      if [[ -z $luks_partition_uuid ]]
+      then
+        print_error "Cound not detect uuid of luks partition" >&2
+        exit 1
+      fi
+
+      crypt_volume_name=cryptvol_${hostname}
+
+      if $ssd
+      then
+        ${cryptsetup-bin} --batch-mode --key-file $luks_keyfile --allow-discards --persistent open $system_partition $crypt_volume_name
+      else
+        ${cryptsetup-bin} --batch-mode --key-file $luks_keyfile open $system_partition $crypt_volume_name
+      fi
+
+      rm $luks_keyfile
+
+      lvm_partition=/dev/mapper/$crypt_volume_name
+    '' else ''
+      lvm_partition=$system_partition
+    ''}
+    vg_name=vg_${hostname}
+
+    ${pvcreate-bin} $lvm_partition
+    ${vgcreate-bin} $vg_name $lvm_partition
+
+    ${lvcreate-bin} --size "${swap}" --name swap --yes $vg_name
+    swap_partition="/dev/$vg_name/swap"
+    ${mkswap-bin} -L swap $swap_partition
+    ${swapon-bin} $swap_partition
+
+    ${lvcreate-bin} --extents "100%FREE" --name btrfs --yes $vg_name
+    root_partition="/dev/$vg_name/btrfs"
+    ${mkfs-btrfs-bin} -L "btrfs_${hostname}" "$root_partition"
+
+    mount_point=/mnt
+
+    # Create subvolumes
+    ${mount-bin} -o noatime,compress=zstd:1 $root_partition $mount_point
+    ${btrfs-bin} subvolume create $mount_point/${hostname}
+    ${btrfs-bin} subvolume create $mount_point/${hostname}/nix
+    ${umount-bin} $mount_point
+
+    # Remount
+    ${mount-bin} -o subvol=/${hostname},noatime,compress=zstd:2 $root_partition $mount_point
+
+    mkdir -p $mount_point/boot
+    ${mount-bin} -o noatime $esp_partition $mount_point/boot
+
+    print_info "Generating NixOS hardware config..."
+    nixos-generate-config --root $mount_point
+
+    print_info "Writing output..."
+    > "$output_file" <<EOF
+    {
+      "installedBlockDevice": "$stable_block_device",
+      "luks": ${toJSON luks},
+      ${if luks then ''
+        "luksPartitionUuid": "$luks_partition_uuid",
+      '' else ""}
+      "ssd": $ssd,
+      "bootloader": "${template.bootloader}"
+    }
+    EOF
+
+    print_info "Installation stage 1 completed"
+  '';
+}

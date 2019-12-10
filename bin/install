@@ -1,0 +1,106 @@
+#!/usr/bin/env nix-shell
+#!nix-shell -i zsh -p zsh -p nix
+
+set -e
+set -u
+set -o pipefail
+
+source $DOTFILES_PATH/bin/util.zsh
+
+cmdname=$(basename $0)
+usage() {
+  print "Usage: $cmdname <via_host> <hostname>" >&2
+}
+
+if [[ $# -ge 1 ]]
+then
+  if [[ "$1" = "--help" || "$1" = "-h" ]]
+  then
+      usage
+      exit 0
+  fi
+fi
+
+if [ $# -ne 2 ]
+then
+  print "Invalid number of arguments." >&2
+  usage
+  exit 2
+fi
+
+via_host="$1"
+hostname="$2"
+
+
+nixos_system_file=$MACHINES_PATH/nixos.nix
+
+# This script cannot run without the nixos configuration entry point
+if [[ ! -f "$nixos_system_file" ]]
+then
+  print -P "%B%F{red}Error: %F{orange}nixos.nix%F{red} not found%b%f" >&2
+  exit 2
+fi
+
+
+local_temp_dir=$(mktemp --tmpdir --directory install-via.XXXXXXXXXX)
+trap "rm -rf $local_temp_dir" EXIT INT HUP TERM
+
+# Pre-build installation helper
+nix build --file $DOTFILES_PATH/bin/format.nix --argstr hostname "$hostname" --arg template "(import $MACHINES_PATH).machineTemplates.$hostname" --out-link "$local_temp_dir/format_$hostname"
+
+if ! ssh -o VisualHostKey=yes root@$via_host true
+then
+  print "Cannot connect to host '$via_host'" >&2
+  exit 1
+fi
+
+if ! nix ping-store --store ssh://root@$via_host
+then
+  print "Cannot connect to nix store on '$via_host'" >&2
+  exit 1
+fi
+
+local_config_file=$local_temp_dir/config
+
+# Prepare config
+#luks_key=$(pass hosts/$hostname/luks)
+luks_key=""
+> $local_config_file <<EOF
+{
+  "blockDevice": null,
+  "luksKey": "$luks_key"
+}
+EOF
+luks_key=""
+
+nix copy --file $DOTFILES_PATH/bin/format.nix --argstr hostname "$hostname" --arg template "(import $MACHINES_PATH).machineTemplates.$hostname" --to ssh://root@$via_host
+
+remote_temp_dir=$(ssh root@$via_host mktemp --tmpdir --directory install-via.XXXXXXXXXX)
+# copy install-helper and config
+scp -r $local_temp_dir/* root@$via_host:$remote_temp_dir/
+scp $DOTFILES_PATH/bin/message root@$via_host:$remote_temp_dir/
+
+# -t: Force pseudo-terminal allocation
+ssh -t root@$via_host "$remote_temp_dir/format_$hostname/bin/format_$hostname" "$remote_temp_dir/config" "$remote_temp_dir/output.json" "$remote_temp_dir/message"
+scp "root@$via_host:$remote_temp_dir/output.json" "$MACHINES_PATH/machines/$hostname/install-result.json"
+
+# TODO: ensure the working directory is set correctly
+print_info "Gathering hardware information..."
+scp root@$via_host:/mnt/etc/nixos/hardware-configuration.nix "$MACHINES_PATH/machines/$hostname/"
+
+print_info "Building target system configuration..."
+nix build --file "$nixos_system_file" --argstr hostname "$hostname" --out-link "$local_temp_dir/nixos-config-$hostname"
+
+print_info "Deploying target system configuration..."
+nix copy --file "$nixos_system_file" --argstr hostname "$hostname" --to ssh://root@$via_host
+nixos_config_path=$(realpath "$local_temp_dir/nixos-config-$hostname")
+
+# TODO: merge commands
+ssh root@$via_host "nixos-install --system $nixos_config_path && sync"
+ssh root@$via_host mkdir --mode u=rwx,g=,o= --parents /mnt/secrets/passwords
+
+# TODO: get host-specific password
+scp -r notThePassword root@$via_host:/mnt/secrets/passwords/root
+scp -r notThePassword root@$via_host:/mnt/secrets/passwords/jens
+
+print_info "Installation completed"
