@@ -67,6 +67,9 @@ exec CM_SELECTIONS=clipboard clipmenud
 #exec nm-applet --indicator
 exec redshift -m wayland
 
+# Fix XWayland DPI
+exec xrdb -load ~/.Xresources
+
 # Share wayland socket with other users
 # This should allocate a free socket instead
 # Also requires passwordless sudo, so it's currently disabled

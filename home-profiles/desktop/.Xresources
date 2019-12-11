@@ -40,3 +40,6 @@ xterm*foreground: lightgray
 
 ! terminal: dark background
 XTerm.vt100.reverseVideo: true
+
+! XWayland DPI Fix
+Xft.dpi: 96

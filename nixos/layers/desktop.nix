@@ -73,10 +73,8 @@ in
   };
 
 
-
-
   programs.sway.enable = true;
-  programs.sway.extraPackages = with pkgs; [ swaylock swayidle xwayland kitty cool-retro-term ];
+  programs.sway.extraPackages = with pkgs; [ swaylock swayidle xwayland kitty cool-retro-term xorg.xrdb ];
   # QT_QPA_PLATFORM=wayland requires qt5.qtwayland in systemPackages
   programs.sway.extraSessionCommands = ''
 export SDL_VIDEODRIVER=wayland
@@ -84,9 +82,9 @@ export QT_QPA_PLATFORM=wayland
 export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
   '';
   environment.loginShellInit = ''
-# start sway when logging in on tty1
-if [ "$USER" = jens ] && [ -n "$XDG_VTNR" ] && [ "$XDG_VTNR" -eq 1 ] && [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ]; then
-exec sway &> /run/user/$UID/sway_log
-fi
+    # start sway when logging in on tty1
+    if [ "$USER" = jens ] && [ -n "$XDG_VTNR" ] && [ "$XDG_VTNR" -eq 1 ] && [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ]; then
+    exec sway &> /run/user/$UID/sway_log
+    fi
   '';
 }
