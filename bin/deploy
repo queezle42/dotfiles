@@ -18,7 +18,7 @@ then
 fi
 
 
-source $DOTFILES_PATH/bin/util.zsh
+source $DOTFILES_PATH/bin/lib/util.zsh
 
 usage() {
   print "Usage: $cmdname [--via via_hostname] <hostname> [switch|boot|reboot|test|dry-activate|build]" >&2

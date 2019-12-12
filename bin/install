@@ -5,7 +5,7 @@ set -e
 set -u
 set -o pipefail
 
-source $DOTFILES_PATH/bin/util.zsh
+source $DOTFILES_PATH/bin/lib/util.zsh
 
 cmdname=$(basename $0)
 usage() {
@@ -46,7 +46,7 @@ local_temp_dir=$(mktemp --tmpdir --directory install-via.XXXXXXXXXX)
 trap "rm -rf $local_temp_dir" EXIT INT HUP TERM
 
 # Pre-build installation helper
-nix build --file $DOTFILES_PATH/bin/format.nix --argstr hostname "$hostname" --arg template "(import $MACHINES_PATH).machineTemplates.$hostname" --out-link "$local_temp_dir/format_$hostname"
+nix build --file $DOTFILES_PATH/bin/lib/format.nix --argstr hostname "$hostname" --arg template "(import $MACHINES_PATH).machineTemplates.$hostname" --out-link "$local_temp_dir/format_$hostname"
 
 if ! ssh -o VisualHostKey=yes root@$via_host true
 then
@@ -73,15 +73,17 @@ luks_key=""
 EOF
 luks_key=""
 
-nix copy --file $DOTFILES_PATH/bin/format.nix --argstr hostname "$hostname" --arg template "(import $MACHINES_PATH).machineTemplates.$hostname" --to ssh://root@$via_host
+nix copy --file $DOTFILES_PATH/bin/lib/format.nix --argstr hostname "$hostname" --arg template "(import $MACHINES_PATH).machineTemplates.$hostname" --to ssh://root@$via_host
 
 remote_temp_dir=$(ssh root@$via_host mktemp --tmpdir --directory install-via.XXXXXXXXXX)
 # copy install-helper and config
 scp -r $local_temp_dir/* root@$via_host:$remote_temp_dir/
 scp $DOTFILES_PATH/bin/message root@$via_host:$remote_temp_dir/
 
+ssh root@$via_host "$remote_temp_dir/message" &
+
 # -t: Force pseudo-terminal allocation
-ssh -t root@$via_host "$remote_temp_dir/format_$hostname/bin/format_$hostname" "$remote_temp_dir/config" "$remote_temp_dir/output.json" "$remote_temp_dir/message"
+ssh -t root@$via_host "$remote_temp_dir/format_$hostname/bin/format_$hostname" "$remote_temp_dir/config" "$remote_temp_dir/output.json"
 scp "root@$via_host:$remote_temp_dir/output.json" "$MACHINES_PATH/machines/$hostname/install-result.json"
 
 # TODO: ensure the working directory is set correctly
@@ -100,7 +102,9 @@ ssh root@$via_host "nixos-install --system $nixos_config_path && sync"
 ssh root@$via_host mkdir --mode u=rwx,g=,o= --parents /mnt/secrets/passwords
 
 # TODO: get host-specific password
-scp -r notThePassword root@$via_host:/mnt/secrets/passwords/root
-scp -r notThePassword root@$via_host:/mnt/secrets/passwords/jens
+#scp -r notThePassword root@$via_host:/mnt/secrets/passwords/root
+#scp -r notThePassword root@$via_host:/mnt/secrets/passwords/jens
+
+ssh root@$via_host sync
 
 print_info "Installation completed"

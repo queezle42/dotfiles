@@ -39,13 +39,12 @@ assert (typeOf swap) == "string";
     set -e
     set -u
     set -o pipefail
-    set -x
 
     source ${./util.zsh}
 
     cmdname=$0
     usage() {
-      print "Usage: $cmdname <CONFIG_FILE> <OUTPUT_FILE> [<MESSAGE_PROGRAM>]" >&2
+      print "Usage: $cmdname <CONFIG_FILE> <OUTPUT_FILE>" >&2
     }
 
     print_info() {
@@ -80,7 +79,6 @@ assert (typeOf swap) == "string";
 
     config_file="$1"
     output_file="$2"
-    message_program="$3"
 
     # Before doing anything that could fail:
     # Set up tmpdir controlled by this script (and trap to remove it) and move the
@@ -130,12 +128,7 @@ assert (typeOf swap) == "string";
       exit 3
     fi
 
-    if [ -x $message_program ]
-    then
-      $message_program &
-    fi
-
-    print_info "Discarding disk contents..."
+    print_info "Discarding disk contents"
     if ${blkdiscard-bin} $block_device
     then
       ssd=true
@@ -165,7 +158,7 @@ assert (typeOf swap) == "string";
       system_partition="$block_device"3
     '' else abort "Invalid bootloader configured in template: ${template.bootloader}" }
 
-    print_info "Creating partitions..."
+    print_info "Creating partitions"
 
     ${mkfs-fat-bin} -F32 -n ESP "$esp_partition"
 
@@ -222,10 +215,16 @@ assert (typeOf swap) == "string";
     mkdir -p $mount_point/boot
     ${mount-bin} -o noatime $esp_partition $mount_point/boot
 
-    print_info "Generating NixOS hardware config..."
+    if [[ -d /nix/.rw-store ]]
+    then
+      print_info "Nix store tmpfs-rw-overlay detected, increasing tmpfs size"
+      mount -o remount,size=8G /nix/.rw-store
+    fi
+
+    print_info "Generating NixOS hardware config"
     nixos-generate-config --root $mount_point
 
-    print_info "Writing output..."
+    print_info "Writing output"
     > "$output_file" <<EOF
     {
       "installedBlockDevice": "$stable_block_device",

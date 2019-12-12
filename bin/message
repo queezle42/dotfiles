@@ -18,7 +18,8 @@ reset() {
 }
 
 reset
-sleep 1
+sleep 1s
+reset
 
 # print character char by char
 for (( i=0; i<${#message}; i++ ))
@@ -30,7 +31,7 @@ done
 # keep screen clear of error messages
 while true
 do
-	sleep 10
+	sleep 10s
 	reset
 	print -n "${message}" > $tty
 done
