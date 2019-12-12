@@ -52,7 +52,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     neovim
-    kitty
     git
     gitAndTools.tig
     lf
@@ -66,7 +65,6 @@
     ldns
     pwgen
     mosquitto
-    pass-wayland
     gopass
     unzip
     file

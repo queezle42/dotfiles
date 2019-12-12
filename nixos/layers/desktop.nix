@@ -27,6 +27,8 @@ in
 
   environment.systemPackages = with pkgs; [
     # desktop environment programs
+    kitty
+    rxvt_unicode
     glxinfo
     gnome3.gnome-disk-utility
     vscode
