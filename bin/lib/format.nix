@@ -123,22 +123,47 @@ assert (typeOf swap) == "string";
     print_info "Creating partition table for bootloader ${template.bootloader}"
 
     ${if template.bootloader == "efi" then ''
-      ${sfdisk-bin} "$block_device" <<EOF
-        label: gpt
-        start=2048, size=512MiB, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, name="esp"
-        type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="system"
-      EOF
-      esp_partition="$block_device"1
-      system_partition="$block_device"2
+      ${if luks then ''
+        ${sfdisk-bin} "$block_device" <<EOF
+          label: gpt
+          start=2048, size=512MiB, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, name="esp"
+          type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="system"
+        EOF
+        esp_partition="$block_device"1
+        luks_partition="$block_device"2
+      '' else ''
+        ${sfdisk-bin} "$block_device" <<EOF
+          label: gpt
+          start=2048, size=512MiB, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, name="esp"
+          size=${swap}iB,type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="swap"
+          type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="system"
+        EOF
+        esp_partition="$block_device"1
+        swap_partition="$block_device"2
+        root_partition="$block_device"3
+      ''}
     '' else if template.bootloader == "bios" then ''
-      ${sfdisk-bin} "$block_device" <<EOF
-        label: gpt
-        size=1MiB, type=21686148-6449-6E6F-744E-656564454649, name="bios_grub"
-        size=512MiB, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="boot"
-        type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="system"
-      EOF
-      esp_partition="$block_device"2
-      system_partition="$block_device"3
+      ${if luks then ''
+        ${sfdisk-bin} "$block_device" <<EOF
+          label: gpt
+          size=1MiB, type=21686148-6449-6E6F-744E-656564454649, name="bios_grub"
+          size=512MiB, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="boot"
+          type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="system"
+        EOF
+        esp_partition="$block_device"2
+        luks_partition="$block_device"3
+      '' else ''
+        ${sfdisk-bin} "$block_device" <<EOF
+          label: gpt
+          size=1MiB, type=21686148-6449-6E6F-744E-656564454649, name="bios_grub"
+          size=512MiB, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="boot"
+          size=${swap}iB,type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="swap"
+          type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="system"
+        EOF
+        esp_partition="$block_device"2
+        swap_partition="$block_device"3
+        root_partition="$block_device"4
+      ''}
     '' else abort "Invalid bootloader configured in template: ${template.bootloader}" }
 
     print_info "Creating partitions"
@@ -146,9 +171,9 @@ assert (typeOf swap) == "string";
     ${mkfs-fat-bin} -F32 -n ESP "$esp_partition"
 
     ${if luks then ''
-      ${cryptsetup-bin} --batch-mode --key-file $luks_keyfile luksFormat --type luks2 $system_partition
+      ${cryptsetup-bin} --batch-mode --key-file $luks_keyfile luksFormat --type luks2 $luks_partition
 
-      luks_partition_uuid=$(${blkid-bin} --match-tag UUID --output value $system_partition)
+      luks_partition_uuid=$(${blkid-bin} --match-tag UUID --output value $luks_partition)
       if [[ -z $luks_partition_uuid ]]
       then
         print_error "Cound not detect uuid of luks partition" >&2
@@ -159,29 +184,29 @@ assert (typeOf swap) == "string";
 
       if $ssd
       then
-        ${cryptsetup-bin} --batch-mode --key-file $luks_keyfile --allow-discards --persistent open $system_partition $crypt_volume_name
+        ${cryptsetup-bin} --batch-mode --key-file $luks_keyfile --allow-discards --persistent open $luks_partition $crypt_volume_name
       else
-        ${cryptsetup-bin} --batch-mode --key-file $luks_keyfile open $system_partition $crypt_volume_name
+        ${cryptsetup-bin} --batch-mode --key-file $luks_keyfile open $luks_partition $crypt_volume_name
       fi
 
       rm $luks_keyfile
 
       lvm_partition=/dev/mapper/$crypt_volume_name
-    '' else ''
-      lvm_partition=$system_partition
-    ''}
-    vg_name=vg_${hostname}
 
-    ${pvcreate-bin} $lvm_partition
-    ${vgcreate-bin} $vg_name $lvm_partition
+      vg_name=vg_${hostname}
 
-    ${lvcreate-bin} --size "${swap}" --name swap --yes $vg_name
-    swap_partition="/dev/$vg_name/swap"
+      ${pvcreate-bin} $lvm_partition
+      ${vgcreate-bin} $vg_name $lvm_partition
+
+      ${lvcreate-bin} --size "${swap}" --name swap --yes $vg_name
+      swap_partition="/dev/$vg_name/swap"
+      ${lvcreate-bin} --extents "100%FREE" --name btrfs --yes $vg_name
+      root_partition="/dev/$vg_name/btrfs"
+    '' else ""}
+
     ${mkswap-bin} -L swap $swap_partition
     ${swapon-bin} $swap_partition
 
-    ${lvcreate-bin} --extents "100%FREE" --name btrfs --yes $vg_name
-    root_partition="/dev/$vg_name/btrfs"
     ${mkfs-btrfs-bin} -L "btrfs_${hostname}" "$root_partition"
 
     mount_point=/mnt
@@ -193,7 +218,7 @@ assert (typeOf swap) == "string";
     ${umount-bin} $mount_point
 
     # Remount
-    ${mount-bin} -o subvol=/${hostname},noatime,compress=zstd:2 $root_partition $mount_point
+    ${mount-bin} -o subvol=/${hostname},noatime,compress=zstd:1 $root_partition $mount_point
 
     mkdir -p $mount_point/boot
     ${mount-bin} -o noatime $esp_partition $mount_point/boot
