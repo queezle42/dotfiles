@@ -47,23 +47,6 @@ assert (typeOf swap) == "string";
       print "Usage: $cmdname <CONFIG_FILE> <OUTPUT_FILE>" >&2
     }
 
-    print_info() {
-      if [[ $# -ge 1 ]]
-      then
-        print -P "%B%F{blue}$1%b%f" >&2
-      else
-        print >&2
-      fi
-    }
-
-    print_warning() {
-      print -P "%B%F{yellow}$1%b%f" >&2
-    }
-
-    print_error() {
-      print -P "%B%F{red}$1%b%f" >&2
-    }
-
     if [ "$1" = "--help" -o "$1" = "-h" ]
     then
         usage
