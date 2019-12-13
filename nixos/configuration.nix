@@ -24,7 +24,7 @@ in
   # Bootloader
   boot.loader.systemd-boot.enable = (installResult.bootloader == "efi");
   boot.loader.efi.canTouchEfiVariables = (installResult.bootloader == "efi");
-  boot.loader.grub.enable = (installResult.bootloader == "grub");
+  boot.loader.grub.enable = (installResult.bootloader == "bios");
   boot.loader.grub.device = installResult.installedBlockDevice;
 
   # Default hostname ist machine directory name
