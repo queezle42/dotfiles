@@ -63,7 +63,7 @@ output * bg $wallpaper fill
 
 # Run desktop daemons
 exec mako
-exec CM_SELECTIONS=clipboard clipmenud
+#exec CM_SELECTIONS=clipboard clipmenud
 #exec nm-applet --indicator
 exec redshift
 
