@@ -40,6 +40,7 @@ in
     rofi
     qt5.qtwayland
     acpilight
+    redshift-wlr
 
     # qbar block dependencies
     python3
