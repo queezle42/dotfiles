@@ -32,6 +32,7 @@ in
     glxinfo
     gnome3.gnome-disk-utility
     vscode
+    networkmanagerapplet
 
     # soft desktop dependencies
     swaylockWithIdle
