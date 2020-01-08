@@ -16,6 +16,7 @@
 
   "breadcrumbs.enabled": true,
   "zenMode.centerLayout": false,
+  "zenMode.hideLineNumbers": false,
 
   "files.trimTrailingWhitespace": true,
   // colors
