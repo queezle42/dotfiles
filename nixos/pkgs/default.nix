@@ -9,6 +9,7 @@ let
     #mypkg = haskell.packages.ghc865.callPackage ./mypkg { };
     dotnet-sdk = callPackage ./dotnet-sdk { };
     haskell-ide-engine = (import ./haskell-ide-engine { inherit pkgs; }).haskell-ide-engine;
+    neovim = (import ./neovim {inherit pkgs; }).neovim;
   };
 
 in newpkgs
