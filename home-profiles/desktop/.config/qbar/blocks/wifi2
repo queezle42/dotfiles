@@ -4,7 +4,7 @@ if [[ -n "${1}" ]]
 then
 	INTERFACE="${1}"
 else
-	INTERFACE="${BLOCK_INSTANCE:-wlan0}"
+	INTERFACE="${BLOCK_INSTANCE:-wlp2s0}"
 fi
 
 SSID=$(iwgetid -r)
