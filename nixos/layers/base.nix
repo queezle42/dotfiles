@@ -80,7 +80,7 @@
       uid = 1000;
       isNormalUser = true;
       passwordFile = "/secrets/passwords/jens";
-      extraGroups = [ "wheel" "audio" ];
+      extraGroups = [ "wheel" "audio" "dialout" ];
     };
   };
 }
