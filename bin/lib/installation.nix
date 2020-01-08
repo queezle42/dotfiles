@@ -34,6 +34,23 @@ in
 assert (typeOf luks) == "bool";
 assert (typeOf swap) == "string";
 {
+  configure = writeScriptBin "configure_${hostname}" ''
+    #!${zsh-bin}
+    set -e
+    set -u
+    set -o pipefail
+
+    # Generate config
+    <<EOF
+    {
+      "blockDevice": null
+      ${if luks then ''
+        ,"luksKey": "$(pass hosts/$hostname/luks)"
+      '' else ""}
+    }
+    EOF
+    luks_key=""
+  '';
   format = writeScriptBin "format_${hostname}" ''
     #!${zsh-bin}
     set -e
@@ -77,12 +94,6 @@ assert (typeOf swap) == "string";
     then
       block_device=$(${lsblk-bin} --nodeps --output PATH,NAME,SIZE,TYPE,MODEL,VENDOR | ${fzf-bin} --layout=reverse --header-lines=1 --nth=1 | awk '{print $1;}')
     fi
-
-    ${if luks then ''
-      luks_keyfile=$temp_dir/luksKey
-      luks_key=$(${jq-bin} -e --raw-output .luksKey $config_file)
-      print -n "$luks_key" > $luks_keyfile
-    '' else "" }
 
     if [ ! -b "$block_device" ]
     then
@@ -171,6 +182,10 @@ assert (typeOf swap) == "string";
     ${mkfs-fat-bin} -F32 -n ESP "$esp_partition"
 
     ${if luks then ''
+      luks_keyfile=$temp_dir/luksKey
+      luks_key=$(${jq-bin} -e --raw-output .luksKey $config_file)
+      print -n "$luks_key" > $luks_keyfile
+
       ${cryptsetup-bin} --batch-mode --key-file $luks_keyfile luksFormat --type luks2 $luks_partition
 
       luks_partition_uuid=$(${blkid-bin} --match-tag UUID --output value $luks_partition)
@@ -212,13 +227,13 @@ assert (typeOf swap) == "string";
     mount_point=/mnt
 
     # Create subvolumes
-    ${mount-bin} -o noatime,compress=zstd:1 $root_partition $mount_point
+    ${mount-bin} -o noatime,compress=zstd $root_partition $mount_point
     ${btrfs-bin} subvolume create $mount_point/${hostname}
     ${btrfs-bin} subvolume create $mount_point/${hostname}/nix
     ${umount-bin} $mount_point
 
     # Remount
-    ${mount-bin} -o subvol=/${hostname},noatime,compress=zstd:1 $root_partition $mount_point
+    ${mount-bin} -o subvol=/${hostname},noatime,compress=zstd $root_partition $mount_point
 
     mkdir -p $mount_point/boot
     ${mount-bin} -o noatime $esp_partition $mount_point/boot
