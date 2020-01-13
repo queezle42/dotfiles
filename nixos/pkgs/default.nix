@@ -10,6 +10,7 @@ let
     dotnet-sdk = callPackage ./dotnet-sdk { };
     haskell-ide-engine = (import ./haskell-ide-engine { inherit pkgs; }).haskell-ide-engine;
     neovim = (import ./neovim {inherit pkgs; }).neovim;
+    nginx-sso = callPackage ./nginx-sso {};
   };
 
 in newpkgs
