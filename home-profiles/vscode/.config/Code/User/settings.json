@@ -63,7 +63,7 @@
   "vim.sneak": true,
   "vim.surround": true,
   "vim.easymotion": true,
-  "vim.useSystemClipboard": true,
+  //"vim.useSystemClipboard": true,
   "vim.smartcase": true,
   "vim.handleKeys": {
     "<C-d>": false
