@@ -89,7 +89,7 @@ fi
 
 # "The time the shell waits, in hundredths of seconds, for another key to be pressed when reading bound multi-character sequences."
 # This is for vim-style multi-letter commands (<f><d> is mapped to <Esc>)
-KEYTIMEOUT=10
+KEYTIMEOUT=20
 
 HISTSIZE=100000
 SAVEHIST=100000
@@ -212,6 +212,26 @@ man() {
   LESS_TERMCAP_ue=$'\e[0m' \
   LESS_TERMCAP_us=$'\e[01;32m' \
   command man "$@"
+}
+
+# submit file/stdin to pastebin, optionally signing it
+pastebin () {
+    local -r pastebin='https://0x0.st'
+
+    if [ "$1" = '--sign' ]; then
+        local -r filter='gpg --clearsign --output -'
+        shift
+    else
+        local -r filter='cat'
+    fi
+
+    if [ -n "$1" ]; then
+        local -r file="$1"
+    else
+        local -r file='-'
+    fi
+
+    $filter "$file" | curl -F'file=@-' "$pastebin"
 }
   '';
 }
