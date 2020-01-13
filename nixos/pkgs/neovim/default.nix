@@ -14,7 +14,7 @@
         filetype plugin indent on
       '';
       packages.myVimPackage = with pkgs.vimPlugins; {
-        start = [ vim-sneak ];
+        start = [ vim-sneak vim-surround vim-easymotion ];
         opt = [ ];
       };
     };
