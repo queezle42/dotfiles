@@ -13,7 +13,7 @@ let
   # channelsDir :: path
   channelsDir = ./channels;
   # allChannels :: { *: path }
-  allChannels = with helpers; keysToAttrs (channelname: import (channelsDir + "/${channelname}")) (readFilterDir (filterAnd [(not filterDirHidden) filterDirDirs]) channelsDir);
+  allChannels = with helpers; keysToAttrs (channelname: import (channelsDir + "/${channelname}") channelname) (readFilterDir (filterAnd [(not filterDirHidden) filterDirDirs]) channelsDir);
   # getMachineChannel :: string -> path
   getMachineChannel = { name, path }:
     let

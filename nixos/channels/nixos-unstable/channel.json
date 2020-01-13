@@ -1,7 +1,8 @@
 {
+  "ref": "refs/heads/nixos-unstable",
   "url": "https://github.com/NixOS/nixpkgs-channels/",
-  "rev": "e89b21504f3e61e535229afa0b121defb52d2a50",
-  "date": "2019-11-19T07:59:43-05:00",
-  "sha256": "0jqcv3rfki3mwda00g66d27k6q2y7ca5mslrnshfpbdm7j8ya0kj",
+  "rev": "9beb0d1ac2ebd6063efbdc4d3631f8ce137bbf90",
+  "date": "2020-01-06T05:49:56-05:00",
+  "sha256": "1v95779di35qhrz70p2v27kmwm09h8pgh74i1wc72v0zp3bdrf50",
   "fetchSubmodules": false
 }
