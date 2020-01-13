@@ -28,15 +28,17 @@
 
   # German locale with english messages
   i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "de-latin1-nodeadkeys";
     defaultLocale = "de_DE.UTF-8";
     extraLocaleSettings = { LC_MESSAGES = "en_US.UTF-8"; };
     supportedLocales = [ "en_US.UTF-8/UTF-8" "de_DE.UTF-8/UTF-8" ];
   };
 
-  # Gruvbox tty colors
-  i18n.consoleColors = [ "000000" "cc241d" "98971a" "d79921" "458588" "b16286" "689d6a" "a89984" "928374" "fb4934" "b8bb26" "fabd2f" "83a598" "d3869b" "8ec07c" "ebdbb2" ];
+  console = {
+    font = "Lat2-Terminus16";
+    keyMap = "de-latin1-nodeadkeys";
+    # Gruvbox tty colors
+    colors = [ "000000" "cc241d" "98971a" "d79921" "458588" "b16286" "689d6a" "a89984" "928374" "fb4934" "b8bb26" "fabd2f" "83a598" "d3869b" "8ec07c" "ebdbb2" ];
+  };
 
   # I like to be able to carry my laptops with the lid closed while they are still running
   services.logind.lidSwitch = "ignore";
