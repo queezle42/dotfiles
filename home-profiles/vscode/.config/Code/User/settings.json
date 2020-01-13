@@ -66,7 +66,8 @@
   //"vim.useSystemClipboard": true,
   "vim.smartcase": true,
   "vim.handleKeys": {
-    "<C-d>": false
+    "<C-d>": false,
+    "<C-u>": false
   },
   "vim.insertModeKeyBindings": [
     {
