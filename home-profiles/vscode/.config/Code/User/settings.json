@@ -69,7 +69,7 @@
     "<C-d>": false,
     "<C-u>": false
   },
-  "vim.insertModeKeyBindings": [
+  "vim.insertModeKeyBindingsNonRecursive": [
     {
       "before": ["f", "d"],
       "after": ["<Esc>"]
