@@ -68,6 +68,7 @@
     gopass
     unzip
     file
+    darkhttpd
   ];
 
   users = {
