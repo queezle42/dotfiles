@@ -34,6 +34,9 @@ in
     vscode
     networkmanagerapplet
 
+    # cursor theme
+    simpleandsoft
+
     # soft desktop dependencies
     swaylockWithIdle
     zsh
