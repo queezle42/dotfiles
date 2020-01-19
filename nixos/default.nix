@@ -5,15 +5,18 @@
 
 with builtins;
 let
-  defaultChannel = (import channels/nixos-unstable);
+  # defaultChannel :: path (channel)
+  defaultChannel = loadChannel "nixos-unstable";
 
   # helpers :: { *: ? }
   helpers = import ./helpers.nix;
 
   # channelsDir :: path
   channelsDir = ./channels;
-  # allChannels :: { *: path }
-  allChannels = with helpers; keysToAttrs (channelname: import (channelsDir + "/${channelname}") channelname) (readFilterDir (filterAnd [(not filterDirHidden) filterDirDirs]) channelsDir);
+  # loadChannel :: string -> path (channel)
+  loadChannel = name: import (channelsDir + "/${name}") name;
+  # allChannels :: { *: path (channel) }
+  allChannels = with helpers; keysToAttrs loadChannel (readFilterDir (filterAnd [(not filterDirHidden) filterDirDirs]) channelsDir);
   # getMachineChannel :: string -> path
   getMachineChannel = { name, path }:
     let
