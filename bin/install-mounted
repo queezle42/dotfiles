@@ -45,11 +45,11 @@ nix copy --file "$nixos_system_file" --argstr hostname "$hostname" --to ssh://ro
 nixos_config_path=$(realpath "$local_temp_dir/nixos-config-$hostname")
 
 ssh root@$via_host "nixos-install --system $nixos_config_path && sync"
-ssh root@$via_host mkdir --mode u=rwx,g=,o= --parents /mnt/secrets/passwords
+ssh root@$via_host mkdir --mode u=rwx,g=,o= --parents /mnt/etc/secrets/passwords
 
 # TODO: get host-specific password
-#scp -r notThePassword root@$via_host:/mnt/secrets/passwords/root
-#scp -r notThePassword root@$via_host:/mnt/secrets/passwords/jens
+#scp -r notThePassword root@$via_host:/mnt/etc/secrets/passwords/root
+#scp -r notThePassword root@$via_host:/mnt/etc/secrets/passwords/jens
 
 ssh root@$via_host sync
 
