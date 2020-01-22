@@ -226,6 +226,8 @@ assert (typeOf swap) == "string";
 
     mount_point=/mnt
 
+    mkdir -p $mount_point
+
     # Create subvolumes
     ${mount-bin} -o noatime,compress=zstd $root_partition $mount_point
     ${btrfs-bin} subvolume create $mount_point/${hostname}
