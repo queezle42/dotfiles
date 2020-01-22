@@ -12,6 +12,7 @@
   "update.mode": "none",
   "window.menuBarVisibility": "toggle",
   "explorer.confirmDelete": false,
+  "files.enableTrash": false,
   "vsicons.dontShowNewVersionMessage": true,
 
   "breadcrumbs.enabled": true,
