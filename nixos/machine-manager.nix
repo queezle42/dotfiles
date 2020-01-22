@@ -31,9 +31,9 @@ let
   machinesDirContents = readDir machinesDir;
   machineNames = filter (p: machinesDirContents.${p} == "directory") (attrNames machinesDirContents);
   withMachines = lambda: listToAttrs (map (m: {name = m; value = lambda { name = m; path = (machinesDir + "/${m}"); }; }) machineNames);
-  mkMachineConfig = { name, path }: (
+  mkMachineConfig = { name, path, isIso ? false }: (
     import ./configuration.nix {
-      inherit name path;
+      inherit name path isIso;
       channel = machineChannels.${name};
     }
   );
@@ -48,10 +48,38 @@ let
       };
     in
       nixos.system;
+  mkNixosIsoDerivation = { name, path }:
+    let
+      channel = machineChannels.${name};
+      configuration = { config, ... }:
+      {
+        imports = [
+          (mkMachineConfig { inherit name path; isIso = true; })
+          <nixpkgs/nixos/modules/installer/cd-dvd/iso-image.nix>
+          <nixpkgs/nixos/modules/profiles/all-hardware.nix>
+          <nixpkgs/nixos/modules/profiles/base.nix>
+        ];
+        isoImage.isoName = "${config.isoImage.isoBaseName}-${config.system.nixos.label}-isohost-${name}.iso";
+        isoImage.volumeID = substring 0 11 "NIXOS_ISO";
+
+        isoImage.makeEfiBootable = true;
+        isoImage.makeUsbBootable = true;
+        boot.loader.grub.memtest86.enable = true;
+
+      };
+      # Importing <nixpkgs/nixos> results in a nixos system closure
+      nixos = import "${channel}/nixos" {
+        system = "x86_64-linux";
+        inherit configuration;
+      };
+    in
+      nixos.config.system.build.isoImage;
+
 in
 {
   configurations = withMachines mkMachineConfig;
   nixosSystemDerivations = withMachines mkNixosSystemDerivation;
+  nixosIsoDerivations = withMachines mkNixosIsoDerivation;
   machineTemplates = withMachines ({name, path}: import (path + /template.nix));
   channels = machineChannels;
 }

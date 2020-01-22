@@ -9,6 +9,7 @@ readonly cmdname=$(basename $0)
 
 
 nixos_system_file=$MACHINES_PATH/nixos.nix
+nixos_iso_file=$MACHINES_PATH/nixos_iso.nix
 
 # This script cannot run without the nixos configuration entry point
 if [[ ! -f "$nixos_system_file" ]]
@@ -21,7 +22,7 @@ fi
 source $DOTFILES_PATH/bin/lib/util.zsh
 
 usage() {
-  print "Usage: $cmdname [--via via_hostname] <hostname> [switch|boot|reboot|test|dry-activate|build]" >&2
+  print "Usage: $cmdname [--via via_hostname] <hostname> [switch|boot|reboot|test|dry-activate|build|iso]" >&2
 }
 
 positional=()
@@ -77,7 +78,7 @@ then
   operation="boot"
   set_profile=1
   reboot=1
-elif [[ "$operation" = "test" || "$operation" = "dry-activate" || "$operation" = "build" ]]
+elif [[ "$operation" = "test" || "$operation" = "dry-activate" || "$operation" = "build" || "$operation" = "iso" ]]
 then
   # pass
 else
@@ -96,6 +97,19 @@ fi
 
 readonly local_temp_dir=$(mktemp --tmpdir --directory phoenix-deploy.XXXXXXXXXX)
 trap "rm -rf $local_temp_dir" EXIT INT HUP TERM
+
+
+if [[ "$operation" = "iso" ]]
+then
+  print_info "Building iso image"
+  nix build --file "$MACHINES_PATH" --out-link "$local_temp_dir/nixos-iso-$hostname" "nixosIsoDerivations.$hostname"
+  readonly nixos_iso_path=$(realpath "$local_temp_dir/nixos-iso-$hostname")
+
+  print_info "Iso generated"
+  print $nixos_iso_path
+  exit 0
+fi
+
 
 print_info "Building target system configuration"
 nix build --file "$nixos_system_file" --argstr hostname "$hostname" --out-link "$local_temp_dir/nixos-config-$hostname"

@@ -1,5 +1,5 @@
 # This is the entry point for my NixOS configuration.
-{ name, path, channel }:
+{ name, path, channel, isIso }:
 { lib, config, pkgs, ... }:
 
 let
@@ -7,12 +7,11 @@ let
   dotfilesConfig = import (path + "/dotfiles.nix");
   layerImports = map (l: ./layers + "/${l}.nix") dotfilesConfig.layers;
 in
-{
+({
   imports = [
     ./modules
     (path + "/configuration.nix")
-    (path + "/hardware-configuration.nix")
-  ] ++ layerImports;
+  ] ++ layerImports ++ (lib.lists.optional (!isIso) (path + "/hardware-configuration.nix"));
 
   nixpkgs.config = {
     packageOverrides = ( import ./pkgs ) { inherit lib config; } ;
@@ -21,14 +20,15 @@ in
   # Pin channel in nix path
   nix.nixPath = [ "nixpkgs=${channel}" ];
 
+  # Default hostname ist machine directory name
+  networking.hostName = lib.mkDefault name;
+
+} // (lib.attrsets.optionalAttrs (!isIso) {
   # Bootloader
   boot.loader.systemd-boot.enable = (installResult.bootloader == "efi");
   boot.loader.efi.canTouchEfiVariables = (installResult.bootloader == "efi");
   boot.loader.grub.enable = (installResult.bootloader == "bios");
   boot.loader.grub.device = installResult.installedBlockDevice;
-
-  # Default hostname ist machine directory name
-  networking.hostName = lib.mkDefault name;
 
   boot.initrd.luks.devices = if installResult.luks then {
     cryptvol = {
@@ -36,4 +36,4 @@ in
       allowDiscards = true;
     };
   } else {};
-}
+}))
