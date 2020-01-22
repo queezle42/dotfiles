@@ -1,19 +1,24 @@
 #!/usr/bin/env nix-shell
-#!nix-shell --pure -i zsh -p zsh -p nix
+#!nix-shell -i zsh -p zsh -p nix
 
 set -e
+set -u
+set -o pipefail
 
-source util.zsh
+source $DOTFILES_PATH/bin/lib/util.zsh
 
 cmdname=$(basename $0)
 usage() {
   print "Usage: $cmdname <via_host> <hostname>" >&2
 }
 
-if [ "$1" = "--help" -o "$1" = "-h" ]
+if [[ $# -ge 1 ]]
 then
-    usage
-    exit 0
+  if [ "$1" = "--help" -o "$1" = "-h" ]
+  then
+      usage
+      exit 0
+  fi
 fi
 
 if [ $# -ne 2 ]
@@ -26,22 +31,26 @@ fi
 via_host="$1"
 hostname="$2"
 
+
+nixos_system_file=$MACHINES_PATH/nixos.nix
+
 local_temp_dir=$(mktemp --tmpdir --directory install-via.XXXXXXXXXX)
 trap "rm -rf $local_temp_dir" EXIT INT HUP TERM
 
 print_info "Building target system configuration..."
-nix build --file ../nixos.nix --argstr hostname "$hostname" --out-link "$local_temp_dir/nixos-config-$hostname"
+nix build --file "$nixos_system_file" --argstr hostname "$hostname" --out-link "$local_temp_dir/nixos-config-$hostname"
 
 print_info "Deploying target system configuration..."
-nix copy --file ../nixos.nix --argstr hostname "$hostname" --to ssh://root@$via_host
+nix copy --file "$nixos_system_file" --argstr hostname "$hostname" --to ssh://root@$via_host
 nixos_config_path=$(realpath "$local_temp_dir/nixos-config-$hostname")
 
-# TODO: merge commands
 ssh root@$via_host "nixos-install --system $nixos_config_path && sync"
 ssh root@$via_host mkdir --mode u=rwx,g=,o= --parents /mnt/secrets/passwords
 
 # TODO: get host-specific password
 #scp -r notThePassword root@$via_host:/mnt/secrets/passwords/root
 #scp -r notThePassword root@$via_host:/mnt/secrets/passwords/jens
+
+ssh root@$via_host sync
 
 print_info "Installation completed"
