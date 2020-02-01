@@ -51,6 +51,8 @@ assert (typeOf swap) == "string";
     EOF
     luks_key=""
   '';
+
+  # Helper script that has to be run on the target machine to format it
   format = writeScriptBin "format_${hostname}" ''
     #!${zsh-bin}
     set -e
