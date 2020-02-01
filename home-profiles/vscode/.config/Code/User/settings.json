@@ -47,7 +47,7 @@
 
   "editor.smoothScrolling": true,
   "editor.cursorSmoothCaretAnimation": true,
-  "editor.cursorSurroundingLines": 3,
+  "editor.cursorSurroundingLines": 2,
   "editor.fontSize": 14,
   "editor.fontFamily": "Fira Code Light",
   "editor.fontLigatures": true,
