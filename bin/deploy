@@ -8,8 +8,8 @@ set -o pipefail
 readonly cmdname=$(basename $0)
 
 
-nixos_system_file=$MACHINES_PATH/nixos.nix
-nixos_iso_file=$MACHINES_PATH/nixos_iso.nix
+readonly nixos_system_file=$MACHINES_PATH/nixos.nix
+readonly nixos_iso_file=$MACHINES_PATH/nixos_iso.nix
 
 # This script cannot run without the nixos configuration entry point
 if [[ ! -f "$nixos_system_file" ]]
