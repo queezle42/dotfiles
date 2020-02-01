@@ -8,13 +8,12 @@ set -o pipefail
 readonly cmdname=$(basename $0)
 
 
-readonly nixos_system_file=$MACHINES_PATH/nixos.nix
-readonly nixos_iso_file=$MACHINES_PATH/nixos_iso.nix
+readonly machines_repo_entry_point=$MACHINES_PATH/default.nix
 
 # This script cannot run without the nixos configuration entry point
-if [[ ! -f "$nixos_system_file" ]]
+if [[ ! -f "$machines_repo_entry_point" ]]
 then
-  print -P "%B%F{red}Error: %F{orange}nixos.nix%F{red} not found%b%f" >&2
+  print -P "%B%F{red}Error: Machines repo %F{orange}default.nix%F{red} not found%b%f" >&2
   exit 2
 fi
 
@@ -112,7 +111,7 @@ fi
 
 
 print_info "Building target system configuration"
-nix build --file "$nixos_system_file" --argstr hostname "$hostname" --out-link "$local_temp_dir/nixos-config-$hostname"
+nix build --file "$MACHINES_PATH" --out-link "$local_temp_dir/nixos-config-$hostname" "nixosSystemDerivations.$hostname"
 readonly nixos_config_path=$(realpath "$local_temp_dir/nixos-config-$hostname")
 
 if [[ "$operation" = "build" ]]
@@ -141,7 +140,7 @@ then
 else
   # remote deploy
 
-  nix copy --file "$nixos_system_file" --argstr hostname "$hostname" --to "ssh://root@$via_hostname"
+  nix copy --file "$MACHINES_PATH" "nixosSystemDerivations.$hostname" --to "ssh://root@$via_hostname"
 
   # The manual way to do it (this is in theory also supported by nixos-rebuild by using '-I')
 
