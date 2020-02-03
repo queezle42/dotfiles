@@ -113,11 +113,11 @@ function print_format {
     PERCENT="%"
     [[ $USE_PERCENT == 0 ]] && PERCENT=""
 
-    if [[ $MUTED =~ "no" ]]; then
-        BLOCK="$SYMBOL<span color='$ACTIVE_COLOR'>$VOL$PERCENT</span>"
-    else
+    # if [[ $MUTED =~ "no" ]]; then
+    #     BLOCK="$SYMBOL<span color='$ACTIVE_COLOR'>$VOL$PERCENT</span>"
+    # else
         BLOCK="$SYMBOL$VOL$PERCENT"
-    fi
+    # fi
 
     case "$1" in
         1) echo "$BLOCK [$NAME]" ;;

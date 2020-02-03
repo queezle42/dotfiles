@@ -7,12 +7,15 @@ if (($TIME > 0100 && $TIME < 0800))
 then
 	if (($TIME > 0230))
 	then
-		echo "<span color='#000000' background='#ff2200'>$zzz sleep</span>"
+		echo "$zzz sleep"
+		exit 33
 	elif (($TIME > 0200))
 	then
-		echo "<span color='#ff4400'>$zzz sleep</span>"
+		echo "$zzz sleep"
+		exit 32
 	else
-		echo "<span color='#ff8800'>$zzz sleep</span>"
+		echo "$zzz sleep"
+		exit 31
 	fi
 
 	exit
