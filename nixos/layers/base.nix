@@ -60,6 +60,7 @@
     fzf
     tree
     htop
+    killall
     gotop
     inxi
     lm_sensors
