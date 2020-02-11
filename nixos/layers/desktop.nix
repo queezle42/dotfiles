@@ -45,6 +45,7 @@ in
     qt5.qtwayland
     acpilight
     redshift-wlr
+    kanshi
 
     # qbar block dependencies
     python3
