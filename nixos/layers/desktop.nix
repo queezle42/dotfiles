@@ -33,6 +33,7 @@ in
     gnome3.gnome-disk-utility
     vscode
     networkmanagerapplet
+    wayvnc
 
     # cursor theme
     simpleandsoft

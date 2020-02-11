@@ -12,6 +12,8 @@ let
     neovim = (import ./neovim { inherit pkgs; }).neovim;
     nginx-sso = callPackage ./nginx-sso {};
     simpleandsoft = (import ./simpleandsoft { inherit pkgs; }).simpleandsoft;
+    neatvnc = callPackage ./neatvnc/neatvnc.nix {};
+    wayvnc = callPackage ./wayvnc/wayvnc.nix {};
   };
 
 in newpkgs
