@@ -31,7 +31,6 @@ in
     rxvt_unicode
     glxinfo
     gnome3.gnome-disk-utility
-    vscode
     networkmanagerapplet
     wayvnc
     pulsemixer

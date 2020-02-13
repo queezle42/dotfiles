@@ -3,6 +3,7 @@
 {
   imports = [
     ./desktop.nix
+    ./vscode.nix
   ];
 
   environment.systemPackages = with pkgs; [
