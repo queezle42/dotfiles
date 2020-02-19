@@ -49,6 +49,9 @@ in
     redshift-wlr
     kanshi
 
+    # theme
+    adwaita-qt
+
     # qbar block dependencies
     python3
     acpi
@@ -97,4 +100,10 @@ in
     exec sway &> /run/user/$UID/sway_log
     fi
   '';
+
+  environment.etc."xdg/Trolltech.conf".text = ''
+    [Qt]
+    style=adwaita-dark
+  '';
+  environment.shellInit = "export QT_STYLE_OVERRIDE=adwaita-dark";
 }
