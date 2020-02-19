@@ -7,6 +7,7 @@
 
   environment.systemPackages = with pkgs; [
     virtmanager
+    keepassxc
 
     tdesktop
     spotify
