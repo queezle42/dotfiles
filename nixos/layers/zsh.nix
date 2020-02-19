@@ -62,12 +62,13 @@ in
     export LESS='-g -i -M -R -S -w -z-4'
 
     export LOCAL_ZSH_COMPLETION_PATH=~/.local/zsh-completions
-    fpath=($LOCAL_ZSH_COMPLETION_PATH $fpath)
   '';
 # FIXME: set the less input preprocessor
 #export LESSOPEN="| ${pkgs.lesspipe}/bin/lesspipe.sh %s 2>&-"
 
   programs.zsh.interactiveShellInit = ''
+    fpath=($LOCAL_ZSH_COMPLETION_PATH $fpath)
+
     zstyle ':completion:*' auto-description '%d'
     zstyle ':completion:*' completer _expand _complete _ignored
     zstyle ':completion:*' format '%d'
