@@ -35,6 +35,7 @@ in
     networkmanagerapplet
     wayvnc
     pulsemixer
+    dfeet
 
     # cursor theme
     simpleandsoft
