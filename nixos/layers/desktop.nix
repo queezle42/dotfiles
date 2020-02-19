@@ -34,6 +34,7 @@ in
     vscode
     networkmanagerapplet
     wayvnc
+    pulsemixer
 
     # cursor theme
     simpleandsoft
