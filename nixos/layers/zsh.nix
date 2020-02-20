@@ -50,6 +50,8 @@ in
     myipv6 = "drill -6 @resolver1.opendns.com any myip.opendns.com";
 
     visual-hostkey = "ssh-keygen -lvf /etc/ssh/ssh_host_ed25519_key.pub";
+
+    starwars="telnet towel.blinkenlights.nl";
   };
 
   environment.shellInit = ''
