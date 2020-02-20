@@ -16,10 +16,8 @@ in
   programs.zsh.promptInit = ''
     if [ "$TERM" != dumb ]
     then
-      fpath=(
-        ${promptPath}
-        $fpath
-      )
+      fpath+=${promptPath}
+
       source ${promptPath}/load_prompt
     fi
   '';
@@ -69,7 +67,7 @@ in
 #export LESSOPEN="| ${pkgs.lesspipe}/bin/lesspipe.sh %s 2>&-"
 
   programs.zsh.interactiveShellInit = ''
-    fpath=($LOCAL_ZSH_COMPLETION_PATH $fpath)
+    fpath+=$LOCAL_ZSH_COMPLETION_PATH
 
     zstyle ':completion:*' auto-description '%d'
     zstyle ':completion:*' completer _expand _complete _ignored
