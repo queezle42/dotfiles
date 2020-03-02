@@ -55,7 +55,7 @@
 
   "search.smartCase": true,
 
-  "latex-workshop.latex.autoBuild.onSave.enabled": false,
+  "latex-workshop.latex.autoBuild.run": "never",
   "latex-workshop.view.pdf.viewer": "browser",
   "latex-workshop.chktex.enabled": true,
 
