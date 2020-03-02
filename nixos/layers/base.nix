@@ -75,6 +75,7 @@
     unzip
     file
     darkhttpd
+    ripgrep
   ];
 
   users = {
