@@ -24,6 +24,9 @@
   # Restore systemd default
   services.logind.killUserProcesses = true;
 
+  # Freezes on shutdown on some machines. Also probably should only be enabled when required?
+  security.rngd.enable = false;
+
   time.timeZone = "Europe/Berlin";
 
   # German locale with english messages
