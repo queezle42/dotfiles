@@ -1,8 +1,8 @@
 {
   "ref": "refs/heads/nixos-19.09",
   "url": "https://github.com/NixOS/nixpkgs-channels/",
-  "rev": "ac218438bdb911f746da1ffcb70c16dddf60dc4f",
-  "date": "2020-01-08T14:25:34+00:00",
-  "sha256": "0cbx6ln0ba11fmdhd64kzb62ggis19klbgpb3px04gbmvqx4nl1g",
+  "rev": "8731aaaf8b30888bc24994096db830993090d7c4",
+  "date": "2020-02-14T00:20:25+01:00",
+  "sha256": "1hcc89rxi47nb0mpk05nl9rbbb04kfw97xfydhpmmgh57yrp3zqa",
   "fetchSubmodules": false
 }
