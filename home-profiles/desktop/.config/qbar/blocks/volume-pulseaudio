@@ -13,8 +13,6 @@ AUDIO_MUTED_SYMBOL=$'🔇\uFE0E '
 
 AUDIO_INTERVAL=5
 
-ACTIVE_COLOR="#ffffff"
-
 LONG_FORMAT=4
 SHORT_FORMAT=2
 USE_PERCENT=1
@@ -113,11 +111,11 @@ function print_format {
     PERCENT="%"
     [[ $USE_PERCENT == 0 ]] && PERCENT=""
 
-    # if [[ $MUTED =~ "no" ]]; then
-    #     BLOCK="$SYMBOL<span color='$ACTIVE_COLOR'>$VOL$PERCENT</span>"
-    # else
+    if [[ $MUTED =~ "no" ]]; then
+        BLOCK="<active>$SYMBOL$VOL$PERCENT</active>"
+    else
         BLOCK="$SYMBOL$VOL$PERCENT"
-    # fi
+    fi
 
     case "$1" in
         1) echo "$BLOCK [$NAME]" ;;

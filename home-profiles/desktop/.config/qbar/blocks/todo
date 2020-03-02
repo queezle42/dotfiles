@@ -7,15 +7,12 @@ if (($TIME > 0100 && $TIME < 0800))
 then
 	if (($TIME > 0230))
 	then
-		echo "$zzz sleep"
-		exit 33
+		echo "<active><critical>$zzz sleep</critical></active>"
 	elif (($TIME > 0200))
 	then
-		echo "$zzz sleep"
-		exit 32
+		echo "<active><error>$zzz sleep</error></active>"
 	else
-		echo "$zzz sleep"
-		exit 31
+		echo "<active><warning>$zzz sleep</warning></active>"
 	fi
 
 	exit
