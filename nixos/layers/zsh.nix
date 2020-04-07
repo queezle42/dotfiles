@@ -10,6 +10,12 @@ in
     less
   ];
 
+  programs.tmux = {
+    enable = true;
+    terminal = "tmux-256color";
+    clock24 = true;
+  };
+
   programs.zsh.enable = true;
   programs.zsh.enableGlobalCompInit = false;
 
