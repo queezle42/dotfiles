@@ -283,6 +283,8 @@ bindsym $mod+a focus parent
 bindsym $mod+d focus child
 
 # switch to workspace
+bindsym $mod+Ctrl+h workspace prev_on_output
+bindsym $mod+Ctrl+l workspace next_on_output
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
@@ -295,6 +297,8 @@ bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
 # move focused container to workspace
+bindsym $mod+Ctrl+Shift+h move container to workspace prev_on_output
+bindsym $mod+Ctrl+Shift+l move container to workspace next_on_output
 bindsym $mod+Shift+1 move container to workspace 1
 bindsym $mod+Shift+2 move container to workspace 2
 bindsym $mod+Shift+3 move container to workspace 3
