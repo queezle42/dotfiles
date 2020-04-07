@@ -35,6 +35,7 @@ in
     wayvnc
     pulsemixer
     dfeet
+    #vimiv
 
     # cursor theme
     simpleandsoft
@@ -48,6 +49,9 @@ in
     acpilight
     redshift-wlr
     kanshi
+    libnotify
+    wl-clipboard
+    ddcutil
 
     # theme
     adwaita-qt
