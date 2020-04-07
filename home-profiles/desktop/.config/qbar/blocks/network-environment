@@ -15,7 +15,7 @@ then
   ENVIRONMENT="home"
   SYMBOL=$'🏠\uFE0E'
   COLOR="#88bbff"
-elif [[ "$SSID" == "100111010110" ]]
+elif [[ "$SSID" == "the-phone" ]]
 then
   ENVIRONMENT="mobile"
   SYMBOL=$'🌍\uFE0E'
