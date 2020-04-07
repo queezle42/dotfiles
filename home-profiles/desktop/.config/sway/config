@@ -62,7 +62,7 @@ output eDP-1 {
 output * bg $wallpaper fill
 
 # Run desktop daemons
-exec_always pkill kanshi; exec kanshi
+exec kanshi
 exec mako
 #exec CM_SELECTIONS=clipboard clipmenud
 #exec nm-applet --indicator
