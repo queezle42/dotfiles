@@ -72,8 +72,10 @@ in
   fonts.fonts = with pkgs; [ fira-code ];
 
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
-
+  hardware.pulseaudio = {
+    enable = true;
+    systemWide = true;
+  };
 
   users = {
     users.jens = {
