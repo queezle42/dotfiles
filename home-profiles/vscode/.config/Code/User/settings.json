@@ -13,13 +13,15 @@
   "window.menuBarVisibility": "toggle",
   "explorer.confirmDelete": false,
   "files.enableTrash": false,
-  "vsicons.dontShowNewVersionMessage": true,
 
   "breadcrumbs.enabled": true,
   "zenMode.centerLayout": false,
   "zenMode.hideLineNumbers": false,
 
   "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "files.insertFinalNewline": true,
+
   // colors
   "editor.tokenColorCustomizations": {
     "[Monokai Dimmed]": {
@@ -48,12 +50,14 @@
   "editor.smoothScrolling": true,
   "editor.cursorSmoothCaretAnimation": true,
   "editor.cursorSurroundingLines": 2,
-  "editor.fontSize": 14,
+  "editor.fontSize": 12,
   "editor.fontFamily": "Fira Code Light",
   "editor.fontLigatures": true,
   "editor.tabSize": 2,
 
   "search.smartCase": true,
+
+  "languageServerHaskell.formattingProvider": "ormolu",
 
   "latex-workshop.latex.autoBuild.run": "never",
   "latex-workshop.view.pdf.viewer": "browser",
