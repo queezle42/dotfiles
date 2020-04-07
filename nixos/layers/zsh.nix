@@ -124,6 +124,17 @@ in
     setopt autocd
     setopt extendedglob
 
+    unsetopt flowcontrol
+
+
+    # Set up fzf for ctrl-t (paste selected paths) and alt-c (cd into selected directory)
+    # This also binds ctrl-r, but that binding is reverted later
+    source ${pkgs.fzf}/share/fzf/key-bindings.zsh
+
+    # bind ctrl-r and ctrl-s to perform emacs-style history search
+    bindkey '^R' history-incremental-search-backward
+    bindkey '^S' history-incremental-search-forward
+
     # Shift-Tab reverse tab through completions
     bindkey '^[[Z' reverse-menu-complete
 
@@ -172,9 +183,6 @@ in
     bindkey '^P' up-history
     bindkey '^N' down-history
 
-    # bind ctrl-r to perform backward search in history
-    bindkey '^r' history-incremental-search-backward
-
     # bind ctrl-a and ctrl-e to move to beginning/end of line
     bindkey '^a' beginning-of-line
     bindkey '^e' end-of-line
@@ -187,16 +195,18 @@ in
     zle -N backward-kill-dir
     bindkey '^[^?' backward-kill-dir
 
-    set-cursor-bar (){
-      if [[ "$TERM" = xterm* ]]; then
+
+    set-cursor-bar () {
+      if [[ "$TERM" = xterm* || "$TERM" = tmux* || "$TERM" = screen* ]]; then
           echo -ne "\e[6 q"
       fi
     }
     set-cursor-block() {
-      if [[ "$TERM" = xterm* ]]; then
+      if [[ "$TERM" = xterm* || "$TERM" = tmux* || "$TERM" = screen* ]]; then
           echo -ne "\e[2 q"
       fi
     }
+
 
     # change cursor on vi mode switch
     zle-keymap-select() {
