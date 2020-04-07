@@ -140,7 +140,7 @@ then
 else
   # remote deploy
 
-  nix copy --file "$MACHINES_PATH" "nixosSystemDerivations.$hostname" --to "ssh://root@$via_hostname"
+  nix copy --substitute-on-destination --file "$MACHINES_PATH" "nixosSystemDerivations.$hostname" --to "ssh://root@$via_hostname"
 
   # The manual way to do it (this is in theory also supported by nixos-rebuild by using '-I')
 
