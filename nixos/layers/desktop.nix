@@ -57,6 +57,7 @@ in
     adwaita-qt
 
     # qbar block dependencies
+    qbar
     python3
     acpi
     perl
