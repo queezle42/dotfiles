@@ -64,6 +64,7 @@
     tree
     htop
     killall
+    tmux
     gotop
     inxi
     lm_sensors
@@ -77,6 +78,9 @@
     darkhttpd
     ncdu
     ripgrep
+    fd
+    loc
+    gotty
   ];
 
   users = {
