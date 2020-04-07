@@ -11,7 +11,7 @@ let
     haskell-ide-engine = (import ./haskell-ide-engine { inherit pkgs; });
     neovim = import ./neovim { inherit pkgs; };
     nginx-sso = callPackage ./nginx-sso {};
-    simpleandsoft = (import ./simpleandsoft { inherit pkgs; }).simpleandsoft;
+    simpleandsoft = import ./simpleandsoft { inherit pkgs; };
     neatvnc = callPackage ./neatvnc/neatvnc.nix {};
     wayvnc = callPackage ./wayvnc/wayvnc.nix {};
 
