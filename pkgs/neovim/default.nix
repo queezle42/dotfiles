@@ -21,10 +21,13 @@ pkgs.neovim.override {
       set expandtab
       set shiftround
 
+      set hidden
+
       set smartindent
       filetype plugin indent on
 
       " Search case-insensitive by default but switch to case-sensitive when using uppercase letters.
+      set ignorecase
       set smartcase
 
       " Full mouse support
