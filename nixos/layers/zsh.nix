@@ -72,6 +72,7 @@ in
     # set the default less options
     export LESS='-g -i -M -R -S -w -z-4'
 
+    # export LOCAL_ZSH_COMPLETION_PATH=''${XDG_DATA_HOME:-$HOME/.local/share}/zsh/site-functions
     export LOCAL_ZSH_COMPLETION_PATH=~/.local/zsh-completions
   '';
 # FIXME: set the less input preprocessor
