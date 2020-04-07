@@ -25,7 +25,7 @@
   services.logind.killUserProcesses = true;
 
   # Freezes on shutdown on some machines. Also probably should only be enabled when required?
-  security.rngd.enable = false;
+  security.rngd.enable = lib.mkDefault false;
 
   time.timeZone = "Europe/Berlin";
 
