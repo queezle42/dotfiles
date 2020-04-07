@@ -98,7 +98,8 @@ in
   # QT_QPA_PLATFORM=wayland requires qt5.qtwayland in systemPackages
   programs.sway.extraSessionCommands = ''
     export SDL_VIDEODRIVER=wayland
-    export QT_QPA_PLATFORM=wayland
+    # Creates problems with OBS
+    #export QT_QPA_PLATFORM=wayland
     export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
   '';
   environment.loginShellInit = ''
