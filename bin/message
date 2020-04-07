@@ -35,3 +35,4 @@ do
 	reset
 	print -n "${message}" > $tty
 done
+
