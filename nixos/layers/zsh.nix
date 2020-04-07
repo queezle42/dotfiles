@@ -39,6 +39,11 @@ in
     la = "ls -la";
     lah = "ls -lah";
 
+    f = "fd";
+
+    # tree configured to ignore .gitignore
+    gtree = "${pkgs.tree}/bin/tree --fromfile <(${pkgs.fd}/bin/fd -H -E .git)";
+
     nix-zsh = "nix-shell --packages zsh --command \"exec zsh\"";
 
     cal = "cal --monday";
@@ -55,7 +60,7 @@ in
 
     visual-hostkey = "ssh-keygen -lvf /etc/ssh/ssh_host_ed25519_key.pub";
 
-    starwars="telnet towel.blinkenlights.nl";
+    starwars="nix-shell -p telnet --run 'telnet towel.blinkenlights.nl'";
   };
 
   environment.shellInit = ''
@@ -96,6 +101,16 @@ in
     then
       eval "$(direnv hook zsh)"
     fi
+
+    nman() {
+      if [[ -n "$1" ]]
+      then
+        nvim "man://$1"
+      else
+        nvim "man://$1"
+      fi
+    }
+
 
     # "The time the shell waits, in hundredths of seconds, for another key to be pressed when reading bound multi-character sequences."
     # This is for vim-style multi-letter commands (<f><d> is mapped to <Esc>)
