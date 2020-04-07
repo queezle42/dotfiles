@@ -20,6 +20,7 @@ let
         qbar = self.callPackage ./qbar {};
       };
     };
+
     mumble-git = (mumble.overrideAttrs (attrs: {
       src = pkgs.fetchFromGitHub {
         owner = "mumble-voip";
