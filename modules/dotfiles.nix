@@ -11,7 +11,7 @@ in {
       dotfiles = {
         base = mkOption {
           type = types.path;
-          default = ../../home-profiles;
+          default = ../home-profiles;
           description = ''
             The `base` for the selected `profiles`.
 

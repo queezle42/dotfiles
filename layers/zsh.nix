@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  promptPath = ../../zsh/prompt;
+  promptPath = ../zsh/prompt;
 
 in
 {
