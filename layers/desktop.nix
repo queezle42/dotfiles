@@ -36,6 +36,7 @@ in
     pulsemixer
     dfeet
     #vimiv
+    mpv
 
     # cursor theme
     simpleandsoft
