@@ -55,6 +55,8 @@ pkgs.neovim.override {
       " Toggle with Alt-b
       nnoremap <a-b> <Cmd>NERDTreeToggle<CR>
 
+      " Airline
+
       let g:highlightedyank_highlight_duration = 200
 
       filetype on
@@ -105,6 +107,10 @@ pkgs.neovim.override {
 
         # NERDTree
         nerdtree
+
+        # Better status bar
+        vim-airline
+        vim-bufferline
 
         # Nix syntax highlighting
         vim-nix
