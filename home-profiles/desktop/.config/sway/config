@@ -202,7 +202,7 @@ bindsym $mod+p exec $terminal ipython
 bindsym $mod+Shift+p exec $terminal stack ghci --verbosity warning
 
 # start a browser
-bindsym $mod+b exec --no-startup-id chromium
+bindsym $mod+b exec --no-startup-id chromium --force-dark-mode
 
 # start htop
 bindsym $mod+Escape exec $terminal htop
