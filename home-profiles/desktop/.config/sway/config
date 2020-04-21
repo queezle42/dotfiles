@@ -222,6 +222,7 @@ bindsym $mod+Shift+m move container to workspace $workspace_music
 # start spotify instead of mopidy web interface while mopidy is broken
 #bindsym $mod+Ctrl+m workspace $workspace_music; exec --no-startup-id chromium --app=http://stargate:6680/iris/#/
 bindsym $mod+Ctrl+m workspace $workspace_music; exec spotify
+bindsym $mod+Alt+m exec $terminal pulsemixer
 #bindsym $mod+Ctrl+m workspace $workspace_music; exec ~/run/spotify-singleton
 
 # scratchpad
@@ -350,7 +351,7 @@ bindsym $mod+r mode "resize"
 
 
 # marks POC
-set $goto_mark "goto mark"
+#set $goto_mark "goto mark"
 set $set_mark "set mark"
 
 mode $goto_mark {
@@ -377,7 +378,8 @@ bindsym $mod+apostrophe mode $goto_mark
 bindsym $mod+grave mode $goto_mark
 bindsym $mod+acute mode $goto_mark
 
-bindsym $mod+Alt+m mode $set_mark
+# Keybinding is in conflict with pulsemixer keybinding
+#bindsym $mod+Alt+m mode $set_mark
 
 # experimental multi-level menu
 
