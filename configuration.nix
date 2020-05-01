@@ -20,6 +20,11 @@ in
   # Pin channel in nix path
   nix.nixPath = [ "nixpkgs=${channel}" ];
 
+  environment.shellAliases = {
+    # nixos-option won't run without a configuration. With an empty config it does not show configured values, but can at least be used to search options and show default values.
+    nixos-option = "nixos-option -I nixos-config=${pkgs.writeText "empty-configuration.nix" "{...}:{}"}";
+  };
+
   # Default hostname ist machine directory name
   networking.hostName = lib.mkDefault name;
 
