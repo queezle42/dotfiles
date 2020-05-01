@@ -6,5 +6,6 @@
     haskell-ide-engine
     ormolu
     haskellPackages.hoogle
+    ghcid
   ];
 }
