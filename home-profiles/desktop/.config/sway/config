@@ -36,6 +36,7 @@ set $workspace_music 13:music
 input * {
   xkb_layout de
   xkb_variant nodeadkeys
+  xkb_numlock enable
 }
 
 input 2:7:SynPS/2_Synaptics_TouchPad {
