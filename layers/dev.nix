@@ -10,7 +10,7 @@
       isNormalUser = true;
       packages = with pkgs; [
       ];
-      dotfiles.profiles = [ "kitty" "vscode" ];
+      dotfiles.profiles = [ "kitty" "vscode" "tmux" ];
     };
   };
 }

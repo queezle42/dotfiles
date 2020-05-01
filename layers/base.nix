@@ -64,7 +64,8 @@
     tree
     htop
     killall
-    tmux
+    # Enabled by zsh layer
+    # tmux
     gotop
     inxi
     lm_sensors
@@ -94,6 +95,7 @@
       isNormalUser = true;
       passwordFile = "/etc/secrets/passwords/jens";
       extraGroups = [ "wheel" "audio" "dialout" ];
+      dotfiles.profiles = [ "tmux" ];
     };
   };
 }
