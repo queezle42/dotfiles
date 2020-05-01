@@ -3,6 +3,11 @@
 pkgs.neovim.override {
   configure = {
     customRC = ''
+      " Map ' ' to trigger the leader key ('\').
+      " When using map instead of using `let mapleader = "<Space>"` there is no delay until the cursor moves visibly and the command in the command bar ('showcmd') reads '\' instead of '<20>'.
+      :map <Space> \
+      "let mapleader = " "
+
       inoremap fd <Esc>
       vnoremap fd <Esc>
 
@@ -17,10 +22,12 @@ pkgs.neovim.override {
       " Enable line numbers
       set number
 
+      " Use 2 spaces for indentation
       set shiftwidth=2
       set expandtab
       set shiftround
 
+      " Send the active buffer to the background when opening a file (allows to have unsaved changes in multiple files)
       set hidden
 
       set smartindent
@@ -37,11 +44,16 @@ pkgs.neovim.override {
       " I want to use clipboard=autoselect, when it is implemented: https://github.com/neovim/neovim/pull/3708
       set clipboard=unnamed
 
+      " Shows the effects of a command incrementally, as you type. Also shows partial off-screen results in a preview window.
+      set inccommand=split
+
       " Configure completion: First <tab> completes to the longest common string and also opens the completion menu, following <Tab>s complete the next matches.
       set wildmode=longest:full,full
 
       " Save with Ctrl-S (if file has changed)
-      noremap <c-s> <Cmd>update<CR>
+      noremap <C-s> <Cmd>update<CR>
+
+      noremap <C-p> <Cmd>Files<CR>
 
       " Use `ALT+{h,j,k,l}` to navigate windows from any mode
       :tnoremap <A-h> <C-\><C-N><C-w>h
@@ -78,11 +90,41 @@ pkgs.neovim.override {
       " Load filetype plugins
       "autocmd FileType nix :packadd vim-nix
 
+      " Bufferline
+      " Bufferline is integrated into airline, so also showing buffers in the command bar is not desirable.
+      let g:bufferline_echo = 0
+
+
       " Configure language client
+
+      let g:LanguageClient_useVirtualText = "No"
+
       let g:LanguageClient_serverCommands = { 'haskell': ['hie-wrapper', '--lsp'] }
+
+      function LC_maps()
+        if has_key(g:LanguageClient_serverCommands, &filetype)
+          nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<CR>
+          nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>
+          nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+        endif
+      endfunction
+
+      autocmd FileType * call LC_maps()
+
 
       " Use deoplete for autocompletion.
       let g:deoplete#enable_at_startup = 1
+
+      " Paste from last yank
+      nnoremap <Leader>p "0p
+      nnoremap <Leader>P "0P
+      vnoremap <Leader>p "0p
+      inoremap <Leader><C-r> <C-r>0
+
+      " <Leader><Space> clears search highlight. This should be <Space><Space> with this .vimrc, if the leader key has not been reconfigured.
+      " <Space><Space> can be easily pressed and should probably be a non-destructive shortcut (hence the mapping to :nohlsearch).
+      nnoremap <Leader><Space> <Cmd>nohlsearch<CR>
+      vnoremap <Leader><Space> <Cmd>nohlsearch<CR>
     '';
     packages.myVimPackage = with pkgs.vimPlugins; {
       start = [
@@ -102,7 +144,8 @@ pkgs.neovim.override {
         # Increment and decrement dates and times with <Ctrl-A> and <Ctrl-X>
         vim-speeddating
 
-        vim-grepper
+        # Multi-cursor. <C-n> to start/add cursor on next match, <C-x> to skip match, <C-p> to undo cursor, <A-n> to select all matches.
+        vim-multiple-cursors
 
         fzfWrapper
         fzf-vim
@@ -110,9 +153,6 @@ pkgs.neovim.override {
         # Language server support
         LanguageClient-neovim
         deoplete-nvim
-
-        # Improved folder navigation
-        #vim-vinegear
 
         vim-highlightedyank
 
@@ -131,6 +171,8 @@ pkgs.neovim.override {
 
         # Haskell syntax highlighting
         haskell-vim
+        # Haskell alternative to language server (TODO: load on demand?)
+        ghcid
       ];
       opt = [
       ];
