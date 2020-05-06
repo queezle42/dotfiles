@@ -51,6 +51,9 @@ in
     copy = "xclip -selection c -i";
     paste = "xclip -selection c -o";
 
+    # Start tmux in a transient scope (a PAM session would be better but this works)
+    tmux-new = "systemd-run --scope --user tmux";
+
     msub = "mosquitto_sub";
     mpub = "mosquitto_pub";
 
