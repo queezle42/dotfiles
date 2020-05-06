@@ -5,6 +5,11 @@
   hardware.opengl.driSupport32Bit = true;
   hardware.pulseaudio.support32Bit = true;
 
+  # Configure xfce for applications that might require apis that are not yet available under wayland (I'm not aware of any right now).
+  # Use `systemctl start display-manager.service` to start xorg.
+  #services.xserver.enable = true;
+  #services.xserver.desktopManager.xfce.enable = true;
+  #services.xserver.autorun = false;
 
   users.users.wine = {
     isNormalUser = true;
