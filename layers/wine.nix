@@ -5,7 +5,6 @@
   hardware.opengl.driSupport32Bit = true;
   hardware.pulseaudio.support32Bit = true;
 
-  gtk.iconCache.enable = true;
 
   users.users.wine = {
     isNormalUser = true;
