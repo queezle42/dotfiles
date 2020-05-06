@@ -5,7 +5,7 @@ pkgs.neovim.override {
     customRC = ''
       " Map ' ' to trigger the leader key ('\').
       " When using map instead of using `let mapleader = "<Space>"` there is no delay until the cursor moves visibly and the command in the command bar ('showcmd') reads '\' instead of '<20>'.
-      :map <Space> \
+      map <Space> \
       "let mapleader = " "
 
       inoremap fd <Esc>
@@ -56,18 +56,18 @@ pkgs.neovim.override {
       noremap <C-p> <Cmd>Files<CR>
 
       " Use `ALT+{h,j,k,l}` to navigate windows from any mode
-      :tnoremap <A-h> <C-\><C-N><C-w>h
-      :tnoremap <A-j> <C-\><C-N><C-w>j
-      :tnoremap <A-k> <C-\><C-N><C-w>k
-      :tnoremap <A-l> <C-\><C-N><C-w>l
-      :inoremap <A-h> <C-\><C-N><C-w>h
-      :inoremap <A-j> <C-\><C-N><C-w>j
-      :inoremap <A-k> <C-\><C-N><C-w>k
-      :inoremap <A-l> <C-\><C-N><C-w>l
-      :nnoremap <A-h> <C-w>h
-      :nnoremap <A-j> <C-w>j
-      :nnoremap <A-k> <C-w>k
-      :nnoremap <A-l> <C-w>l
+      tnoremap <A-h> <C-\><C-N><C-w>h
+      tnoremap <A-j> <C-\><C-N><C-w>j
+      tnoremap <A-k> <C-\><C-N><C-w>k
+      tnoremap <A-l> <C-\><C-N><C-w>l
+      inoremap <A-h> <C-\><C-N><C-w>h
+      inoremap <A-j> <C-\><C-N><C-w>j
+      inoremap <A-k> <C-\><C-N><C-w>k
+      inoremap <A-l> <C-\><C-N><C-w>l
+      nnoremap <A-h> <C-w>h
+      nnoremap <A-j> <C-w>j
+      nnoremap <A-k> <C-w>k
+      nnoremap <A-l> <C-w>l
 
       " Always show the sign column (to prevent jumps when loading git- or the language client)
       " Disabled because it also adds a sign column to NERDTree
@@ -103,9 +103,9 @@ pkgs.neovim.override {
 
       function LC_maps()
         if has_key(g:LanguageClient_serverCommands, &filetype)
-          nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<CR>
-          nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>
-          nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+          nnoremap <buffer> <silent> K <Cmd>call LanguageClient#textDocument_hover()<CR>
+          nnoremap <buffer> <silent> gd <Cmd>call LanguageClient#textDocument_definition()<CR>
+          nnoremap <buffer> <silent> <F2> <Cmd>call LanguageClient#textDocument_rename()<CR>
         endif
       endfunction
 
