@@ -115,16 +115,9 @@ pkgs.neovim.override {
       " Use deoplete for autocompletion.
       let g:deoplete#enable_at_startup = 1
 
-      " Paste from last yank
-      nnoremap <Leader>p "0p
-      nnoremap <Leader>P "0P
-      vnoremap <Leader>p "0p
-      inoremap <Leader><C-r> <C-r>0
-
-      " <Leader><Space> clears search highlight. This should be <Space><Space> with this .vimrc, if the leader key has not been reconfigured.
-      " <Space><Space> can be easily pressed and should probably be a non-destructive shortcut (hence the mapping to :nohlsearch).
-      nnoremap <Leader><Space> <Cmd>nohlsearch<CR>
-      vnoremap <Leader><Space> <Cmd>nohlsearch<CR>
+      " <Leader>n clears the last search highlighting.
+      nnoremap <Leader>n <Cmd>nohlsearch<CR>
+      vnoremap <Leader>n <Cmd>nohlsearch<CR>
     '';
     packages.myVimPackage = with pkgs.vimPlugins; {
       start = [
