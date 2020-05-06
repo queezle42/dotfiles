@@ -41,6 +41,9 @@ in
     # cursor theme (installed via `home-profiles/desktop/.local/share/icons/default/index.theme`)
     simpleandsoft
 
+    # icon theme (required for e.g. `lutris`)
+    gnome3.adwaita-icon-theme
+
     # soft desktop dependencies
     swaylockWithIdle
     zsh
