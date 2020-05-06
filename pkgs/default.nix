@@ -12,8 +12,6 @@ let
     neovim = import ./neovim { inherit pkgs; };
     nginx-sso = callPackage ./nginx-sso {};
     simpleandsoft = import ./simpleandsoft { inherit pkgs; };
-    neatvnc = callPackage ./neatvnc/neatvnc.nix {};
-    wayvnc = callPackage ./wayvnc/wayvnc.nix {};
 
     haskell = pkgs.haskell // {
       packageOverrides = self: super: {
