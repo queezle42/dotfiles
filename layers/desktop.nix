@@ -38,7 +38,7 @@ in
     #vimiv
     mpv
 
-    # cursor theme
+    # cursor theme (installed via `home-profiles/desktop/.local/share/icons/default/index.theme`)
     simpleandsoft
 
     # soft desktop dependencies
