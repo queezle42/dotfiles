@@ -8,6 +8,8 @@ in
   environment.systemPackages = with pkgs; [
     neovim
     less
+    # required for neovim spellcheck
+    aspell
   ];
 
   programs.tmux = {
@@ -124,7 +126,6 @@ in
     SAVEHIST=100000
 
     setopt appendhistory histignorealldups
-    setopt autocd
     setopt extendedglob
 
     unsetopt flowcontrol
