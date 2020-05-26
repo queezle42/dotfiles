@@ -38,6 +38,10 @@ in
     #vimiv
     mpv
 
+    # screenshot utilities
+    grim
+    slurp
+
     # cursor theme (installed via `home-profiles/desktop/.local/share/icons/default/index.theme`)
     simpleandsoft
 
