@@ -22,6 +22,9 @@ pkgs.neovim.override {
       " Enable line numbers
       set number
 
+      " Highlight active line (this works well with gruvbox)
+      set cursorline
+
       " Use 2 spaces for indentation
       set shiftwidth=2
       set expandtab
