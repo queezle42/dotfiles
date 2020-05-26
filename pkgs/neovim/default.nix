@@ -125,6 +125,10 @@ pkgs.neovim.override {
       " <Leader>n clears the last search highlighting.
       nnoremap <Leader>n <Cmd>nohlsearch<CR>
       vnoremap <Leader>n <Cmd>nohlsearch<CR>
+
+      " Shortcut to enable spellcheck (requires aspell installation)
+      nnoremap <Leader>s <Cmd>setlocal spell spelllang=en_us<CR>
+
     '';
     packages.myVimPackage = with pkgs.vimPlugins; {
       start = [
