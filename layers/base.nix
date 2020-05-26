@@ -95,7 +95,7 @@
       isNormalUser = true;
       passwordFile = "/etc/secrets/passwords/jens";
       extraGroups = [ "wheel" "audio" "dialout" ];
-      dotfiles.profiles = [ "tmux" ];
+      dotfiles.profiles = [ "base" ];
     };
   };
 }
