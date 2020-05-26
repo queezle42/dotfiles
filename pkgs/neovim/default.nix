@@ -112,6 +112,10 @@ pkgs.neovim.override {
         endif
       endfunction
 
+      nnoremap <silent> <Leader>lh <Cmd>call LanguageClient#textDocument_hover()<CR>
+      nnoremap <silent> <Leader>le <Cmd>call LanguageClient#explainErrorAtPoint()<CR>
+      nnoremap <silent> <Leader>lr <Cmd>LanguageClientStop<CR><Cmd>LanguageClientStart<CR>
+
       autocmd FileType * call LC_maps()
 
 
