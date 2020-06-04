@@ -90,6 +90,8 @@ focus_follows_mouse always
 #for_window [class="Chromium"] border none
 #for_window [class="Code"] border none
 
+for_window [class="Vncviewer"] fullscreen enable
+
 # notification controls
 bindsym Ctrl+Shift+Space exec makoctl dismiss
 
