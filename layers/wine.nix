@@ -5,6 +5,11 @@
   hardware.opengl.driSupport32Bit = true;
   hardware.pulseaudio.support32Bit = true;
 
+  # Required for lutris until it is replaced
+  nixpkgs.config.permittedInsecurePackages = [
+    "p7zip-16.02"
+  ];
+
   # Configure xfce for applications that might require apis that are not yet available under wayland (I'm not aware of any right now).
   # Use `systemctl start display-manager.service` to start xorg.
   #services.xserver.enable = true;
