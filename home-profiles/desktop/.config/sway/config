@@ -416,7 +416,7 @@ client.placeholder      $base00 $base00 $base05 $base00 $base00
 client.background       $base00
 
 bar {
-	status_command qbar server swaybar date battery cpu script --poll '~/.config/qbar/blocks/memory' script --poll '~/.config/qbar/blocks/temperature' networkmanager script --poll ~/.config/qbar/blocks/network-environment script --poll ~/.config/qbar/blocks/todo
+	status_command qbar server swaybar date battery cpu script --poll '~/.config/qbar/blocks/memory' script --poll '~/.config/qbar/blocks/temperature' networkmanager script --poll ~/.config/qbar/blocks/network-environment
 
 	id bar-0
 	position top
