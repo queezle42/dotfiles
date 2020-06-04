@@ -94,7 +94,7 @@
       uid = 1000;
       isNormalUser = true;
       passwordFile = "/etc/secrets/passwords/jens";
-      extraGroups = [ "wheel" "audio" "dialout" ];
+      extraGroups = [ "wheel" "audio" "dialout" "networkmanager" ];
       dotfiles.profiles = [ "base" ];
     };
   };
