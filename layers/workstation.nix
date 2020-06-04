@@ -16,6 +16,9 @@
     spotify
     gimp
 
+    # Dictionary (command `trans`)
+    translate-shell
+
     posix_man_pages
   ];
 
