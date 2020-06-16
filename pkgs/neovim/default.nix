@@ -3,10 +3,8 @@
 pkgs.neovim.override {
   configure = {
     customRC = ''
-      " Map ' ' to trigger the leader key ('\').
-      " When using map instead of using `let mapleader = "<Space>"` there is no delay until the cursor moves visibly and the command in the command bar ('showcmd') reads '\' instead of '<20>'.
-      map <Space> \
-      "let mapleader = " "
+      " Configure ' ' as the leader key (would be '\' by default).
+      let mapleader = " "
 
       inoremap fd <Esc>
       vnoremap fd <Esc>
@@ -21,6 +19,7 @@ pkgs.neovim.override {
 
       " Enable line numbers
       set number
+      set relativenumber
 
       " Highlight active line (this works well with gruvbox)
       set cursorline
@@ -54,9 +53,9 @@ pkgs.neovim.override {
       set wildmode=longest:full,full
 
       " Save with Ctrl-S (if file has changed)
-      noremap <C-s> <Cmd>update<CR>
+      nnoremap <C-s> <Cmd>update<CR>
 
-      noremap <C-p> <Cmd>Files<CR>
+      nnoremap <C-p> <Cmd>Files<CR>
 
       " Use `ALT+{h,j,k,l}` to navigate windows from any mode
       tnoremap <A-h> <C-\><C-N><C-w>h
@@ -71,10 +70,6 @@ pkgs.neovim.override {
       nnoremap <A-j> <C-w>j
       nnoremap <A-k> <C-w>k
       nnoremap <A-l> <C-w>l
-
-      " Always show the sign column (to prevent jumps when loading git- or the language client)
-      " Disabled because it also adds a sign column to NERDTree
-      "set signcolumn=yes
 
       " NERDTree
       " Show hidden files by default
@@ -102,21 +97,33 @@ pkgs.neovim.override {
 
       let g:LanguageClient_useVirtualText = "No"
 
-      let g:LanguageClient_serverCommands = { 'haskell': ['hie-wrapper', '--lsp'] }
+      let g:LanguageClient_serverCommands = {
+      \   'haskell': ['hie-wrapper', '--lsp'],
+      \   'cpp': ['clangd', '--background-index',]
+      \ }
 
-      function LC_maps()
-        if has_key(g:LanguageClient_serverCommands, &filetype)
-          nnoremap <buffer> <silent> K <Cmd>call LanguageClient#textDocument_hover()<CR>
-          nnoremap <buffer> <silent> gd <Cmd>call LanguageClient#textDocument_definition()<CR>
-          nnoremap <buffer> <silent> <F2> <Cmd>call LanguageClient#textDocument_rename()<CR>
-        endif
-      endfunction
+      function SetupLanguageClient()
+        " Always show the sign column (to prevent jumps when loading git- or the language client)
+        set signcolumn=yes
 
-      nnoremap <silent> <Leader>lh <Cmd>call LanguageClient#textDocument_hover()<CR>
-      nnoremap <silent> <Leader>le <Cmd>call LanguageClient#explainErrorAtPoint()<CR>
-      nnoremap <silent> <Leader>lr <Cmd>LanguageClientStop<CR><Cmd>LanguageClientStart<CR>
+        nnoremap <Leader>la <Cmd>call LanguageClient_workspace_applyEdit()<CR>
+        nnoremap <Leader>lc <Cmd>call LanguageClient#textDocument_definition()<CR>
+        nnoremap <Leader>ld <Cmd>call LanguageClient#textDocument_definition()<CR>
+        nnoremap <Leader>le <Cmd>call LanguageClient#explainErrorAtPoint()<CR>
+        nnoremap <Leader>lf <Cmd>call LanguageClient#textDocument_formatting()<CR>
+        nnoremap <Leader>lh <Cmd>call LanguageClient#textDocument_hover()<CR>
+        nnoremap <Leader>lm <Cmd>call LanguageClient_contextMenu()<CR>
+        nnoremap <Leader>lr <Cmd>call LanguageClient#textDocument_rename()<CR>
+        nnoremap <Leader>ls <Cmd>call LanguageClient_textDocument_documentSymbol()<CR>
+        nnoremap <Leader>lt <Cmd>call LanguageClient#textDocument_typeDefinition()<CR>
+        nnoremap <Leader>lx <Cmd>call LanguageClient#textDocument_references()<CR>
+        nnoremap <Leader>lq <Cmd>LanguageClientStop<CR><Cmd>LanguageClientStart<CR>
+      endfunction()
 
-      autocmd FileType * call LC_maps()
+      augroup LSP
+        autocmd!
+        autocmd FileType c,h,cpp,hpp,hs call SetupLanguageClient()
+      augroup END
 
 
       " Use deoplete for autocompletion.
