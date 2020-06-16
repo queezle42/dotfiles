@@ -183,9 +183,6 @@ font Fira Code retina 9
 # X core fonts rendering does not support right-to-left and this being a bitmap
 # font, it doesn’t scale on retina/hidpi displays.
 
-bindsym $mod+Shift+F1 move workspace output eDP-1
-bindsym $mod+Shift+F2 move workspace output HDMI-A-1
-
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -266,6 +263,15 @@ bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
+
+bindsym $mod+Alt+h move workspace to output left
+bindsym $mod+Alt+j move workspace to output down
+bindsym $mod+Alt+k move workspace to output up
+bindsym $mod+Alt+l move workspace to output right
+bindsym $mod+Alt+Left move workspace to output left
+bindsym $mod+Alt+Down move workspace to output down
+bindsym $mod+Alt+Up move workspace to output up
+bindsym $mod+Alt+Right move workspace to output right
 
 # split in horizontal orientation
 bindsym $mod+c split h
