@@ -83,6 +83,13 @@ in
 # FIXME: set the less input preprocessor
 #export LESSOPEN="| ${pkgs.lesspipe}/bin/lesspipe.sh %s 2>&-"
 
+  programs.zsh.setOptions = [
+    "hist_ignore_all_dups"
+    "inc_append_history"
+    "hist_fcntl_lock"
+    "extended_glob"
+  ];
+
   programs.zsh.interactiveShellInit = ''
     fpath+=$LOCAL_ZSH_COMPLETION_PATH
 
@@ -125,11 +132,7 @@ in
     HISTSIZE=100000
     SAVEHIST=100000
 
-    setopt appendhistory histignorealldups
-    setopt extendedglob
-
-    unsetopt flowcontrol
-
+    unsetopt flow_control
 
     # Set up fzf for ctrl-t (paste selected paths) and alt-c (cd into selected directory)
     # This also binds ctrl-r, but that binding is reverted later
