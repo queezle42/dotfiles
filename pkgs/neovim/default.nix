@@ -122,7 +122,7 @@ pkgs.neovim.override {
 
       augroup LSP
         autocmd!
-        autocmd FileType c,h,cpp,hpp,hs call SetupLanguageClient()
+        autocmd FileType c,cpp,haskell call SetupLanguageClient()
       augroup END
 
 
