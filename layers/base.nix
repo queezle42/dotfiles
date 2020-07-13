@@ -82,6 +82,7 @@
     fd
     loc
     gotty
+    entr
   ];
 
   users = {
