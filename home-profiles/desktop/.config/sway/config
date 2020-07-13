@@ -87,6 +87,8 @@ smart_gaps off
 # The window under the cursor will always be focused, even after switching between workspaces.
 focus_follows_mouse always
 
+focus_wrapping yes
+
 #for_window [class="Chromium"] border none
 #for_window [class="Code"] border none
 
