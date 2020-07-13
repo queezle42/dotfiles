@@ -35,6 +35,8 @@ in
     #root = "machinectl shell root@";
     root = "sudo su";
 
+    ".." = "cd ..";
+
     ls = "ls --color=auto";
     l = "ls -l";
     lh = "ls -lh";
