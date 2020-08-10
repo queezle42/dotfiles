@@ -80,6 +80,7 @@ pkgs.neovim.override {
       nnoremap <a-b> <Cmd>NERDTreeToggle<CR>
 
       " Airline
+      let g:airline#extensions#tabline#enabled = 1
 
       let g:highlightedyank_highlight_duration = 200
 
