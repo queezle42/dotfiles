@@ -19,7 +19,7 @@ pkgs.neovim.override {
 
       " Enable line numbers
       set number
-      set relativenumber
+      "set relativenumber
 
       " Highlight active line (this works well with gruvbox)
       set cursorline
@@ -166,6 +166,7 @@ pkgs.neovim.override {
         deoplete-nvim
 
         vim-highlightedyank
+        #vim-numbertoggle
 
         # A Vim plugin which shows a git diff in the 'gutter' (sign column).
         vim-gitgutter
