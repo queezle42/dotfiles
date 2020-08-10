@@ -80,6 +80,7 @@
     ncdu
     ripgrep
     fd
+    fastmod
     loc
     gotty
     entr

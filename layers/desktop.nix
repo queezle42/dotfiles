@@ -37,6 +37,7 @@ in
     dfeet
     #vimiv
     mpv
+    wdisplays
 
     # screenshot utilities
     grim
