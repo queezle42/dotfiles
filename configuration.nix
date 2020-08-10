@@ -5,7 +5,12 @@
 let
   installResult = builtins.fromJSON (builtins.readFile (path + "/install-result.json"));
   dotfilesConfig = import (path + "/dotfiles.nix");
-  layerImports = map (l: ./layers + "/${l}.nix") dotfilesConfig.layers;
+  layerPath = layerName: let
+    filePath = ./layers + "/${layerName}.nix";
+    dirPath = ./layers + "/${layerName}";
+  in
+    if builtins.pathExists filePath then filePath else dirPath;
+  layerImports = map layerPath dotfilesConfig.layers;
 in
 ({
   imports = [
