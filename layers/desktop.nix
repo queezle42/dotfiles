@@ -89,6 +89,7 @@ in
     users.jens = {
       packages = with pkgs; [
         chromium
+        qutebrowser
         pavucontrol
         playerctl
         xdg_utils

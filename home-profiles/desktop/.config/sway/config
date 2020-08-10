@@ -91,6 +91,7 @@ focus_wrapping yes
 
 #for_window [class="Chromium"] border none
 #for_window [class="Code"] border none
+for_window [class=qutebrowser] border pixel
 
 for_window [class="Vncviewer"] fullscreen enable
 
@@ -207,7 +208,8 @@ bindsym $mod+p exec $terminal ipython
 bindsym $mod+Shift+p exec $terminal stack ghci --verbosity warning
 
 # start a browser
-bindsym $mod+b exec --no-startup-id chromium --force-dark-mode
+bindsym $mod+b exec --no-startup-id qutebrowser
+bindsym $mod+Shift+b exec --no-startup-id chromium --force-dark-mode
 
 # start htop
 bindsym $mod+Escape exec $terminal htop
