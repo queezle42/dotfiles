@@ -202,7 +202,7 @@ bindsym $mod+Shift+Return exec cool-retro-term --fullscreen --profile "Default A
 bindsym $mod+o exec cool-retro-term --fullscreen --profile "Monochrome Green" -e ssh edi
 
 # start an ipython terminal
-bindsym $mod+p exec $terminal ipython
+bindsym $mod+p exec $terminal python
 
 # start an haskel ghci terminal
 bindsym $mod+Shift+p exec $terminal stack ghci --verbosity warning
