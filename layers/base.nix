@@ -84,6 +84,7 @@
     loc
     gotty
     entr
+    netevent
   ];
 
   users = {
