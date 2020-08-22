@@ -100,6 +100,9 @@ for_window [class=qutebrowser] border pixel
 
 for_window [class="Vncviewer"] fullscreen enable
 
+# sway
+bindsym $mod+n bar mode toggle
+
 # notification controls
 bindsym Ctrl+Shift+Space exec makoctl dismiss
 
