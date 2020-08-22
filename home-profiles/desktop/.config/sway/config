@@ -114,7 +114,7 @@ bindsym $mod+Shift+F10 output eDP-1 disable
 bindsym $mod+plus exec CM_LAUNCHER=rofi CM_HISTLENGTH=15 clipmenu -p clipboard
 
 # pass
-bindsym $mod+numbersign exec passmenu && sleep 0.1 && clipdel -d ".*" && sleep 1 && clipdel -d ".*"
+#bindsym $mod+numbersign exec passmenu && sleep 0.1 && clipdel -d ".*" && sleep 1 && clipdel -d ".*"
 
 # lock
 bindsym Print exec swaylock-with-idle -i $wallpaper
