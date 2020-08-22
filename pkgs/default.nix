@@ -12,6 +12,7 @@ let
     neovim = import ./neovim { inherit pkgs; };
     nginx-sso = callPackage ./nginx-sso {};
     simpleandsoft = import ./simpleandsoft { inherit pkgs; };
+    netevent = callPackage ./netevent {};
 
     haskell = pkgs.haskell // {
       packageOverrides = self: super: {
