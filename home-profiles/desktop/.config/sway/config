@@ -39,6 +39,11 @@ input * {
   xkb_numlock enable
 }
 
+input 7805:12850:ROCCAT_ROCCAT_Ryos_MK_Pro {
+  xkb_variant ""
+  xkb_layout us
+}
+
 input 2:7:SynPS/2_Synaptics_TouchPad {
   tap enabled
   natural_scroll enabled
