@@ -89,6 +89,7 @@ in
   users = {
     users.jens = {
       packages = with pkgs; [
+        q
         chromium
         qutebrowser
         pavucontrol
