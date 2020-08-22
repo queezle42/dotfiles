@@ -99,9 +99,11 @@ pkgs.neovim.override {
       let g:LanguageClient_useVirtualText = "No"
 
       let g:LanguageClient_serverCommands = {
-      \   'haskell': ['hie-wrapper', '--lsp'],
       \   'cpp': ['clangd', '--background-index',]
       \ }
+
+      " hie is mostly broken with the installed version
+      " \   'haskell': ['hie-wrapper', '--lsp'],
 
       function SetupLanguageClient()
         " Always show the sign column (to prevent jumps when loading git- or the language client)
