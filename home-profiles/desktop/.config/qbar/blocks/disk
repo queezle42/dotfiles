@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-
-dir="/"
-
-df -h -P -l "$dir" | awk '/\// { print $4 }'
-
