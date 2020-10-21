@@ -1,10 +1,10 @@
 {
   "ref": "refs/heads/nixos-unstable",
-  "url": "https://github.com/NixOS/nixpkgs-channels/",
-  "rev": "daaa0e33505082716beb52efefe3064f0332b521",
-  "date": "2020-09-22T23:19:05-05:00",
-  "path": "/nix/store/3i3zl2jxnwys6lifyg5cjbx6kpzxk25a-nixpkgs-channels",
-  "sha256": "15vprzpbllp9hy5md36ch1llzhxhd44d291kawcslgrzibw51f95",
+  "url": "https://github.com/NixOS/nixpkgs/",
+  "rev": "5265d49a36bb5a18c85e6817b338b456acc3b8cc",
+  "date": "2020-10-18T20:13:06-04:00",
+  "path": "/nix/store/pir5j598afs8bis41jdshl3mga0kgq2j-nixpkgs",
+  "sha256": "0cab38mj3f5ip0hld6wqwxsg4lj6d285kw71d2c8mnk2nk5bk4q6",
   "fetchSubmodules": false,
   "deepClone": false,
   "leaveDotGit": false
