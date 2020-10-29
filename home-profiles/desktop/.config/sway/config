@@ -65,7 +65,8 @@ output eDP-1 {
 #  pos 0 -1080
 #}
 
-output * bg $wallpaper fill
+#output * bg $wallpaper fill
+output * bg "#1d2021" solid_color
 
 # Run desktop daemons
 exec_always pkill kanshi; exec kanshi
