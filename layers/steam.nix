@@ -17,7 +17,11 @@ in
     isNormalUser = true;
     uid = 1100;
     passwordFile = "/etc/secrets/passwords/steam";
-    extraGroups = [ "audio" "input" ];
+    extraGroups = [
+      "audio"
+      "input"
+      "pulse-access"
+    ];
     packages = [
       customSteam
       pkgs.steam-run-native
