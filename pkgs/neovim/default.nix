@@ -11,6 +11,7 @@ pkgs.neovim.override {
 
       " Configure colorscheme
       let g:gruvbox_contrast_dark='hard'
+      let g:gruvbox_contrast_light='hard'
       colorscheme gruvbox
       "hi ColorMagenta guifg='#f92672' guibg=132 guibg='NONE' ctermbg='NONE' gui='NONE' cterm='NONE'
       "hi! link haskellOperators ColorMagenta
@@ -45,6 +46,9 @@ pkgs.neovim.override {
       " Yank to primary selection.
       " I want to use clipboard=autoselect, when it is implemented: https://github.com/neovim/neovim/pull/3708
       set clipboard=unnamed
+
+      " Wrap at word boundaries instead of splitting words at the end of the line.
+      set linebreak
 
       " Shows the effects of a command incrementally, as you type. Also shows partial off-screen results in a preview window.
       set inccommand=split
