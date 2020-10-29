@@ -13,6 +13,7 @@ let
     nginx-sso = callPackage ./nginx-sso {};
     simpleandsoft = import ./simpleandsoft { inherit pkgs; };
     netevent = callPackage ./netevent {};
+    g810-led = callPackage ./g810-led {};
 
     haskell = pkgs.haskell // {
       packageOverrides = self: super: {
