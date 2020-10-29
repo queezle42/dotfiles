@@ -3,9 +3,9 @@
 {
   environment.systemPackages = with pkgs; [
     stack
-    haskell-ide-engine
-    ormolu
+    haskell-language-server
     haskellPackages.hoogle
     ghcid
+    haskellPackages.threadscope
   ];
 }
