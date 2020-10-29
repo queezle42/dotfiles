@@ -59,6 +59,7 @@
     neovim
     git
     gitAndTools.tig
+    git-revise
     lf
     fzf
     tree
