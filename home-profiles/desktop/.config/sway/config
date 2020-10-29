@@ -131,16 +131,26 @@ exec swayidle -w before-sleep "swaylock -f -i $wallpaper"
 #bindsym $mod+Delete exec --no-startup-id ~/run/subraum/hackbuzzer
 #bindsym $mod+Shift+Delete exec --no-startup-id ~/run/edi/sob hackbuzzer
 
-bindsym $mod+Delete exec --no-startup-id mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m sparkle && sleep 3s && mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m bubblegum
-bindsym $mod+Shift+Delete exec --no-startup-id mosquitto_pub -h blinky.subraum.c3pb.de -t device/matryx/fullHour -m 1 && mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m rgb && sleep 3s && mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m bubblegum
+#bindsym $mod+Delete exec --no-startup-id mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m sparkle && sleep 3s && mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m bubblegum
+#bindsym $mod+Shift+Delete exec --no-startup-id mosquitto_pub -h blinky.subraum.c3pb.de -t device/matryx/fullHour -m 1 && mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m rgb && sleep 3s && mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m bubblegum
 
+# macro keys (bound to F14-F18, which is received as XF86Launch5-XF86Launch9)
+bindsym XF86Launch5 exec mosquitto_pub -h 10.0.2.1 -t component/G815/key/G1 -m G1
+bindsym XF86Launch6 exec mosquitto_pub -h 10.0.2.1 -t component/G815/key/G2 -m G2
+bindsym XF86Launch7 exec mosquitto_pub -h 10.0.2.1 -t component/G815/key/G3 -m G3
+bindsym XF86Launch8 exec mosquitto_pub -h 10.0.2.1 -t component/G815/key/G4 -m G4
+bindsym XF86Launch9 exec mosquitto_pub -h 10.0.2.1 -t component/G815/key/G5 -m G5
 
 # audio volume
-set $audioRaiseVolume "pactl set-sink-mute 0 false ; pactl set-sink-volume 0 +5%"
-set $audioLowerVolume "pactl set-sink-mute 0 false ; pactl set-sink-volume 0 -5%"
+set $audioRaiseVolume "pactl set-sink-mute 0 false ; pactl set-sink-volume 0 +1%"
+set $audioLowerVolume "pactl set-sink-mute 0 false ; pactl set-sink-volume 0 -1%"
+set $audioRaiseVolume5 "pactl set-sink-mute 0 false ; pactl set-sink-volume 0 +5%"
+set $audioLowerVolume5 "pactl set-sink-mute 0 false ; pactl set-sink-volume 0 -5%"
 set $audioMute "pactl set-sink-mute 0 toggle"
 bindsym XF86AudioRaiseVolume exec --no-startup-id $audioRaiseVolume
 bindsym XF86AudioLowerVolume exec --no-startup-id $audioLowerVolume
+bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id $audioRaiseVolume5
+bindsym Shift+XF86AudioLowerVolume exec --no-startup-id $audioLowerVolume5
 bindsym XF86AudioMute exec --no-startup-id $audioMute
 
 # music player control
