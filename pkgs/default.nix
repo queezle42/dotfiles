@@ -18,6 +18,7 @@ let
     haskell = pkgs.haskell // {
       packageOverrides = self: super: {
         q = self.callPackage ./q {};
+        qd = self.callPackage ./qd {};
         qbar = self.callPackage ./qbar {};
       };
     };
@@ -33,6 +34,7 @@ let
     }));
 
     q = haskellPackages.q;
+    qd = haskellPackages.qd;
     qbar = haskellPackages.qbar;
   };
 
