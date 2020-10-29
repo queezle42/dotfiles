@@ -21,6 +21,7 @@
     ];
     extraGroups = [
       "audio"
+      "pulse-access"
     ];
   };
 }
