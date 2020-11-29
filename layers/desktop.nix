@@ -26,6 +26,8 @@ in
   ];
 
   environment.systemPackages = with pkgs; [
+    qd
+
     # desktop environment programs
     kitty
     rxvt_unicode
@@ -33,6 +35,7 @@ in
     gnome3.gnome-disk-utility
     networkmanagerapplet
     wayvnc
+    tigervnc
     pulsemixer
     dfeet
     #vimiv

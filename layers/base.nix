@@ -89,6 +89,8 @@
     gotty
     entr
     netevent
+    picocom
+    pv
   ];
 
   users = {
