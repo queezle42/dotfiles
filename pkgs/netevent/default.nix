@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, docutils, tree, zsh }:
+{ stdenv, fetchFromGitHub, docutils, zsh }:
 stdenv.mkDerivation rec {
   pname = "netevent";
   version = "git";
@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
     sha256 = "0myk91pmim0m51h4b8hplkbxvns0icvfmv0401r0hw8md828nh5c";
   };
 
-  depsBuildBuild = [ docutils tree zsh ];
+  depsBuildBuild = [ docutils zsh ];
 
   configurePhase = ''
     # running configure with zsh, otherwise 'which' is not available
@@ -18,11 +18,6 @@ stdenv.mkDerivation rec {
   '';
 
   installPhase = ''
-    tree
     make DESTDIR="$out" install
-    cd $out
-    tree
-    #mkdir -p $out/bin
-    #cp netevent $out/bin/
   '';
 }

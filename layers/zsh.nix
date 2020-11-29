@@ -6,7 +6,7 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
-    neovim
+    neovim-queezle
     less
     # required for neovim spellcheck
     aspell

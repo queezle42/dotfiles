@@ -19,7 +19,7 @@ in
   ] ++ layerImports ++ (lib.lists.optional (!isIso) (path + "/hardware-configuration.nix"));
 
   nixpkgs.config = {
-    packageOverrides = ( import ./pkgs ) { inherit lib config; } ;
+    packageOverrides = import ./pkgs;
   };
 
   # Pin channel in nix path
