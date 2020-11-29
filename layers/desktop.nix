@@ -115,6 +115,8 @@ in
     # Creates problems with OBS
     #export QT_QPA_PLATFORM=wayland
     export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+
+    export QT_STYLE_OVERRIDE=adwaita-dark
   '';
   environment.loginShellInit = ''
     # start sway when logging in on tty1
@@ -127,5 +129,4 @@ in
     [Qt]
     style=adwaita-dark
   '';
-  environment.shellInit = "export QT_STYLE_OVERRIDE=adwaita-dark";
 }
