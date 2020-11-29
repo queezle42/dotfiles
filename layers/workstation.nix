@@ -19,6 +19,7 @@
     tdesktop
     spotify
     gimp
+    mumble
 
     # Dictionary (command `trans`)
     translate-shell
