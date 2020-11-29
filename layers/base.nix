@@ -21,6 +21,8 @@
 
   boot.tmpOnTmpfs = true;
 
+  powerManagement.cpuFreqGovernor = "ondemand";
+
   # Restore systemd default
   services.logind.killUserProcesses = true;
 
