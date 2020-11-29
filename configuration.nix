@@ -1,5 +1,5 @@
 # This is the entry point for my NixOS configuration.
-{ name, path, channel, isIso }:
+{ name, path, channel, isIso, extraLayersDir }:
 { lib, config, pkgs, ... }:
 
 let
@@ -8,8 +8,19 @@ let
   layerPath = layerName: let
     filePath = ./layers + "/${layerName}.nix";
     dirPath = ./layers + "/${layerName}";
+    extraDirFilePath = extraLayersDir + "/${layerName}.nix";
+    extraDirDirPath = extraLayersDir + "/${layerName}";
   in
-    if builtins.pathExists filePath then filePath else dirPath;
+  if builtins.pathExists filePath
+    then filePath
+    else if builtins.pathExists dirPath
+      then dirPath
+      else if builtins.pathExists extraDirFilePath
+        then extraDirFilePath
+        else if builtins.pathExists extraDirDirPath
+          then extraDirDirPath
+          else builtins.throw "Cannot find layer `${layerName}`";
+
   layerImports = map layerPath dotfilesConfig.layers;
 in
 ({

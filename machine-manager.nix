@@ -1,7 +1,7 @@
 # entry point for machine configurations:
 # (import <repo-path> { machinesDir=./machines }).<netname>.configurations.<hostname>
 
-{ machinesDir }:
+{ machinesDir, extraLayersDir }:
 
 with builtins;
 let
@@ -33,7 +33,7 @@ let
   withMachines = lambda: listToAttrs (map (m: {name = m; value = lambda { name = m; path = (machinesDir + "/${m}"); }; }) machineNames);
   mkMachineConfig = { name, path, isIso ? false }: (
     import ./configuration.nix {
-      inherit name path isIso;
+      inherit name path isIso extraLayersDir;
       channel = machineChannels.${name};
     }
   );
