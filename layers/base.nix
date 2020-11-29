@@ -71,10 +71,12 @@
     # Enabled by zsh layer
     # tmux
     gotop
+
     inxi
     lm_sensors
     acpi
     ldns
+
     pwgen
     mosquitto
     gopass
