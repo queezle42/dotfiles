@@ -142,10 +142,10 @@ bindsym XF86Launch8 exec mosquitto_pub -h 10.0.2.1 -t component/G815/key/G4 -m G
 bindsym XF86Launch9 exec mosquitto_pub -h 10.0.2.1 -t component/G815/key/G5 -m G5
 
 # audio volume
-set $audioRaiseVolume "pactl set-sink-mute 0 false ; pactl set-sink-volume 0 +1%"
-set $audioLowerVolume "pactl set-sink-mute 0 false ; pactl set-sink-volume 0 -1%"
-set $audioRaiseVolume5 "pactl set-sink-mute 0 false ; pactl set-sink-volume 0 +5%"
-set $audioLowerVolume5 "pactl set-sink-mute 0 false ; pactl set-sink-volume 0 -5%"
+set $audioRaiseVolume "pactl set-sink-mute 0 false & pactl set-sink-volume 0 +1%"
+set $audioLowerVolume "pactl set-sink-mute 0 false & pactl set-sink-volume 0 -1%"
+set $audioRaiseVolume5 "pactl set-sink-mute 0 false & pactl set-sink-volume 0 +5%"
+set $audioLowerVolume5 "pactl set-sink-mute 0 false & pactl set-sink-volume 0 -5%"
 set $audioMute "pactl set-sink-mute 0 toggle"
 bindsym XF86AudioRaiseVolume exec --no-startup-id $audioRaiseVolume
 bindsym XF86AudioLowerVolume exec --no-startup-id $audioLowerVolume
