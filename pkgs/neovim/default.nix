@@ -101,13 +101,12 @@ pkgs.neovim.override {
       " Configure language client
 
       let g:LanguageClient_useVirtualText = "No"
+      " let g:LanguageClient_hideVirtualTextsOnInsert = 1
 
       let g:LanguageClient_serverCommands = {
+      \   'haskell': ['haskell-language-server-wrapper', '--lsp'],
       \   'cpp': ['clangd', '--background-index',]
       \ }
-
-      " hie is mostly broken with the installed version
-      " \   'haskell': ['hie-wrapper', '--lsp'],
 
       function SetupLanguageClient()
         " Always show the sign column (to prevent jumps when loading git- or the language client)
@@ -161,6 +160,9 @@ pkgs.neovim.override {
         vim-repeat
         # Increment and decrement dates and times with <Ctrl-A> and <Ctrl-X>
         vim-speeddating
+
+        # Mark whitespace red
+        vim-better-whitespace
 
         # Multi-cursor. <C-n> to start/add cursor on next match, <C-x> to skip match, <C-p> to undo cursor, <A-n> to select all matches.
         vim-multiple-cursors
