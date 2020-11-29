@@ -24,6 +24,8 @@ in
 
   # Pin channel in nix path
   nix.nixPath = [ "nixpkgs=${channel}" ];
+  # Make nixpkgs path available inside of the configuration
+  _module.args.nixpkgsPath = channel;
 
   environment.shellAliases = {
     # nixos-option won't run without a configuration. With an empty config it does not show configured values, but can at least be used to search options and show default values.
