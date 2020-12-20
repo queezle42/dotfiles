@@ -4,7 +4,7 @@
   imports = [
     #./loginctl-linger.nix
     ./dotfiles.nix
-    ./heDns.nix
+    ./he-dns.nix
     ./kea.nix
     #./webserver.nix
   ];
