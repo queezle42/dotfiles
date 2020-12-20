@@ -31,10 +31,6 @@ in
   '';
 
   environment.shellAliases = {
-    # 'root' gives a proper root login session
-    #root = "machinectl shell root@";
-    root = "sudo su";
-
     ".." = "cd ..";
 
     ls = "ls --color=auto";
