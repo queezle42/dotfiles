@@ -1,10 +1,10 @@
 {
   "ref": "refs/heads/master",
   "url": "https://git.c3pb.de/jens/qd.git",
-  "rev": "2fea596b3222a6a9064111d74e79cec1a58a382c",
-  "date": "2020-11-26T03:24:31+01:00",
-  "path": "/nix/store/64p2g6z497h0fz6qhj8wnh1ypn1893gf-qd",
-  "sha256": "18ipgdbzv4svd59m18m1lll0z39s768cim0hjp97cyx6z9pwys01",
+  "rev": "ec42f49c3c12855022fcaaff007ff9172472f63e",
+  "date": "2020-12-05T23:21:18+01:00",
+  "path": "/nix/store/da49nck17db2gi95lcmwq09cxdaiyy65-qd",
+  "sha256": "16vjnh2x0pqvfzy32rc97gza0ixmr8447jd8s5ippwkf0rc7krns",
   "fetchSubmodules": false,
   "deepClone": false,
   "leaveDotGit": false
