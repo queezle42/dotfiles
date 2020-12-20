@@ -142,16 +142,16 @@ bindsym XF86Launch8 exec mosquitto_pub -h 10.0.2.1 -t component/G815/key/G4 -m G
 bindsym XF86Launch9 exec mosquitto_pub -h 10.0.2.1 -t component/G815/key/G5 -m G5
 
 # audio volume
-set $audioRaiseVolume "pactl set-sink-mute 0 false & pactl set-sink-volume 0 +1%"
-set $audioLowerVolume "pactl set-sink-mute 0 false & pactl set-sink-volume 0 -1%"
-set $audioRaiseVolume5 "pactl set-sink-mute 0 false & pactl set-sink-volume 0 +5%"
-set $audioLowerVolume5 "pactl set-sink-mute 0 false & pactl set-sink-volume 0 -5%"
-set $audioMute "pactl set-sink-mute 0 toggle"
-bindsym XF86AudioRaiseVolume exec --no-startup-id $audioRaiseVolume
-bindsym XF86AudioLowerVolume exec --no-startup-id $audioLowerVolume
-bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id $audioRaiseVolume5
-bindsym Shift+XF86AudioLowerVolume exec --no-startup-id $audioLowerVolume5
-bindsym XF86AudioMute exec --no-startup-id $audioMute
+set $audioRaiseVolume "pamixer --unmute --increase 1"
+set $audioLowerVolume "pamixer --unmute --decrease 1"
+set $audioRaiseVolume5 "pamixer --unmute --increase 5"
+set $audioLowerVolume5 "pamixer --unmute --decrease 5"
+set $audioToggleMute "pamixer --toggle-mute"
+bindsym XF86AudioRaiseVolume exec $audioRaiseVolume
+bindsym XF86AudioLowerVolume exec $audioLowerVolume
+bindsym Shift+XF86AudioRaiseVolume exec $audioRaiseVolume5
+bindsym Shift+XF86AudioLowerVolume exec $audioLowerVolume5
+bindsym XF86AudioMute exec $audioToggleMute
 
 # music player control
 bindsym --locked $mod+F1 exec playerctl play-pause

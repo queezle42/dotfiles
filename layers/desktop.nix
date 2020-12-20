@@ -64,6 +64,7 @@ in
     libnotify
     wl-clipboard
     ddcutil
+    pamixer
 
     # theme
     adwaita-qt
