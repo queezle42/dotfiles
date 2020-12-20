@@ -18,6 +18,7 @@ in
     uid = 1100;
     passwordFile = "/etc/secrets/passwords/steam";
     extraGroups = [
+      "audio"
       "pulse-access"
     ];
     packages = [
