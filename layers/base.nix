@@ -106,6 +106,7 @@ in
     netevent
     picocom
     pv
+    socat
   ];
 
   users = {
