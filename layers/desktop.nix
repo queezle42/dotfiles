@@ -94,7 +94,6 @@ in
       packages = with pkgs; [
         q
         chromium
-        qutebrowser
         pavucontrol
         playerctl
         xdg_utils
