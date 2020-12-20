@@ -9,7 +9,7 @@
     packages = with pkgs; [
       ardour
       calf
-      vcv-rack
+      #vcv-rack
       #sunvox
     ];
   };
