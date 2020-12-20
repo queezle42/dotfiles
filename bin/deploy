@@ -8,7 +8,7 @@ set -o pipefail
 readonly cmdname=$(basename $0)
 
 
-readonly machines_repo_entry_point=$MACHINES_PATH/default.nix
+readonly machines_repo_entry_point=$MACHINES_PATH/flake.nix
 
 # This script cannot run without the nixos configuration entry point
 if [[ ! -f "$machines_repo_entry_point" ]]
@@ -16,7 +16,6 @@ then
   print -P "%B%F{red}Error: Machines repo %F{orange}default.nix%F{red} not found%b%f" >&2
   exit 2
 fi
-
 
 source $DOTFILES_PATH/bin/lib/util.zsh
 
@@ -101,7 +100,7 @@ trap "rm -rf $local_temp_dir" EXIT INT HUP TERM
 if [[ "$operation" = "iso" ]]
 then
   print_info "Building iso image"
-  nix build --file "$MACHINES_PATH" --out-link "$local_temp_dir/nixos-iso-$hostname" "nixosIsoDerivations.$hostname"
+  nix build "path:$MACHINES_PATH#nixosConfigurations.$hostname.config.system.build.iso" --out-link "$local_temp_dir/nixos-iso-$hostname"
   readonly nixos_iso_path=$(realpath "$local_temp_dir/nixos-iso-$hostname")
 
   print_info "Iso generated"
@@ -110,21 +109,21 @@ then
 fi
 
 
-print_info "Building target system configuration"
-nix build --file "$MACHINES_PATH" --out-link "$local_temp_dir/nixos-config-$hostname" "nixosSystemDerivations.$hostname"
-readonly nixos_config_path=$(realpath "$local_temp_dir/nixos-config-$hostname")
-
-if [[ "$operation" = "build" ]]
-then
-  print_info "Build completed"
-  print $nixos_config_path
-  exit 0
-fi
-
 print_info "Deploying target system configuration"
-if [[ "$is_target_host" ]]
+if [[ "$is_target_host" || "$operation" = "build" ]]
 then
   # local deploy
+
+  print_info "Building target system configuration"
+  nix build "path:$MACHINES_PATH#nixosConfigurations.$hostname.config.system.build.toplevel" --out-link "$local_temp_dir/nixos-config-$hostname"
+  readonly nixos_config_path=$(realpath "$local_temp_dir/nixos-config-$hostname")
+
+  if [[ "$operation" = "build" ]]
+  then
+    print_info "Build completed"
+    print $nixos_config_path
+    exit 0
+  fi
 
   if [[ -n "$set_profile" ]]
   then
@@ -140,8 +139,7 @@ then
 else
   # remote deploy
 
-  nix copy --file "$MACHINES_PATH" "nixosSystemDerivations.$hostname" --to "ssh://root@$via_hostname"
-  #nix copy --substitute-on-destination --file "$MACHINES_PATH" "nixosSystemDerivations.$hostname" --to "ssh://root@$via_hostname"
+  nix copy --substitute-on-destination --to "ssh://root@$via_hostname" "path:$MACHINES_PATH#nixosConfigurations.$hostname.config.system.build.toplevel"
 
   # The manual way to do it (this is in theory also supported by nixos-rebuild by using '-I')
 

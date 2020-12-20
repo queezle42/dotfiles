@@ -1,85 +1,109 @@
 # entry point for machine configurations:
 # (import <repo-path> { machinesDir=./machines }).<netname>.configurations.<hostname>
 
-{ machinesDir, extraLayersDir }:
+{ flakeInputs, flakeOutputs, machinesDir, extraLayersDir }:
 
 with builtins;
 let
   # defaultChannel :: path (channel)
-  defaultChannel = loadChannel "nixos-unstable";
+  #defaultChannel = loadChannel "nixos-unstable";
 
   # helpers :: { *: ? }
   helpers = import ./helpers.nix;
 
   # channelsDir :: path
-  channelsDir = ./channels;
+  #channelsDir = ./channels;
   # loadChannel :: string -> path (channel)
-  loadChannel = name: import (channelsDir + "/${name}") name;
+  #loadChannel = name: import (channelsDir + "/${name}") name;
   # allChannels :: { *: path (channel) }
-  allChannels = with helpers; keysToAttrs loadChannel (readFilterDir (filterAnd [(not filterDirHidden) filterDirDirs]) channelsDir);
+  #allChannels = with helpers; keysToAttrs loadChannel (readFilterDir (filterAnd [(not filterDirHidden) filterDirDirs]) channelsDir);
   # getMachineChannel :: string -> path
-  getMachineChannel = { name, path }:
-    let
-      channelFile = path + "/channel.nix";
-    in
-      if (pathExists channelFile)
-        then (import channelFile) allChannels
-        else defaultChannel;
+  getMachineChannel = _: flakeInputs.nixpkgs-unstable;
+  #getMachineChannel = { name, path }:
+  #  let
+  #    channelFile = path + "/channel.nix";
+  #  in
+  #    if (pathExists channelFile)
+  #      then (import channelFile) allChannels
+  #      else defaultChannel;
   # machineChannels :: { *: path }
   machineChannels = withMachines getMachineChannel;
 
   machinesDirContents = readDir machinesDir;
   machineNames = filter (p: machinesDirContents.${p} == "directory") (attrNames machinesDirContents);
   withMachines = lambda: listToAttrs (map (m: {name = m; value = lambda { name = m; path = (machinesDir + "/${m}"); }; }) machineNames);
-  mkMachineConfig = { name, path, isIso ? false }: (
+  mkMachineConfig = { name, path, isIso }: (
     import ./configuration.nix {
       inherit name path isIso extraLayersDir;
       channel = machineChannels.${name};
     }
   );
+  evaluateConfig = pkgs: args: (import "${pkgs}/nixos/lib/eval-config.nix" args).config;
   mkNixosSystemDerivation = { name, path }:
     let
-      channel = machineChannels.${name};
-      configuration = mkMachineConfig { inherit name path; };
-      # Importing <nixpkgs/nixos> results in a nixos system closure
-      nixos = import "${channel}/nixos" {
-        system = "x86_64-linux";
-        inherit configuration;
-      };
-    in
-      nixos.system;
-  mkNixosIsoDerivation = { name, path }:
-    let
-      channel = machineChannels.${name};
-      configuration = { config, ... }:
-      {
-        imports = [
-          (mkMachineConfig { inherit name path; isIso = true; })
-          <nixpkgs/nixos/modules/installer/cd-dvd/iso-image.nix>
-          <nixpkgs/nixos/modules/profiles/all-hardware.nix>
-          <nixpkgs/nixos/modules/profiles/base.nix>
+      channel = flakeInputs.nixpkgs-unstable;
+      configuration = mkMachineConfig { inherit name path; isIso = false; };
+      isoConfiguration = mkMachineConfig { inherit name path; isIso = true; };
+      system = "x86_64-linux";
+      iso = (evaluateConfig channel {
+        inherit system;
+        modules = [
+          isoConfiguration
+          (mkAdditionalIsoConfig name)
         ];
-        isoImage.isoName = "${config.isoImage.isoBaseName}-${config.system.nixos.label}-isohost-${name}.iso";
-        isoImage.volumeID = substring 0 11 "NIXOS_ISO";
-
-        isoImage.makeEfiBootable = true;
-        isoImage.makeUsbBootable = true;
-        boot.loader.grub.memtest86.enable = true;
-
-      };
-      # Importing <nixpkgs/nixos> results in a nixos system closure
-      nixos = import "${channel}/nixos" {
-        system = "x86_64-linux";
-        inherit configuration;
-      };
+      }).system.build.isoImage;
+      sdImage = (evaluateConfig channel {
+        inherit system;
+        modules = [
+          isoConfiguration
+          (mkAdditionalSdCardConfig name)
+        ];
+      }).system.build.sdImage;
     in
-      nixos.config.system.build.isoImage;
+    channel.lib.nixosSystem {
+      inherit system;
+      modules = [
+        configuration
+        {
+          system.build = {
+            inherit iso sdImage;
+          };
+        }
+      ];
+    };
+  mkAdditionalIsoConfig = name: { config, modulesPath, ... }: {
+    imports = [
+      "${modulesPath}/installer/cd-dvd/iso-image.nix"
+      "${modulesPath}/profiles/all-hardware.nix"
+      "${modulesPath}/profiles/base.nix"
+    ];
+    isoImage.isoName = "${config.isoImage.isoBaseName}-${config.system.nixos.label}-isohost-${name}.iso";
+    isoImage.volumeID = substring 0 11 "NIXOS_ISO";
+    isoImage.makeEfiBootable = true;
+    isoImage.makeUsbBootable = true;
+    boot.loader.grub.memtest86.enable = true;
+    _module.args.isIso = true;
+  };
+  mkAdditionalSdCardConfig = name: { config, modulesPath, ... }: {
+    imports = [
+      "${modulesPath}/installer/cd-dvd/sd-image.nix"
+      "${modulesPath}/profiles/all-hardware.nix"
+      "${modulesPath}/profiles/base.nix"
+    ];
+    sdImage.populateRootCommands = "";
+    sdImage.populateFirmwareCommands = "";
+    boot.loader.grub.enable = false;
+    boot.loader.generic-extlinux-compatible.enable = true;
+    _module.args.isIso = true;
+  };
 
 in
 {
-  configurations = withMachines mkMachineConfig;
+  # TODO remove
+  # configurations = withMachines mkMachineConfig;
+  # nixosIsoDerivations = withMachines mkNixosIsoDerivation;
+  # channels = machineChannels;
+
   nixosSystemDerivations = withMachines mkNixosSystemDerivation;
-  nixosIsoDerivations = withMachines mkNixosIsoDerivation;
   machineTemplates = withMachines ({name, path}: import (path + /template.nix));
-  channels = machineChannels;
 }

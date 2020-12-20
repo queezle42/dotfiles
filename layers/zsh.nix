@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 let
   promptPath = ../zsh/prompt;
@@ -111,6 +111,8 @@ in
       kitty + complete setup zsh | source /dev/stdin
       alias icat="kitty +kitten icat"
     fi
+
+    source ${config.nix.package.src}/misc/zsh/completion.zsh
 
     if (( $+commands[direnv] ))
     then
