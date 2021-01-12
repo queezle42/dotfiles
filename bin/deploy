@@ -93,20 +93,20 @@ else
 fi
 
 
-readonly local_temp_dir=$(mktemp --tmpdir --directory phoenix-deploy.XXXXXXXXXX)
-trap "rm -rf $local_temp_dir" EXIT INT HUP TERM
-
-
 if [[ "$operation" = "iso" ]]
 then
   print_info "Building iso image"
-  nix build "path:$MACHINES_PATH#nixosConfigurations.$hostname.config.system.build.iso" --out-link "$local_temp_dir/nixos-iso-$hostname"
-  readonly nixos_iso_path=$(realpath "$local_temp_dir/nixos-iso-$hostname")
+  readonly nixos_iso_path=$(nix build --no-link --json "path:$MACHINES_PATH#nixosConfigurations.$hostname.config.system.build.iso" | jq --raw-output ".[0].outputs.out")
 
   print_info "Iso generated"
   print $nixos_iso_path
   exit 0
 fi
+
+print_info "Evaluating target system configuration"
+readonly system_installable="path:$MACHINES_PATH#nixosConfigurations.$hostname.config.system.build.toplevel"
+readonly nixos_config_path=$(nix path-info --json "$system_installable" | jq --raw-output ".[0].path")
+print >&2 "$nixos_config_path"
 
 
 print_info "Deploying target system configuration"
@@ -115,8 +115,7 @@ then
   # local deploy
 
   print_info "Building target system configuration"
-  nix build "path:$MACHINES_PATH#nixosConfigurations.$hostname.config.system.build.toplevel" --out-link "$local_temp_dir/nixos-config-$hostname"
-  readonly nixos_config_path=$(realpath "$local_temp_dir/nixos-config-$hostname")
+  nix build --no-link "$system_installable"
 
   if [[ "$operation" = "build" ]]
   then
@@ -139,15 +138,17 @@ then
 else
   # remote deploy
 
-  nix copy --substitute-on-destination --to "ssh://root@$via_hostname" "path:$MACHINES_PATH#nixosConfigurations.$hostname.config.system.build.toplevel"
+  nix copy --substitute-on-destination --to "ssh://root@$via_hostname" "$system_installable"
 
-  # The manual way to do it (this is in theory also supported by nixos-rebuild by using '-I')
-
+  # The manual way to activate a system derivation
   if [[ -n "$set_profile" ]]
   then
     ssh root@$via_hostname "nix-env --profile /nix/var/nix/profiles/system --set $nixos_config_path"
   fi
   ssh root@$via_hostname "$nixos_config_path/bin/switch-to-configuration $operation && sync"
+
+  # This should work instead, but has some bugs at the moment
+  #nixos-rebuild "$operation" --flake "path:$MACHINES_PATH#$hostname" --target-host "root@$via_hostname"
 
   if [[ -n "$reboot" ]]
   then
