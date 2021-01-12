@@ -32,19 +32,24 @@ let
   machinesDirContents = readDir machinesDir;
   machineNames = filter (p: machinesDirContents.${p} == "directory") (attrNames machinesDirContents);
   withMachines = lambda: listToAttrs (map (m: {name = m; value = lambda { name = m; path = (machinesDir + "/${m}"); }; }) machineNames);
-  mkMachineConfig = { name, path, isIso }: (
-    import ./configuration.nix {
-      inherit name path isIso extraLayersDir;
-      channel = machineChannels.${name};
-    }
-  );
   evaluateConfig = pkgs: args: (import "${pkgs}/nixos/lib/eval-config.nix" args).config;
   mkNixosSystemDerivation = { name, path }:
     let
       channel = flakeInputs.nixpkgs-unstable;
+      system = "x86_64-linux";
+      mkMachineConfig = { name, path, isIso }: {
+        imports = [
+          (import ./configuration.nix {
+            inherit name path isIso extraLayersDir;
+            channel = machineChannels.${name};
+          })
+        ];
+        _module.args.flakeInputs = flakeInputs;
+        _module.args.flakeOutputs = flakeOutputs;
+        _module.args.system = system;
+      };
       configuration = mkMachineConfig { inherit name path; isIso = false; };
       isoConfiguration = mkMachineConfig { inherit name path; isIso = true; };
-      system = "x86_64-linux";
       iso = (evaluateConfig channel {
         inherit system;
         modules = [
