@@ -20,7 +20,7 @@
     isNormalUser = true;
     uid = 1101;
     passwordFile = "/etc/secrets/passwords/steam";
-    extraGroups = [ "pulse-access" ];
+    extraGroups = [ "audio" "pulse-access" ];
     packages = with pkgs; [
       (wine.override {
         wineBuild = "wineWow";
@@ -42,6 +42,7 @@
         openglSupport = true;
       })
       lutris
+      steam-run-native
     ];
   };
 
