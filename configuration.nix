@@ -48,9 +48,7 @@ in
 
   _module.args.isIso = lib.mkDefault false;
 
-  nixpkgs.config = {
-    packageOverrides = import ./pkgs;
-  };
+  nixpkgs.overlays = [ (import ./pkgs) ];
 
   # Pin channel in nix path
   nix.nixPath = [ "nixpkgs=${channel}" ];

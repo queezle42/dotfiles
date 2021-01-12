@@ -1,23 +1,22 @@
-pkgs:
+self: super:
 
-with pkgs;
 rec {
-  neovim-queezle = import ./neovim { inherit pkgs; };
-  simpleandsoft = import ./simpleandsoft { inherit pkgs; };
-  netevent = callPackage ./netevent {};
-  g810-led = callPackage ./g810-led {};
-  gamescope = callPackage ./gamescope {};
+  neovim-queezle = import ./neovim { pkgs = self; };
+  simpleandsoft = import ./simpleandsoft { pkgs = self; };
+  netevent = self.callPackage ./netevent {};
+  g810-led = self.callPackage ./g810-led {};
+  gamescope = self.callPackage ./gamescope {};
 
-  haskell = pkgs.haskell // {
-    packageOverrides = self: super: {
-      q = self.callPackage ./q {};
-      qd = self.callPackage ./qd {};
-      qbar = self.callPackage ./qbar {};
+  haskell = super.haskell // {
+    packageOverrides = hself: hsuper: {
+      q = hself.callPackage ./q {};
+      qd = hself.callPackage ./qd {};
+      qbar = hself.callPackage ./qbar {};
     };
   };
 
-  mumble-git = (mumble.overrideAttrs (attrs: {
-    src = pkgs.fetchFromGitHub {
+  mumble-git = (self.mumble.overrideAttrs (attrs: {
+    src = self.fetchFromGitHub {
       owner = "mumble-voip";
       repo = "mumble";
       rev = "f8ee53688353c8f5e1650504a961ee582ac16668";
@@ -26,12 +25,12 @@ rec {
     };
   }));
 
-  factorio = pkgs.factorio.override {
+  factorio = super.factorio.override {
     username = "Queezle";
     token = "706b6ebdf7539bc7539e55a580c669";
   };
 
-  q = haskellPackages.q;
-  qd = haskellPackages.qd;
-  qbar = haskellPackages.qbar;
+  q = self.haskellPackages.q;
+  qd = self.haskellPackages.qd;
+  qbar = self.haskellPackages.qbar;
 }
