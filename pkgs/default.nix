@@ -9,6 +9,8 @@ rec {
 
   haskell = super.haskell // {
     packageOverrides = hself: hsuper: {
+      #net-mqtt = self.haskell.lib.doJailbreak hsuper.net-mqtt;
+      net-mqtt = self.haskell.lib.unmarkBroken hsuper.net-mqtt;
       q = hself.callPackage ./q {};
       qd = hself.callPackage ./qd {};
       qbar = hself.callPackage ./qbar {};
