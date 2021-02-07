@@ -107,6 +107,7 @@ in
     picocom
     pv
     socat
+    reptyr
   ];
 
   users = {
