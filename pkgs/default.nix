@@ -7,6 +7,7 @@ rec {
   g810-led = self.callPackage ./g810-led {};
   gamescope = self.callPackage ./gamescope {};
   greetd = self.callPackage ./greetd {};
+  aseq2json = self.callPackage ./aseq2json {};
 
   mpv-queezle = self.mpv-with-scripts.override {
     scripts = [ self.mpvScripts.mpris ];
