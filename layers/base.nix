@@ -16,6 +16,7 @@ in
 {
   imports = [
     ./zsh.nix
+    ./ioschedulers.nix
   ];
 
   # This value determines the NixOS release with which your system is to be
