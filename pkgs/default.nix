@@ -6,6 +6,7 @@ rec {
   netevent = self.callPackage ./netevent {};
   g810-led = self.callPackage ./g810-led {};
   gamescope = self.callPackage ./gamescope {};
+  greetd = self.callPackage ./greetd {};
 
   mpv-queezle = self.mpv-with-scripts.override {
     scripts = [ self.mpvScripts.mpris ];
