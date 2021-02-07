@@ -39,7 +39,7 @@ in
     pulsemixer
     dfeet
     #vimiv
-    mpv
+    mpv-queezle
     wdisplays
 
     # screenshot utilities

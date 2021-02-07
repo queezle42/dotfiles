@@ -7,6 +7,10 @@ rec {
   g810-led = self.callPackage ./g810-led {};
   gamescope = self.callPackage ./gamescope {};
 
+  mpv-queezle = self.mpv-with-scripts.override {
+    scripts = [ self.mpvScripts.mpris ];
+  };
+
   haskell = super.haskell // {
     packageOverrides = hself: hsuper: {
       #net-mqtt = self.haskell.lib.doJailbreak hsuper.net-mqtt;
