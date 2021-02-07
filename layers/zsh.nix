@@ -85,7 +85,6 @@ in
     "hist_ignore_all_dups"
     "inc_append_history"
     "hist_fcntl_lock"
-    "extended_glob"
   ];
 
   programs.zsh.interactiveShellInit = ''
