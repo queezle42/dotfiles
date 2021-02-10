@@ -1,19 +1,6 @@
 { pkgs, lib, ... }:
 
 let
-  greetd-config = ''
-    [terminal]
-    vt = 1
-
-    [default_session]
-    command = sway --config ${greeter-sway-config-file}
-    user = greeter
-
-    [initial_session]
-    command = sway
-    user = jens
-  '';
-  greetd-config-file = pkgs.writeText "greetd-config" greetd-config;
   greeter-sway-config = ''
     input * {
       xkb_layout de
@@ -54,51 +41,16 @@ in
     dotfiles.profiles = [ "desktop" ];
   };
 
-
-  security.pam.services.greetd = {
-    allowNullPassword = true;
-    startSession = true;
-  };
-
-  # This prevents nixos-rebuild from killing greetd on every system activation
-  systemd.services."autovt@tty1".enable = lib.mkForce false;
-
-  systemd.services.greetd = {
+  services.greetd = {
     enable = true;
-
-    unitConfig = {
-      Wants = [
-        "systemd-user-sessions.service"
-      ];
-      After = [
-        "systemd-user-sessions.service"
-        "plymouth-quit-wait.service"
-        "getty@tty1.service"
-      ];
-      Conflicts = [
-        "getty@tty1.service"
-      ];
-
-      #StartLimitBurst = 10;
-      #StartLimitInterval = 60;
+    settings = {
+      default_session = {
+        command = "sway --config ${greeter-sway-config-file}";
+        user = "greeter";
+      };
+      initial_session = "sway";
+      user = "jens";
     };
-
-    serviceConfig = {
-      ExecStart = "${pkgs.greetd}/bin/greetd --config ${greetd-config-file}";
-
-      IgnoreSIGPIPE = false;
-      SendSIGHUP = true;
-      TimeoutStopSec = "30s";
-      KeyringMode = "shared";
-
-      #Restart = "always";
-      #RestartSec = 1;
-    };
-
-    restartIfChanged = false;
-    stopIfChanged = false;
-    wantedBy = [ "graphical.target" ];
+    restart = false;
   };
-
-  systemd.defaultUnit = "graphical.target";
 }
