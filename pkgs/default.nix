@@ -8,7 +8,6 @@ rec {
   gamescope = self.callPackage ./gamescope {};
   greetd = self.callPackage ./greetd {};
   gtkgreet = self.callPackage ./gtkgreet {};
-  aseq2json = self.callPackage ./aseq2json {};
 
   mpv-queezle = self.mpv-with-scripts.override {
     scripts = [ self.mpvScripts.mpris ];
