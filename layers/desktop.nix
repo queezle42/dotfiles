@@ -23,6 +23,7 @@ in
 {
   imports = [
     ./base.nix
+    ./greeter.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -127,12 +128,13 @@ in
 
     export QT_STYLE_OVERRIDE=adwaita-dark
   '';
-  environment.loginShellInit = ''
-    # start sway when logging in on tty1
-    if [ "$USER" = jens ] && [ -n "$XDG_VTNR" ] && [ "$XDG_VTNR" -eq 1 ] && [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ]; then
-      exec sway &> /run/user/$UID/sway_log
-    fi
-  '';
+  # Start on tty1 login is disabled because I'm using a display manager
+  #environment.loginShellInit = ''
+  #  # start sway when logging in on tty1
+  #  if [ "$USER" = jens ] && [ -n "$XDG_VTNR" ] && [ "$XDG_VTNR" -eq 1 ] && [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ]; then
+  #    exec sway &> /run/user/$UID/sway_log
+  #  fi
+  #'';
 
   environment.etc."xdg/Trolltech.conf".text = ''
     [Qt]
