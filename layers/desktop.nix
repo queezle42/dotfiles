@@ -59,7 +59,7 @@ in
     rofi
     qt5.qtwayland
     acpilight
-    redshift-wlr
+    gammastep
     kanshi
     libnotify
     wl-clipboard
@@ -103,6 +103,15 @@ in
         "video"
       ];
       dotfiles.profiles = [ "kitty" "vscode" "desktop" ];
+    };
+  };
+
+  home-manager.users.jens = { pkgs, ... }: {
+    xdg.configFile."sway/config" = {
+      source = pkgs.writeText "sway-config" ''
+        include common
+        include local
+      '';
     };
   };
 
