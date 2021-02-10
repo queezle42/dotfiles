@@ -12,5 +12,9 @@
   };
   outputs = { ... }: {
     overlay = import ./pkgs;
+
+    nixosModules = {
+      greetd = import ./modules/greetd.nix;
+    };
   };
 }
