@@ -18,7 +18,7 @@ let
   # allChannels :: { *: path (channel) }
   #allChannels = with helpers; keysToAttrs loadChannel (readFilterDir (filterAnd [(not filterDirHidden) filterDirDirs]) channelsDir);
   # getMachineChannel :: string -> path
-  getMachineChannel = _: flakeInputs.nixpkgs-unstable;
+  getMachineChannel = _: flakeInputs.nixpkgs;
   #getMachineChannel = { name, path }:
   #  let
   #    channelFile = path + "/channel.nix";
@@ -35,7 +35,7 @@ let
   evaluateConfig = pkgs: args: (import "${pkgs}/nixos/lib/eval-config.nix" args).config;
   mkNixosSystemDerivation = { name, path }:
     let
-      channel = flakeInputs.nixpkgs-unstable;
+      channel = flakeInputs.nixpkgs;
       system = "x86_64-linux";
       mkMachineConfig = { name, path, isIso }: {
         imports = [
