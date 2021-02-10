@@ -1,5 +1,5 @@
 # This is the entry point for my NixOS configuration.
-{ name, path, channel, isIso, extraLayersDir }:
+{ name, path, channel, isIso, extraLayersDir, flakeInputs, flakeOutputs }:
 { lib, config, pkgs, ... }:
 
 let
@@ -44,7 +44,14 @@ in
     ./modules
     (path + "/configuration.nix")
     normalSystemConfiguration
+    flakeInputs.homemanager.nixosModules.home-manager
   ] ++ layerImports;
+
+  home-manager = {
+    useGlobalPkgs = true;
+    # disable home-managers usage of nix-env
+    useUserPackages = true;
+  };
 
   _module.args.isIso = lib.mkDefault false;
 
