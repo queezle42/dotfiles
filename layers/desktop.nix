@@ -1,20 +1,20 @@
 # Basic desktop functionality (window manager, terminal emulator, browser and a few utilities)
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 let
   swaylockWithIdle = pkgs.writeScriptBin "swaylock-with-idle" ''
-#!/usr/bin/env zsh
+    #!/usr/bin/env zsh
 
-trap 'swaymsg "output * dpms on"' EXIT INT HUP TERM
+    trap 'swaymsg "output * dpms on"' EXIT INT HUP TERM
 
-swayidle -w \
-        timeout 10 'swaymsg "output * dpms off"' \
-        resume 'swaymsg "output * dpms on"' \
-        &
+    swayidle -w \
+            timeout 10 'swaymsg "output * dpms off"' \
+            resume 'swaymsg "output * dpms on"' \
+            &
 
-swaylock $@
+    swaylock $@
 
-kill %1
+    kill %1
   '';
 
   blockPath = ../../desktop/blocks;
