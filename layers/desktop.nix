@@ -102,6 +102,7 @@ in
       ];
       extraGroups = [
         "video"
+        "pulse-access"
       ];
       dotfiles.profiles = [ "kitty" "vscode" "desktop" ];
     };
