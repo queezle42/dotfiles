@@ -1,5 +1,5 @@
 # This is the entry point for my NixOS configuration.
-{ name, path, channel, isIso, extraLayersDir, flakeInputs, flakeOutputs }:
+{ name, path, channel, isIso, extraLayersDir, flakeInputs, flakeOutputs, system }:
 { lib, config, pkgs, ... }:
 
 let
@@ -45,6 +45,7 @@ in
     (path + "/configuration.nix")
     normalSystemConfiguration
     flakeInputs.homemanager.nixosModules.home-manager
+    flakeInputs.qd.nixosModules.qd
   ] ++ layerImports;
 
   home-manager = {
@@ -55,7 +56,14 @@ in
 
   _module.args.isIso = lib.mkDefault false;
 
-  nixpkgs.overlays = [ (import ./pkgs) ];
+  nixpkgs.overlays = [
+    (import ./pkgs)
+    (self: super:
+      {
+        qd = flakeInputs.qd.packages."${system}".qd;
+      }
+    )
+  ];
 
   # Pin channel in nix path
   nix.nixPath = [ "nixpkgs=${channel}" ];

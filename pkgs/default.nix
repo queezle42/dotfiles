@@ -18,7 +18,6 @@ rec {
       #net-mqtt = self.haskell.lib.doJailbreak hsuper.net-mqtt;
       net-mqtt = self.haskell.lib.unmarkBroken hsuper.net-mqtt;
       q = hself.callPackage ./q {};
-      qd = hself.callPackage ./qd {};
       qbar = hself.callPackage ./qbar {};
     };
   };
@@ -39,6 +38,5 @@ rec {
   };
 
   q = self.haskellPackages.q;
-  qd = self.haskellPackages.qd;
   qbar = self.haskellPackages.qbar;
 }

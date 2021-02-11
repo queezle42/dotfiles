@@ -40,7 +40,7 @@ let
       mkMachineConfig = { name, path, isIso }: {
         imports = [
           (import ./configuration.nix {
-            inherit name path isIso extraLayersDir flakeInputs flakeOutputs;
+            inherit name path isIso extraLayersDir flakeInputs flakeOutputs system;
             channel = machineChannels.${name};
           })
         ];
