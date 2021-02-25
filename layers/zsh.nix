@@ -39,8 +39,6 @@ in
     la = "ls -la";
     lah = "ls -lah";
 
-    f = "fd";
-
     # tree configured to ignore .gitignore
     gtree = "${pkgs.tree}/bin/tree --fromfile <(${pkgs.fd}/bin/fd -H -E .git)";
 
@@ -166,7 +164,7 @@ in
 
     # vi mode
     bindkey -v
-    bindkey 'fd' vi-cmd-mode
+    #bindkey 'fd' vi-cmd-mode
     # backspace
     bindkey '^?' backward-delete-char
     # delete key

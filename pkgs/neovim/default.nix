@@ -6,8 +6,8 @@ pkgs.neovim.override {
       " Configure ' ' as the leader key (would be '\' by default).
       let mapleader = " "
 
-      inoremap fd <Esc>
-      vnoremap fd <Esc>
+      " inoremap fd <Esc>
+      " vnoremap fd <Esc>
 
       " Configure colorscheme
       let g:gruvbox_contrast_dark='hard'
