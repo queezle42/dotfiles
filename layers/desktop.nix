@@ -24,6 +24,7 @@ in
   imports = [
     ./base.nix
     ./greeter.nix
+    ./pulseaudio.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -84,12 +85,6 @@ in
   ];
 
   fonts.fonts = with pkgs; [ fira-code ];
-
-  sound.enable = true;
-  hardware.pulseaudio = {
-    enable = true;
-    systemWide = true;
-  };
 
   users = {
     users.jens = {

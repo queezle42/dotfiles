@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 {
-  users.groups."pulse-access" = {};
   users.users.audio = {
     isNormalUser = true;
     uid = 1102;
