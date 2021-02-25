@@ -58,11 +58,8 @@ in
 
   nixpkgs.overlays = [
     (import ./pkgs)
-    (self: super:
-      {
-        qd = flakeInputs.qd.packages."${system}".qd;
-      }
-    )
+    flakeInputs.qd.overlay
+    flakeInputs.q.overlay
   ];
 
   # Pin channel in nix path
