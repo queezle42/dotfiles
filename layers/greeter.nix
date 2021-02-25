@@ -48,8 +48,10 @@ in
         command = "sway --config ${greeter-sway-config-file}";
         user = "greeter";
       };
-      initial_session = "sway";
-      user = "jens";
+      initial_session = {
+        command = "sway";
+        user = "jens";
+      };
     };
     restart = false;
   };
