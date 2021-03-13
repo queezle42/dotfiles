@@ -34,9 +34,5 @@ rec {
     };
   }));
 
-  factorio = super.factorio.override {
-    username = "Queezle";
-    token = "706b6ebdf7539bc7539e55a580c669";
-  };
   qbar = self.haskellPackages.qbar;
 }
