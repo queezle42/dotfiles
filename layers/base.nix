@@ -83,10 +83,8 @@ in
     # tmux
     gotop
 
-    inxi
+    (inxi.override { withRecommends = true; })
     lm_sensors
-    acpi
-    ldns
 
     pwgen
     mosquitto
