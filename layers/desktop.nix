@@ -5,12 +5,12 @@ let
   swaylockWithIdle = pkgs.writeScriptBin "swaylock-with-idle" ''
     #!/usr/bin/env zsh
 
-    trap 'swaymsg "output * dpms on"' EXIT INT HUP TERM
+    trap 'qctl set /g815/idle false; swaymsg "output * dpms on"' EXIT INT HUP TERM
 
     swayidle -w \
-            timeout 10 'swaymsg "output * dpms off"' \
-            resume 'swaymsg "output * dpms on"' \
-            &
+      timeout 10 'qctl set /g815/idle true; swaymsg "output * dpms off"' \
+      resume 'qctl set /g815/idle false; swaymsg "output * dpms on"' \
+      &
 
     swaylock $@
 
