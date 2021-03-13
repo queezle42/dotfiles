@@ -29,7 +29,7 @@ in
   nixpkgs.config.allowUnfree = true;
 
   # Always run the latest kernel
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
   boot.tmpOnTmpfs = true;
 
@@ -37,9 +37,6 @@ in
 
   # Restore systemd default
   services.logind.killUserProcesses = true;
-
-  # Freezes on shutdown on some machines. Also probably should only be enabled when required?
-  security.rngd.enable = lib.mkDefault false;
 
   time.timeZone = "Europe/Berlin";
 
@@ -93,7 +90,6 @@ in
 
     pwgen
     mosquitto
-    gopass
     unzip
     file
     darkhttpd
