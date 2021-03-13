@@ -24,6 +24,7 @@ in
     packages = [
       customSteam
       pkgs.steam-run-native
+      pkgs.gamescope
     ];
   };
 }
