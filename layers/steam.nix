@@ -20,6 +20,8 @@ in
     extraGroups = [
       "audio"
       "pulse-access"
+      # FIXME a better workaround for gamepads not being accessible is required
+      "input"
     ];
     packages = [
       customSteam
