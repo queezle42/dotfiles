@@ -12,6 +12,8 @@ rec {
   greetd = self.callPackage ./greetd {};
   gtkgreet = self.callPackage ./gtkgreet {};
 
+  squeekboard = self.callPackage ./squeekboard {};
+
   mpv-queezle = self.mpv-with-scripts.override {
     scripts = [ self.mpvScripts.mpris ];
   };
