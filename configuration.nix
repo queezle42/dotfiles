@@ -1,5 +1,5 @@
 # This is the entry point for my NixOS configuration.
-{ name, path, channel, isIso, extraLayersDir, flakeInputs, flakeOutputs, system }:
+{ name, path, channel, isIso, extraLayersDir, flakeInputs, flakeOutputs, system, extraOverlays }:
 { lib, config, pkgs, ... }:
 
 let
@@ -60,7 +60,7 @@ in
     (import ./pkgs)
     flakeInputs.qd.overlay
     flakeInputs.q.overlay
-  ];
+  ] ++ extraOverlays;
 
   # Pin channel in nix path
   nix.nixPath = [ "nixpkgs=${channel}" ];

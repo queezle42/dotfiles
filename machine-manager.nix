@@ -1,7 +1,7 @@
 # entry point for machine configurations:
 # (import <repo-path> { machinesDir=./machines }).<netname>.configurations.<hostname>
 
-{ flakeInputs, flakeOutputs, machinesDir, extraLayersDir }:
+{ flakeInputs, flakeOutputs, machinesDir, extraLayersDir, extraOverlays ? [] }:
 
 with builtins;
 let
@@ -40,7 +40,7 @@ let
       mkMachineConfig = { name, path, isIso }: {
         imports = [
           (import ./configuration.nix {
-            inherit name path isIso extraLayersDir flakeInputs flakeOutputs system;
+            inherit name path isIso extraLayersDir flakeInputs flakeOutputs system extraOverlays;
             channel = machineChannels.${name};
           })
         ];
