@@ -4,6 +4,7 @@
 { flakeInputs, flakeOutputs, machinesDir, extraLayersDir, extraOverlays ? [] }:
 
 with builtins;
+with flakeInputs.nixpkgs.lib;
 let
   # defaultChannel :: path (channel)
   #defaultChannel = loadChannel "nixos-unstable";
@@ -33,7 +34,7 @@ let
   machineNames = filter (p: machinesDirContents.${p} == "directory") (attrNames machinesDirContents);
   withMachines = lambda: listToAttrs (map (m: {name = m; value = lambda { name = m; path = (machinesDir + "/${m}"); }; }) machineNames);
   evaluateConfig = pkgs: args: (import "${pkgs}/nixos/lib/eval-config.nix" args).config;
-  mkNixosSystemDerivation = { name, path }:
+  mkNixosSystemDerivations = { name, path }:
     let
       channel = flakeInputs.nixpkgs;
       system = "x86_64-linux";
@@ -64,17 +65,12 @@ let
           (mkAdditionalSdCardConfig name)
         ];
       }).system.build.sdImage;
-    in
-    channel.lib.nixosSystem {
-      inherit system;
-      modules = [
-        configuration
-        {
-          system.build = {
-            inherit iso sdImage;
-          };
-        }
-      ];
+      systemDerivation = channel.lib.nixosSystem {
+        inherit system;
+        modules = [ configuration ];
+      };
+    in {
+      inherit systemDerivation iso sdImage;
     };
   mkAdditionalIsoConfig = name: { config, modulesPath, ... }: {
     imports = [
@@ -109,6 +105,8 @@ in
   # nixosIsoDerivations = withMachines mkNixosIsoDerivation;
   # channels = machineChannels;
 
-  nixosSystemDerivations = withMachines mkNixosSystemDerivation;
+  nixosSystemDerivations = withMachines (x: (mkNixosSystemDerivations x).systemDerivation);
+  isos = withMachines (x: (mkNixosSystemDerivations x).iso);
+  sdImages = withMachines (x: (mkNixosSystemDerivations x).sdImage);
   machineTemplates = withMachines ({name, path}: import (path + /template.nix));
 }
