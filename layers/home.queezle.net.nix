@@ -13,6 +13,7 @@
       '';
       locations = {
         "= /" = {
+          extraConfig = "default_type text/plain;";
           return  = ''200 "Hello World!"'';
         };
         "/ip" = {
@@ -30,6 +31,9 @@
           alias = "/srv/k8ctl/";
           index = "index.html";
           extraConfig = "auth_request /auth;";
+        };
+        "/tmp/" = {
+          alias = "/srv/tmp/";
         };
         "/mqtt" = {
           proxyPass = "http://localhost:1884";
