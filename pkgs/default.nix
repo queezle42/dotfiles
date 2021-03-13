@@ -20,7 +20,6 @@ rec {
     packageOverrides = hself: hsuper: {
       #net-mqtt = self.haskell.lib.doJailbreak hsuper.net-mqtt;
       net-mqtt = self.haskell.lib.unmarkBroken hsuper.net-mqtt;
-      q = hself.callPackage ./q {};
       qbar = hself.callPackage ./qbar {};
     };
   };
@@ -39,7 +38,5 @@ rec {
     username = "Queezle";
     token = "706b6ebdf7539bc7539e55a580c669";
   };
-
-  q = self.haskellPackages.q;
   qbar = self.haskellPackages.qbar;
 }
