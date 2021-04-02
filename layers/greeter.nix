@@ -8,7 +8,7 @@ let
       xkb_numlock enable
     }
 
-    exec "${pkgs.gtkgreet}/bin/gtkgreet --layer-shell --command=sway; swaymsg exit"
+    exec "${pkgs.greetd.gtkgreet}/bin/gtkgreet --layer-shell --command=sway; swaymsg exit"
 
     bindsym Mod4+shift+e exec swaynag \
       -t warning \
@@ -26,8 +26,8 @@ in
 {
   environment.systemPackages = with pkgs; [
     # for greeter manpages
-    greetd
-    gtkgreet
+    greetd.greetd
+    greetd.gtkgreet
   ];
 
   programs.sway.enable = true;
@@ -46,7 +46,6 @@ in
     settings = {
       default_session = {
         command = "sway --config ${greeter-sway-config-file}";
-        user = "greeter";
       };
       initial_session = {
         command = "sway";

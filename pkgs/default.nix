@@ -9,9 +9,6 @@ rec {
   libliftoff = self.callPackage ./libliftoff {};
   gamescope = self.callPackage ./gamescope {};
 
-  greetd = self.callPackage ./greetd {};
-  gtkgreet = self.callPackage ./gtkgreet {};
-
   squeekboard = self.callPackage ./squeekboard {};
 
   mpv-queezle = self.mpv-with-scripts.override {

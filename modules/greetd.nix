@@ -12,8 +12,8 @@ in
 
     package = mkOption {
       type = types.package;
-      default = pkgs.greetd;
-      defaultText = "pkgs.greetd";
+      default = pkgs.greetd.greetd;
+      defaultText = "pkgs.greetd.greetd";
       description = "The greetd package that should be used.";
     };
 
@@ -22,9 +22,7 @@ in
       example = literalExample ''
         {
           default_session = {
-            command = "''${pkgs.greetd}/bin/agreety --cmd sway";
-            # you have to create the 'greeter'-user
-            user = "greeter";
+            command = "''${pkgs.greetd.greetd}/bin/agreety --cmd sway";
           };
         }
       '';
@@ -55,6 +53,7 @@ in
   config = mkIf cfg.enable {
 
     services.greetd.settings.terminal.vt = mkDefault cfg.vt;
+    services.greetd.settings.default_session = mkDefault "greeter";
 
     security.pam.services.greetd = {
       allowNullPassword = true;
@@ -80,15 +79,15 @@ in
       };
 
       serviceConfig = {
-        ExecStart = "${pkgs.greetd}/bin/greetd --config ${settingsFormat.generate "greetd.toml" cfg.settings}";
+        ExecStart = "${pkgs.greetd.greetd}/bin/greetd --config ${settingsFormat.generate "greetd.toml" cfg.settings}";
+
+        Restart = mkIf cfg.restart "always";
 
         # Defaults from greetd upstream configuration
         IgnoreSIGPIPE = false;
         SendSIGHUP = true;
         TimeoutStopSec = "30s";
         KeyringMode = "shared";
-      } // optionalAttrs cfg.restart {
-        Restart = "always";
       };
 
       # Don't kill a user session when using nixos-rebuild
@@ -98,6 +97,8 @@ in
     };
 
     systemd.defaultUnit = "graphical.target";
+
+    users.users.greeter.isSystemUser = true;
   };
 
   meta.maintainers = with maintainers; [ queezle ];
