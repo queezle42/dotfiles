@@ -38,7 +38,6 @@ in
     networkmanagerapplet
     wayvnc
     tigervnc
-    pulsemixer
     dfeet
     #vimiv
     mpv-queezle
