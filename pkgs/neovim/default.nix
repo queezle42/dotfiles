@@ -56,6 +56,10 @@ pkgs.neovim.override {
       " Configure completion: First <tab> completes to the longest common string and also opens the completion menu, following <Tab>s complete the next matches.
       set wildmode=longest:full,full
 
+      " Disable preview *window* on completion
+      set completeopt-=preview
+
+
       " Save with Ctrl-S (if file has changed)
       nnoremap <C-s> <Cmd>update<CR>
 
