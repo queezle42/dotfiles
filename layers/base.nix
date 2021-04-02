@@ -85,6 +85,9 @@ in
 
     (inxi.override { withRecommends = true; })
     lm_sensors
+    smartmontools
+    pciutils
+    usbutils
 
     pwgen
     mosquitto
