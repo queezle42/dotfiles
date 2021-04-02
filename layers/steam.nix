@@ -2,13 +2,13 @@
 
 with lib;
 
-let
-  customSteam = pkgs.steam.override {
-    withPrimus = true;
-    extraPkgs = pkgs: with pkgs; [ glxinfo ];
-  };
-
-in
+#let
+#  customSteam = pkgs.steam.override {
+#    withPrimus = true;
+#    extraPkgs = pkgs: with pkgs; [ glxinfo ];
+#  };
+#
+#in
 {
   hardware.opengl.driSupport32Bit = true;
   hardware.pulseaudio.support32Bit = true;
@@ -24,7 +24,7 @@ in
       "input"
     ];
     packages = [
-      customSteam
+      pkgs.steam
       pkgs.steam-run-native
       pkgs.gamescope
     ];
