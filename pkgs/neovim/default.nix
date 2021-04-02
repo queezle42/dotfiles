@@ -56,6 +56,9 @@ pkgs.neovim.override {
       " Configure completion: First <tab> completes to the longest common string and also opens the completion menu, following <Tab>s complete the next matches.
       set wildmode=longest:full,full
 
+      " Don't show mode in command line (command line is used by echodoc.vim instead while mode is shown in status bar)
+      set noshowmode
+
       " Disable preview *window* on completion
       set completeopt-=preview
 
