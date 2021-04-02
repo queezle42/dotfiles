@@ -228,7 +228,8 @@ bindsym $mod+p exec $terminal python
 bindsym $mod+Shift+p exec $terminal stack ghci --verbosity warning
 
 # start a browser
-bindsym $mod+b exec --no-startup-id chromium --force-dark-mode
+#bindsym $mod+b exec --no-startup-id chromium --enable-features=UseOzonePlatform --ozone-platform=wayland --force-dark-mode
+bindsym $mod+b exec --no-startup-id chromium --enable-features=WebRTCPipeWireCapturer --force-dark-mode
 #bindsym $mod+Shift+b exec --no-startup-id qutebrowser
 
 # start htop
