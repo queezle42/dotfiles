@@ -130,7 +130,7 @@ assert (typeOf swap) == "string";
       ssd=true
     else
       ssd=false
-      print_warning "Discard failed"
+      print_warning "Discard failed, disabling ssd configuration"
     fi
 
     print_info "Creating partition table for bootloader ${template.bootloader}"
@@ -230,14 +230,21 @@ assert (typeOf swap) == "string";
 
     mkdir -p $mount_point
 
+    if $ssd
+    then
+      mountflags=noatime,discard=async
+    else
+      mountflags=noatime
+    fi
+
     # Create subvolumes
-    ${mount-bin} -o noatime,compress=zstd $root_partition $mount_point
+    ${mount-bin} -o $mountflags $root_partition $mount_point
     ${btrfs-bin} subvolume create $mount_point/${hostname}
     ${btrfs-bin} subvolume create $mount_point/${hostname}/nix
     ${umount-bin} $mount_point
 
     # Remount
-    ${mount-bin} -o subvol=/${hostname},noatime,compress=zstd $root_partition $mount_point
+    ${mount-bin} -o subvol=/${hostname},$mountflags $root_partition $mount_point
 
     mkdir -p $mount_point/boot
     ${mount-bin} -o noatime $esp_partition $mount_point/boot
