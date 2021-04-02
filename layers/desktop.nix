@@ -116,6 +116,9 @@ in
   programs.sway.extraPackages = with pkgs; [ swaylock swayidle xwayland kitty cool-retro-term xorg.xrdb ];
   # QT_QPA_PLATFORM=wayland requires qt5.qtwayland in systemPackages
   programs.sway.extraSessionCommands = ''
+    export XDG_SESSION_TYPE=wayland
+    export XDG_CURRENT_DESKTOP=sway
+
     export SDL_VIDEODRIVER=wayland
     # Creates problems with OBS
     #export QT_QPA_PLATFORM=wayland
