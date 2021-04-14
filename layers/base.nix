@@ -88,6 +88,8 @@ in
     smartmontools
     pciutils
     usbutils
+    hdparm
+    wireguard-tools
 
     pwgen
     mosquitto
