@@ -2,6 +2,7 @@
 { name, path, channel, isIso, extraLayersDir, flakeInputs, flakeOutputs, system, extraOverlays }:
 { lib, config, pkgs, ... }:
 
+
 let
   installResult = builtins.fromJSON (builtins.readFile (path + "/install-result.json"));
   dotfilesConfig = import (path + "/dotfiles.nix");
@@ -67,6 +68,10 @@ in
   nix.registry.nixpkgs.flake = channel;
   # Make nixpkgs path available inside of the configuration
   #_module.args.nixpkgsPath = channel;
+
+  # Let 'nixos-version --json' know about the Git revision
+  # of this flake.
+  system.configurationRevision = lib.mkIf (flakeInputs.self ? rev) flakeInputs.self.rev;
 
   environment.shellAliases = {
     # nixos-option won't run without a configuration. With an empty config it does not show configured values, but can at least be used to search options and show default values.

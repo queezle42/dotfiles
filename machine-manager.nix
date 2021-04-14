@@ -1,11 +1,13 @@
-# entry point for machine configurations:
-# (import <repo-path> { machinesDir=./machines }).<netname>.configurations.<hostname>
-
-{ flakeInputs, flakeOutputs, machinesDir, extraLayersDir, extraOverlays ? [] }:
+# applied by this repositories flake
+{ flakeInputs, flakeOutputs }:
+# applied by outer flake
+{ extraFlakeInputs, extraFlakeOutputs, machinesDir, extraLayersDir, extraOverlays ? [] }:
 
 with builtins;
 with flakeInputs.nixpkgs.lib;
 let
+  finalFlakeInputs = flakeInputs // extraFlakeInputs;
+  finalFlakeOutputs = flakeOutputs // extraFlakeOutputs;
   # defaultChannel :: path (channel)
   #defaultChannel = loadChannel "nixos-unstable";
 
@@ -19,7 +21,7 @@ let
   # allChannels :: { *: path (channel) }
   #allChannels = with helpers; keysToAttrs loadChannel (readFilterDir (filterAnd [(not filterDirHidden) filterDirDirs]) channelsDir);
   # getMachineChannel :: string -> path
-  getMachineChannel = _: flakeInputs.nixpkgs;
+  getMachineChannel = _: finalFlakeInputs.nixpkgs;
   #getMachineChannel = { name, path }:
   #  let
   #    channelFile = path + "/channel.nix";
@@ -36,17 +38,19 @@ let
   evaluateConfig = pkgs: args: (import "${pkgs}/nixos/lib/eval-config.nix" args).config;
   mkNixosSystemDerivations = { name, path }:
     let
-      channel = flakeInputs.nixpkgs;
+      channel = finalFlakeInputs.nixpkgs;
       system = "x86_64-linux";
       mkMachineConfig = { name, path, isIso }: {
         imports = [
           (import ./configuration.nix {
-            inherit name path isIso extraLayersDir flakeInputs flakeOutputs system extraOverlays;
+            inherit name path isIso extraLayersDir system extraOverlays;
+            flakeInputs = finalFlakeInputs;
+            flakeOutputs = finalFlakeOutputs;
             channel = machineChannels.${name};
           })
         ];
-        _module.args.flakeInputs = flakeInputs;
-        _module.args.flakeOutputs = flakeOutputs;
+        _module.args.flakeInputs = finalFlakeInputs;
+        _module.args.flakeOutputs = finalFlakeOutputs;
         _module.args.system = system;
       };
       configuration = mkMachineConfig { inherit name path; isIso = false; };

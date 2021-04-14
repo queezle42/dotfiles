@@ -1,0 +1,121 @@
+{
+  "nodes": {
+    "homemanager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1617220862,
+        "narHash": "sha256-nLka+S6Vww8hTF3ZkzK/BezvgAo1Z433/L6TR1SiXyM=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "ad04237d5142f53dcba258942b78e2d2bbf210c8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1617082367,
+        "narHash": "sha256-W0cQPGjc4IVzryaGycuoS8KZkXafS1P23w/fcKLoD5Y=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "04a2b269d8921505a2969fc9ec25c1f517f2b307",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "q": {
+      "inputs": {
+        "nixpkgs": [
+          "qd",
+          "nixpkgs"
+        ],
+        "qd": [
+          "qd"
+        ]
+      },
+      "locked": {
+        "host": "git.c3pb.de",
+        "lastModified": 1614196923,
+        "narHash": "sha256-Yjnd3hSW1XpZ9BQJCUeC0ES3KrWe6kubh22wkxEp9xE=",
+        "owner": "jens",
+        "repo": "q",
+        "rev": "1002c6c644bb377a22a8ac5a8ac9e54bcb055874",
+        "type": "gitlab"
+      },
+      "original": {
+        "host": "git.c3pb.de",
+        "owner": "jens",
+        "repo": "q",
+        "type": "gitlab"
+      }
+    },
+    "qauth": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "host": "git.c3pb.de",
+        "lastModified": 1611110209,
+        "narHash": "sha256-PGJWsILu0NO8ERv8+fgKFf6idkDuZgFlJGtGWdJsV8A=",
+        "owner": "jens",
+        "repo": "qauth",
+        "rev": "72d18c270a256434c18b1fadd68755413dd8fdb6",
+        "type": "gitlab"
+      },
+      "original": {
+        "host": "git.c3pb.de",
+        "owner": "jens",
+        "repo": "qauth",
+        "type": "gitlab"
+      }
+    },
+    "qd": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "host": "git.c3pb.de",
+        "lastModified": 1615431166,
+        "narHash": "sha256-ZwR9s18dGMrPJ+SLFOTL2BCsd4eZ6dd86v+Z7M2LSZc=",
+        "owner": "jens",
+        "repo": "qd",
+        "rev": "49571704277e7f59712622dc2c87ee18b226da31",
+        "type": "gitlab"
+      },
+      "original": {
+        "host": "git.c3pb.de",
+        "owner": "jens",
+        "repo": "qd",
+        "type": "gitlab"
+      }
+    },
+    "root": {
+      "inputs": {
+        "homemanager": "homemanager",
+        "nixpkgs": "nixpkgs",
+        "q": "q",
+        "qauth": "qauth",
+        "qd": "qd"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

@@ -94,6 +94,10 @@ else
 fi
 
 
+# Update nar-hash of dotfiles repository
+nix flake lock --update-input dotfiles "path:$MACHINES_PATH"
+
+
 if [[ "$operation" = "iso" ]]
 then
   print_info "Building iso image"
@@ -108,6 +112,12 @@ print_info "Evaluating target system configuration"
 readonly system_installable="path:$MACHINES_PATH#nixosConfigurations.$hostname.config.system.build.toplevel"
 readonly nixos_config_path=$(nix path-info $common_nix_flags --json "$system_installable" | jq --raw-output ".[0].path")
 print >&2 "$nixos_config_path"
+
+if [[ -z "$nixos_config_path" ]]
+then
+  print_error "No path was generated"
+  exit 3
+fi
 
 
 print_info "Deploying target system configuration"
