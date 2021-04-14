@@ -5,6 +5,16 @@
 
   services.nginx = {
     virtualHosts."home.queezle.net" = {
+      listen = [
+        {
+          addr = "10.0.0.1";
+        }
+        {
+          addr = "10.0.0.1";
+          port = 443;
+          ssl = true;
+        }
+      ];
       forceSSL = true;
       useACMEHost = "home.queezle.net";
       # for qauth
@@ -14,7 +24,7 @@
       locations = {
         "= /" = {
           extraConfig = "default_type text/plain;";
-          return  = ''200 "Hello World!"'';
+          return  = ''307 /qapp/'';
         };
         "/ip" = {
           extraConfig = "default_type text/plain;";
@@ -24,13 +34,13 @@
           extraConfig = "default_type application/json;";
           return = ''200 "{\"ip\":\"$remote_addr\"}"'';
         };
-        "/k8ctl" = {
-          return  = ''301 /k8ctl/'';
+        "/qapp" = {
+          return  = ''301 /qapp/'';
         };
-        "/k8ctl/" = {
-          alias = "/srv/k8ctl/";
+        "/qapp/" = {
+          alias = "/srv/qapp/";
           index = "index.html";
-          extraConfig = "auth_request /auth;";
+          #extraConfig = "auth_request /auth;";
         };
         "/tmp/" = {
           alias = "/srv/tmp/";
@@ -40,8 +50,10 @@
           proxyWebsockets = true;
           extraConfig = ''
             proxy_read_timeout 5m;
-            auth_request /auth;
           '';
+          #extraConfig = ''
+          #  auth_request /auth;
+          #'';
         };
 
         "@error401" = {
