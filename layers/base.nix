@@ -35,7 +35,9 @@ in
 
   boot.tmpOnTmpfs = true;
 
-  powerManagement.cpuFreqGovernor = "ondemand";
+  # schedutil is a modern replacement for ondemand and conservative that is tied to the scheduler
+  # priority 100 is default; mkDefault is priority 1000; the goal here is to prefer schedutil over the auto-generated cpuFreqGovernor
+  powerManagement.cpuFreqGovernor = mkOverride 900 "schedutil";
 
   # Restore systemd default
   services.logind.killUserProcesses = true;
