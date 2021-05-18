@@ -4,6 +4,10 @@
   hardware.pulseaudio = {
     enable = true;
     systemWide = true;
+    daemon.config = {
+      "remixing-produce-lfe" = "yes";
+      "remixing-consume-lfe" = "yes";
+    };
   };
   users.groups.pulse-access = {};
 
