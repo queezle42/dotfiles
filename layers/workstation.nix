@@ -32,5 +32,17 @@
     packages = with pkgs; [ direnv ];
   };
 
+
+  users.users.adobe = {
+    isNormalUser = true;
+    uid = 1202;
+    passwordFile = "/etc/secrets/passwords/jens";
+    extraGroups = [
+    ];
+    packages = [
+      #pkgs.adobe-reader
+    ];
+  };
+
 }
 
