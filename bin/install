@@ -1,5 +1,4 @@
-#!/usr/bin/env nix-shell
-#!nix-shell -i zsh -p zsh -p nix
+#!/usr/bin/env zsh
 
 set -e
 set -u
@@ -32,22 +31,20 @@ via_host="$1"
 hostname="$2"
 
 
-nixos_system_file=$MACHINES_PATH/nixos.nix
-installation_tools=$DOTFILES_PATH/bin/lib/installation.nix
 
-# This script cannot run without the nixos configuration entry point
-if [[ ! -f "$nixos_system_file" ]]
-then
-  print -P "%B%F{red}Error: %F{orange}nixos.nix%F{red} not found%b%f" >&2
-  exit 2
-fi
+# Update nar-hash of dotfiles repository
+nix flake lock --update-input dotfiles "path:$MACHINES_PATH"
 
 
-local_temp_dir=$(mktemp --tmpdir --directory install-via.XXXXXXXXXX)
+readonly nix=(nix --log-format bar-with-logs)
+
+readonly system_installable="path:$MACHINES_PATH#nixosConfigurations.$hostname.config.system.build.toplevel"
+readonly installer="path:$MACHINES_PATH#machine-manager.installers.$hostname"
+
+
+local_temp_dir=$(mktemp --tmpdir --directory install-$hostname.XXXXXXXXXX)
 trap "rm -rf $local_temp_dir" EXIT INT HUP TERM
 
-# Pre-build installation helper
-nix build --file $installation_tools format --argstr hostname "$hostname" --arg template "(import $MACHINES_PATH).machineTemplates.$hostname" --out-link "$local_temp_dir/format_$hostname"
 
 if ! ssh -o VisualHostKey=yes root@$via_host true
 then
@@ -55,7 +52,7 @@ then
   exit 1
 fi
 
-if ! nix ping-store --store ssh://root@$via_host
+if ! nix store ping --store ssh://root@$via_host
 then
   print "Cannot connect to nix store on '$via_host'" >&2
   exit 1
@@ -63,12 +60,13 @@ fi
 
 # Generate config file
 local_config_file=$local_temp_dir/config
-nix run --file $installation_tools configure --argstr hostname "$hostname" --arg template "(import $MACHINES_PATH).machineTemplates.$hostname" --command "configure_$hostname" > $local_config_file
+$nix run $installer.configure > $local_config_file
 
 # Copy 'format' binary to target host
-nix copy --file $installation_tools format --argstr hostname "$hostname" --arg template "(import $MACHINES_PATH).machineTemplates.$hostname" --to ssh://root@$via_host
+$nix copy --to ssh://root@$via_host $installer.format
+readonly format_helper=$($nix path-info $installer.format)
 
-remote_temp_dir=$(ssh root@$via_host mktemp --tmpdir --directory install-via.XXXXXXXXXX)
+remote_temp_dir=$(ssh root@$via_host mktemp --tmpdir --directory install-$hostname.XXXXXXXXXX)
 # Copy install-helper and config
 scp -r $local_temp_dir/* root@$via_host:$remote_temp_dir/
 scp $DOTFILES_PATH/bin/message root@$via_host:$remote_temp_dir/
@@ -76,26 +74,39 @@ scp $DOTFILES_PATH/bin/message root@$via_host:$remote_temp_dir/
 ssh root@$via_host "$remote_temp_dir/message" &
 
 # -t: Force pseudo-terminal allocation
-ssh -t root@$via_host "$remote_temp_dir/format_$hostname/bin/format_$hostname" "$remote_temp_dir/config" "$remote_temp_dir/output.json"
+ssh -t root@$via_host "$format_helper/bin/format" "$remote_temp_dir/config" "$remote_temp_dir/output.json"
 scp "root@$via_host:$remote_temp_dir/output.json" "$MACHINES_PATH/machines/$hostname/install-result.json"
 
 print_info "Gathering hardware information..."
 scp root@$via_host:/mnt/etc/nixos/hardware-configuration.nix "$MACHINES_PATH/machines/$hostname/"
 
-print_info "Building target system configuration..."
-nix build --file "$nixos_system_file" --argstr hostname "$hostname" --out-link "$local_temp_dir/nixos-config-$hostname"
+print_info "Evaluating target system configuration..."
+$nix path-info --json "$system_installable" | jq --raw-output ".[0].path" | read nixos_config_path
 
 print_info "Deploying target system configuration..."
-nix copy --file "$nixos_system_file" --argstr hostname "$hostname" --to ssh://root@$via_host
-nixos_config_path=$(realpath "$local_temp_dir/nixos-config-$hostname")
+$nix copy --substitute-on-destination --no-check-sigs --to "ssh://root@$via_host?remote-store=/mnt" $system_installable
 
-ssh root@$via_host "nixos-install --system $nixos_config_path && sync"
+print_info "Activating target system configuration..."
+#ssh root@$via_host "nixos-install --system $nixos_config_path && sync"
+ssh root@$via_host '
+  print "Setting system profile" >&2 &&
+  nix-env --store /mnt --profile /mnt/nix/var/nix/profiles/system --set '$nixos_config_path' &&
+  print "Creating /etc/NIXOS" >&2 &&
+  mkdir -m 0755 -p "/mnt/etc" &&
+  touch "/mnt/etc/NIXOS" &&
+  print "" >&2 &&
+  print "Linking mtab for grub" >&2 &&
+  ln -sfn /proc/mounts /mnt/etc/mtab &&
+  print "Installing bootloader" >&2 &&
+  nixos-enter --root /mnt -c "NIXOS_INSTALL_BOOTLOADER=1 '$nixos_config_path'/bin/switch-to-configuration boot" &&
+  sync
+  '
+
 ssh root@$via_host mkdir --mode u=rwx,g=,o= --parents /mnt/etc/secrets/passwords
 
 # TODO: get host-specific password
 #scp -r notThePassword root@$via_host:/mnt/etc/secrets/passwords/root
 #scp -r notThePassword root@$via_host:/mnt/etc/secrets/passwords/jens
-
-ssh root@$via_host sync
+print_warning "Not deploying passwords"
 
 print_info "Installation completed"

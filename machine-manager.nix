@@ -112,5 +112,11 @@ in
   nixosSystemDerivations = withMachines (x: (mkNixosSystemDerivations x).systemDerivation);
   isos = withMachines (x: (mkNixosSystemDerivations x).iso);
   sdImages = withMachines (x: (mkNixosSystemDerivations x).sdImage);
-  machineTemplates = withMachines ({name, path}: import (path + /template.nix));
+  installers = withMachines (
+    {name, path}: import ./bin/lib/installation.nix {
+      pkgs=flakeInputs.nixpkgs.legacyPackages.x86_64-linux;
+      hostname = name;
+      template = import (path + /template.nix);
+    }
+  );
 }

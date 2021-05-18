@@ -17,9 +17,9 @@ let
   mount-bin = "${utillinux}/bin/mount";
   umount-bin = "${utillinux}/bin/umount";
   cryptsetup-bin = "${cryptsetup}/bin/cryptsetup";
-  pvcreate-bin = "${lvm2}/bin/pvcreate";
-  lvcreate-bin = "${lvm2}/bin/lvcreate";
-  vgcreate-bin = "${lvm2}/bin/vgcreate";
+  pvcreate-bin = "${lvm2.bin}/bin/pvcreate";
+  lvcreate-bin = "${lvm2.bin}/bin/lvcreate";
+  vgcreate-bin = "${lvm2.bin}/bin/vgcreate";
   mkfs-fat-bin = "${dosfstools}/bin/mkfs.fat";
   mkfs-ext4-bin = "${e2fsprogs}/bin/mkfs.ext4";
   mkfs-btrfs-bin = "${btrfsProgs}/bin/mkfs.btrfs";
@@ -34,7 +34,7 @@ in
 assert (typeOf luks) == "bool";
 assert (typeOf swap) == "string";
 {
-  configure = writeScriptBin "configure_${hostname}" ''
+  configure = writeScriptBin "configure" ''
     #!${zsh-bin}
     set -e
     set -u
@@ -45,7 +45,7 @@ assert (typeOf swap) == "string";
     {
       "blockDevice": null
       ${if luks then ''
-        ,"luksKey": "$(pass hosts/$hostname/luks)"
+        ,"luksKey": "foobar"
       '' else ""}
     }
     EOF
@@ -53,7 +53,7 @@ assert (typeOf swap) == "string";
   '';
 
   # Helper script that has to be run on the target machine to format it
-  format = writeScriptBin "format_${hostname}" ''
+  format = writeScriptBin "format" ''
     #!${zsh-bin}
     set -e
     set -u
@@ -178,6 +178,9 @@ assert (typeOf swap) == "string";
         root_partition="$block_device"4
       ''}
     '' else abort "Invalid bootloader configured in template: ${template.bootloader}" }
+
+    # Partitons take a while to settle, waiting makes sure the old partitions have disappeared and new partitions are available
+    sleep 1s
 
     print_info "Creating partitions"
 
