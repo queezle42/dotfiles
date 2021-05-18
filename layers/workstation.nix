@@ -3,7 +3,7 @@
 {
   imports = [
     ./desktop.nix
-    ./vscode.nix
+    #./vscode.nix
   ];
 
   nix.package = pkgs.nixUnstable;
