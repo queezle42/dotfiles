@@ -2,6 +2,8 @@
 
 { pkgs, lib, ... }:
 
+with lib;
+
 let
   root = pkgs.writeShellScriptBin "root" ''
     if [ -n "$1" ] ; then
@@ -23,13 +25,13 @@ in
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = lib.mkDefault "20.09"; # Did you read the comment?
+  system.stateVersion = mkDefault "20.09"; # Did you read the comment?
 
   # Is it worth to specify this where it is needed instead of configuring it globally? Not sure yet.
   nixpkgs.config.allowUnfree = true;
 
   # Always run the latest kernel
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  boot.kernelPackages = mkDefault pkgs.linuxPackages_latest;
 
   boot.tmpOnTmpfs = true;
 
