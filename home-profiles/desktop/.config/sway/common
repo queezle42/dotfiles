@@ -156,13 +156,13 @@ bindsym Shift+XF86AudioLowerVolume exec $audioLowerVolume5
 bindsym XF86AudioMute exec $audioToggleMute
 
 # music player control
-bindsym --locked $mod+F1 exec playerctl play-pause
-bindsym --locked $mod+F2 exec playerctl previous
-bindsym --locked $mod+F3 exec playerctl next
-bindsym --locked XF86AudioPlay exec playerctl play-pause
-bindsym --locked XF86AudioStop exec playerctl stop
-bindsym --locked XF86AudioNext exec playerctl next
-bindsym --locked XF86AudioPrev exec playerctl previous
+bindsym --locked $mod+F1 exec "playerctl --player=%any,chromium play-pause"
+bindsym --locked $mod+F2 exec "playerctl --player=%any,chromium previous"
+bindsym --locked $mod+F3 exec "playerctl --player=%any,chromium next"
+bindsym --locked XF86AudioPlay exec "playerctl --player=%any,chromium play-pause"
+bindsym --locked XF86AudioStop exec "playerctl --player=%any,chromium stop"
+bindsym --locked XF86AudioPrev exec "playerctl --player=%any,chromium previous"
+bindsym --locked XF86AudioNext exec "playerctl --player=%any,chromium next"
 
 # brightness
 set $brightnessUp "xbacklight -fps 60 -inc 5"
