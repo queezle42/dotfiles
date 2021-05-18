@@ -467,6 +467,8 @@ bar {
     urgent_workspace    $base09 $base0A $base00
     binding_mode        $base00 $base0D $base00
   }
+  bindsym button4 nop
+  bindsym button5 nop
 }
 
 include /etc/sway/config.d/*
