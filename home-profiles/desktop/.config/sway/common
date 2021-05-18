@@ -327,6 +327,8 @@ bindsym $mod+d focus child
 
 # switch to workspace
 bindsym $mod+Ctrl+h workspace prev_on_output
+bindsym $mod+Ctrl+k workspace prev_on_output
+bindsym $mod+Ctrl+j workspace next_on_output
 bindsym $mod+Ctrl+l workspace next_on_output
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
