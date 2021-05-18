@@ -21,7 +21,8 @@ set $base0F #a3685a
 #set $active #b54ea7
 set $active #51c9ff
 
-set $wallpaper ~/pictures/retrowave.png
+set $wallpaper ~/pictures/background.png
+set $lockscreen ~/pictures/retrowave.png
 
 set $terminal PROMPT_NO_INITIAL_NEWLINE=1 kitty
 
@@ -65,8 +66,8 @@ output eDP-1 {
 #  pos 0 -1080
 #}
 
-#output * bg $wallpaper fill
-output * bg "#1d2021" solid_color
+output * bg $wallpaper fill
+#output * bg "#1d2021" solid_color
 
 # Run desktop daemons
 #exec_always pkill kanshi; exec kanshi
@@ -119,14 +120,14 @@ bindsym $mod+plus exec CM_LAUNCHER=rofi CM_HISTLENGTH=15 clipmenu -p clipboard
 #bindsym $mod+numbersign exec passmenu && sleep 0.1 && clipdel -d ".*" && sleep 1 && clipdel -d ".*"
 
 # lock
-bindsym Print exec swaylock-with-idle -i $wallpaper
+bindsym Print exec swaylock-with-idle -i $lockscreen
 bindsym Shift+Print exec swaylock -c 00000000
 #bindsym Shift+Print exec --no-startup-id ~/run/lock/winlock
 #bindsym Ctrl+Print exec --no-startup-id ~/run/lock/blurlock
 
 # suspend
 bindsym $mod+Print exec systemctl suspend
-exec swayidle -w before-sleep "swaylock -f -i $wallpaper"
+exec swayidle -w before-sleep "swaylock -f -i $lockscreen"
 
 # subraum
 #bindsym $mod+Delete exec --no-startup-id ~/run/subraum/hackbuzzer
