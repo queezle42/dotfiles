@@ -10,8 +10,11 @@ with lib;
 #
 #in
 {
+  hardware.opengl.enable = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.pulseaudio.support32Bit = true;
+
+  programs.steam.enable = true;
 
   users.users.steam = {
     isNormalUser = true;
@@ -24,9 +27,9 @@ with lib;
       "input"
     ];
     packages = [
-      pkgs.steam
+      #pkgs.steam
       pkgs.steam-run-native
-      pkgs.gamescope
+      #pkgs.gamescope
     ];
   };
 }
