@@ -83,7 +83,7 @@ in
     jq
   ];
 
-  fonts.fonts = with pkgs; [ fira-code ];
+  fonts.fonts = with pkgs; [ fira-code pragmatapro ];
 
   users = {
     users.jens = {

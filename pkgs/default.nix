@@ -11,6 +11,8 @@ rec {
 
   squeekboard = self.callPackage ./squeekboard {};
 
+  pragmatapro = self.callPackage ./pragmatapro {};
+
   mpv-queezle = self.mpv-with-scripts.override {
     scripts = [ self.mpvScripts.mpris ];
   };
