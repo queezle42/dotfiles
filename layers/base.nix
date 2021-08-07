@@ -53,9 +53,17 @@ in
 
   console = {
     font = "Lat2-Terminus16";
-    keyMap = "de-latin1-nodeadkeys";
+    #keyMap = "de-latin1-nodeadkeys";
+    useXkbConfig = true;
     # Gruvbox tty colors
     colors = [ "000000" "cc241d" "98971a" "d79921" "458588" "b16286" "689d6a" "a89984" "928374" "fb4934" "b8bb26" "fabd2f" "83a598" "d3869b" "8ec07c" "ebdbb2" ];
+  };
+
+  services.xserver = {
+    layout = "de";
+    xkbModel = "pc105";
+    xkbVariant = "nodeadkeys";
+    xkbOptions = "caps:escape_shifted_capslock";
   };
 
   # I like to be able to carry my laptops with the lid closed while they are still running
