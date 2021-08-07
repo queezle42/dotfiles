@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1620138697,
-        "narHash": "sha256-8Mgj+Fj4zGEI7oA9wbyqvdwq+46kAyd3barMIedWkho=",
+        "lastModified": 1628287034,
+        "narHash": "sha256-pWMEpQQcKxBy0OKskFLXJHEyGYJIiMu/BUQjCWxGF38=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "64c5228c0828fff0c94c1d42f7225115c299ae08",
+        "rev": "b0d769691cc379c9ab91d3acec5d14e75c02c02b",
         "type": "github"
       },
       "original": {
@@ -22,11 +22,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1620901170,
-        "narHash": "sha256-hsJnA0fH6gGzj9KOoolUR+8mw+wNAJC/2SxjZsEq1AI=",
+        "lastModified": 1628199198,
+        "narHash": "sha256-DkMFcm5VdqbausjUjyHWGBlcXNw/EMFiQpiCY5KKtMo=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d1601a40c48426ae460eede1675fd1d6ee23e198",
+        "rev": "439b1605227b8adb1357b55ce8529d541abbe9eb",
         "type": "github"
       },
       "original": {
@@ -39,20 +39,17 @@
     "q": {
       "inputs": {
         "nixpkgs": [
-          "qd",
           "nixpkgs"
         ],
-        "qd": [
-          "qd"
-        ]
+        "qrpc": "qrpc"
       },
       "locked": {
         "host": "git.c3pb.de",
-        "lastModified": 1614196923,
-        "narHash": "sha256-Yjnd3hSW1XpZ9BQJCUeC0ES3KrWe6kubh22wkxEp9xE=",
+        "lastModified": 1625853843,
+        "narHash": "sha256-lEsACncCRVYHimQYe4phdCsXKN3XyXwDVpTrz8l53WU=",
         "owner": "jens",
         "repo": "q",
-        "rev": "1002c6c644bb377a22a8ac5a8ac9e54bcb055874",
+        "rev": "4d8addff43a1c55da33c3fffaf614a4ffe69d66a",
         "type": "gitlab"
       },
       "original": {
@@ -84,7 +81,7 @@
         "type": "gitlab"
       }
     },
-    "qd": {
+    "qrpc": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
@@ -92,17 +89,17 @@
       },
       "locked": {
         "host": "git.c3pb.de",
-        "lastModified": 1615431166,
-        "narHash": "sha256-ZwR9s18dGMrPJ+SLFOTL2BCsd4eZ6dd86v+Z7M2LSZc=",
+        "lastModified": 1625850564,
+        "narHash": "sha256-ubB7L1MDiQyTikN7ocFrqhz9QZSUk5JC+h4yEm8f2/A=",
         "owner": "jens",
-        "repo": "qd",
-        "rev": "49571704277e7f59712622dc2c87ee18b226da31",
+        "repo": "qrpc",
+        "rev": "66ceccbb855df7e6048f70fb0790de47412c754a",
         "type": "gitlab"
       },
       "original": {
         "host": "git.c3pb.de",
         "owner": "jens",
-        "repo": "qd",
+        "repo": "qrpc",
         "type": "gitlab"
       }
     },
@@ -111,8 +108,7 @@
         "homemanager": "homemanager",
         "nixpkgs": "nixpkgs",
         "q": "q",
-        "qauth": "qauth",
-        "qd": "qd"
+        "qauth": "qauth"
       }
     }
   },

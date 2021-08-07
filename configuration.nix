@@ -46,7 +46,7 @@ in
     (path + "/configuration.nix")
     normalSystemConfiguration
     flakeInputs.homemanager.nixosModules.home-manager
-    flakeInputs.qd.nixosModules.qd
+    #flakeInputs.sample.nixosModules.sample
   ] ++ layerImports;
 
   home-manager = {
@@ -59,8 +59,10 @@ in
 
   nixpkgs.overlays = [
     (import ./pkgs)
-    flakeInputs.qd.overlay
-    flakeInputs.q.overlay
+    #flakeInputs.q.overlay
+    (self: super: {
+      q = flakeInputs.q.packages.${system}.q;
+    })
   ] ++ extraOverlays;
 
   # Pin channel in nix path

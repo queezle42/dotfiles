@@ -28,8 +28,6 @@ in
   ];
 
   environment.systemPackages = with pkgs; [
-    qd
-
     # desktop environment programs
     kitty
     rxvt_unicode
