@@ -18,7 +18,6 @@ set $base0D #81a2be
 set $base0E #b294bb
 set $base0F #a3685a
 
-#set $active #b54ea7
 set $active #51c9ff
 
 set $wallpaper ~/pictures/background.png
@@ -30,9 +29,6 @@ set $workspace_q 0:q
 set $workspace_irc 11:irc
 set $workspace_telegram 12:t
 set $workspace_music 13:music
-
-#workspace 10:hdmi output HDMI-A-1
-#workspace 1 output eDP-1
 
 input * {
   xkb_layout de
@@ -63,15 +59,9 @@ output eDP-1 {
   pos 0 0
 }
 
-#output HDMI-A-1 {
-#  pos 0 -1080
-#}
-
 output * bg $wallpaper fill
-#output * bg "#1d2021" solid_color
 
 # Run desktop daemons
-#exec_always pkill kanshi; exec kanshi
 exec mako
 #exec CM_SELECTIONS=clipboard clipmenud
 #exec nm-applet --indicator
@@ -98,8 +88,6 @@ focus_follows_mouse always
 
 focus_wrapping yes
 
-#for_window [class="Chromium"] border none
-#for_window [class="Code"] border none
 for_window [class=qutebrowser] border pixel
 
 for_window [class="Vncviewer"] fullscreen enable
