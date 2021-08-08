@@ -107,8 +107,6 @@ in
       alias icat="kitty +kitten icat"
     fi
 
-    source ${config.nix.package.src}/misc/zsh/completion.zsh
-
     if (( $+commands[direnv] ))
     then
       eval "$(direnv hook zsh)"
