@@ -116,6 +116,10 @@ bindsym Shift+Print exec swaylock -c 00000000
 #bindsym Shift+Print exec --no-startup-id ~/run/lock/winlock
 #bindsym Ctrl+Print exec --no-startup-id ~/run/lock/blurlock
 
+# screenshot
+bindsym Ctrl+Print exec grim -g "$(slurp -o)"
+bindsym Ctrl+Shift+Print exec grim -g "$(slurp)"
+
 # suspend
 bindsym $mod+Print exec systemctl suspend
 exec swayidle -w before-sleep "swaylock -f -i $lockscreen"
