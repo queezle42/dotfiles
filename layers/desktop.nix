@@ -81,7 +81,10 @@ in
     jq
   ];
 
-  fonts.fonts = with pkgs; [ fira-code pragmatapro ];
+  fonts = {
+    fonts = with pkgs; [ fira-code pragmatapro ];
+    fontconfig.defaultFonts.monospace = [ "PragmataPro Liga" ];
+  };
 
   users = {
     users.jens = {
