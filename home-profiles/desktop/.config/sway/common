@@ -68,6 +68,8 @@ exec mako
 
 exec gammastep
 
+exec squeekboard
+
 # Fix XWayland DPI
 exec xrdb -load ~/.Xresources
 
