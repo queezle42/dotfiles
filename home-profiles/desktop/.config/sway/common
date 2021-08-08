@@ -144,11 +144,11 @@ set $audioLowerVolume "pamixer --unmute --decrease 1"
 set $audioRaiseVolume5 "pamixer --unmute --increase 5"
 set $audioLowerVolume5 "pamixer --unmute --decrease 5"
 set $audioToggleMute "pamixer --toggle-mute"
-bindsym XF86AudioRaiseVolume exec $audioRaiseVolume
-bindsym XF86AudioLowerVolume exec $audioLowerVolume
-bindsym Shift+XF86AudioRaiseVolume exec $audioRaiseVolume5
-bindsym Shift+XF86AudioLowerVolume exec $audioLowerVolume5
-bindsym XF86AudioMute exec $audioToggleMute
+bindsym --locked XF86AudioRaiseVolume exec $audioRaiseVolume
+bindsym --locked XF86AudioLowerVolume exec $audioLowerVolume
+bindsym --locked Shift+XF86AudioRaiseVolume exec $audioRaiseVolume5
+bindsym --locked Shift+XF86AudioLowerVolume exec $audioLowerVolume5
+bindsym --locked XF86AudioMute exec $audioToggleMute
 
 # music player control
 bindsym --locked $mod+F1 exec "playerctl --player=%any,chromium play-pause"
