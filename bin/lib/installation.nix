@@ -26,6 +26,7 @@ let
   btrfs-bin = "${btrfsProgs}/bin/btrfs";
   fzf-bin = "${fzf}/bin/fzf";
   jq-bin = "${jq}/bin/jq";
+  partprobe-bin = "${busybox}/bin/partprobe";
 
   swap = (if template ? swap then template.swap else "8G");
   luks = template.luks;
@@ -179,8 +180,8 @@ assert (typeOf swap) == "string";
       ''}
     '' else abort "Invalid bootloader configured in template: ${template.bootloader}" }
 
-    # Partitons take a while to settle, waiting makes sure the old partitions have disappeared and new partitions are available
-    sleep 1s
+    # Ensure partition table changes have been registered by the kernel
+    ${partprobe-bin} $block_device
 
     print_info "Creating partitions"
 
