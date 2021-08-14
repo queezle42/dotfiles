@@ -111,13 +111,13 @@ assert (typeOf swap) == "string";
     print_info "Stable block device name is: $stable_block_device"
     print_info
 
-    print_info "Printing current layout:"
+    print_info "Printing old layout of target block device:"
     print_info "$(${lsblk-bin} --output name,size,type,mountpoint,model,vendor "$block_device")"
     print_info
 
 
     print_info "You are about to install the configuration for host '${hostname}' to $block_device (this is executed on host '$(hostname)')."
-    if read -q "?Do you want to wipe all data on $block_device? (y/n) "
+    if read -q "?Do you want to WIPE ALL DATA on $block_device? (y/n) "
     then
       print >&2
     else
