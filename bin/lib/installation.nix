@@ -125,6 +125,12 @@ assert (typeOf swap) == "string";
       exit 3
     fi
 
+    print_info "Wiping partition table"
+    dd if=/dev/zero of=$block_device bs=1M count=1 conv=fsync
+
+    # Ensure partition table changes have been registered by the kernel
+    ${partprobe-bin} $block_device
+
     print_info "Discarding disk contents"
     if ${blkdiscard-bin} $block_device
     then
