@@ -87,7 +87,13 @@ in
     "hist_fcntl_lock"
   ];
 
+  programs.zsh.shellInit = ''
+    # Disable new-user configuration
+    zsh-newuser-install() { :; }
+  '';
+
   programs.zsh.interactiveShellInit = ''
+
     fpath+=$LOCAL_ZSH_COMPLETION_PATH
 
     zstyle ':completion:*' auto-description '%d'
