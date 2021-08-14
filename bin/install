@@ -8,27 +8,39 @@ source $DOTFILES_PATH/bin/lib/util.zsh
 
 cmdname=$(basename $0)
 usage() {
-  print "Usage: $cmdname <via_host> <hostname>" >&2
+  print "Usage: $cmdname [--substitute-on-destination|-s] <via_host> <hostname>" >&2
 }
 
-if [[ $# -ge 1 ]]
-then
-  if [[ "$1" = "--help" || "$1" = "-h" ]]
-  then
+
+positional=()
+substitute_on_destination=""
+while [[ $# -gt 0 ]]
+do
+  case "$1" in
+    --help|-h)
       usage
       exit 0
-  fi
-fi
+      ;;
+    --substitute-on-destination|-s)
+      substitute_on_destination="--substitute-on-destination"
+      shift
+      ;;
+    *)
+      positional+=("$1")
+      ;;
+  esac
+  shift
+done
 
-if [ $# -ne 2 ]
+if [[ ${#positional[@]} -ne 2 ]]
 then
   print "Invalid number of arguments." >&2
   usage
   exit 2
 fi
 
-via_host="$1"
-hostname="$2"
+readonly via_host="${positional[1]}"
+readonly hostname="${positional[2]}"
 
 
 
@@ -84,7 +96,7 @@ print_info "Evaluating target system configuration..."
 $nix path-info --json "$system_installable" | jq --raw-output ".[0].path" | read nixos_config_path
 
 print_info "Deploying target system configuration..."
-$nix copy --substitute-on-destination --no-check-sigs --to "ssh://root@$via_host?remote-store=/mnt" $system_installable
+$nix copy $substitute_on_destination --no-check-sigs --to "ssh://root@$via_host?remote-store=/mnt" $system_installable
 
 print_info "Activating target system configuration..."
 #ssh root@$via_host "nixos-install --system $nixos_config_path && sync"

@@ -20,11 +20,12 @@ fi
 source $DOTFILES_PATH/bin/lib/util.zsh
 
 usage() {
-  print "Usage: $cmdname [--via via_hostname] <hostname> [switch|boot|reboot|test|dry-activate|build|iso]" >&2
+  print "Usage: $cmdname [--via via_hostname] [--substitute-on-destination|-s] <hostname> [switch|boot|reboot|test|dry-activate|build|iso]" >&2
 }
 
 positional=()
 via_hostname=""
+substitute_on_destination=""
 while [[ $# -gt 0 ]]
 do
   case "$1" in
@@ -34,6 +35,10 @@ do
       ;;
     --via)
       via_hostname="$2"
+      shift
+      ;;
+    --substitute-on-destination|-s)
+      substitute_on_destination="--substitute-on-destination"
       shift
       ;;
     *)
@@ -149,7 +154,7 @@ then
 else
   # remote deploy
 
-  nix copy $common_nix_flags --substitute-on-destination --to "ssh://root@$via_hostname" "$system_installable"
+  nix copy $common_nix_flags $substitute_on_destination --to "ssh://root@$via_hostname" "$system_installable"
 
   # The manual way to activate a system derivation
   if [[ -n "$set_profile" ]]
