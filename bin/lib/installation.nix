@@ -41,12 +41,16 @@ assert (typeOf swap) == "string";
     set -u
     set -o pipefail
 
+    ${if luks then ''
+      read -r -s "luks?Please enter the new LUKS passphrase:"
+    '' else ""}
+
     # Generate config
     <<EOF
     {
       "blockDevice": null
       ${if luks then ''
-        ,"luksKey": "foobar"
+        ,"luksKey": "$luks"
       '' else ""}
     }
     EOF
