@@ -68,8 +68,6 @@ in
 
   # I like to be able to carry my laptops with the lid closed while they are still running
   services.logind.lidSwitch = "ignore";
-  # I have some machines where the power key can be easily pressed on accident
-  services.logind.extraConfig = "HandlePowerKey=ignore";
 
   services.openssh.enable = true;
   services.openssh.passwordAuthentication = false;
