@@ -118,6 +118,7 @@ in
     pv
     socat
     reptyr
+    ldns
   ];
 
   users = {
