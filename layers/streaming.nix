@@ -9,7 +9,10 @@
   # ffmpeg -i http://10.0.2.5:8080/video -vf format=yuv420p -f v4l2 /dev/video1
 
   environment.systemPackages = with pkgs; [
-    obs-studio
-    obs-wlrobs
+    (wrapOBS {
+      plugins = with obs-studio-plugins; [
+        wlrobs
+      ];
+    })
   ];
 }
