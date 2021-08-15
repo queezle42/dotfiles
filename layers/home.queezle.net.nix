@@ -108,8 +108,8 @@
     email = "jens@nightmarestudio.de";
     certs."home.queezle.net" = {
       dnsProvider = "hetzner";
-      # HACK ask hetzner nameservers directly because acme-lego doesn't follow ns records correctly
-      dnsResolver = "helium.ns.hetzner.de";
+      # HACK acme-lego doesn't follow ns records correctly
+      dnsPropagationCheck = false;
       credentialsFile = "/etc/secrets/dns/dns.hetzner.com_queezle.net";
       group = "nginx";
     };
