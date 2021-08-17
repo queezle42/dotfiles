@@ -113,8 +113,8 @@ bindsym $mod+plus exec CM_LAUNCHER=rofi CM_HISTLENGTH=15 clipmenu -p clipboard
 # lock
 bindsym Print exec swaylock-with-idle -i $lockscreen
 bindsym Shift+Print exec swaylock -c 00000000
-#bindsym Shift+Print exec --no-startup-id ~/run/lock/winlock
-#bindsym Ctrl+Print exec --no-startup-id ~/run/lock/blurlock
+#bindsym Shift+Print exec ~/run/lock/winlock
+#bindsym Ctrl+Print exec ~/run/lock/blurlock
 
 # screenshot
 bindsym Ctrl+Print exec grim -g "$(slurp -o)"
@@ -125,11 +125,11 @@ bindsym $mod+Print exec systemctl suspend
 exec swayidle -w before-sleep "swaylock -f -i $lockscreen"
 
 # subraum
-#bindsym $mod+Delete exec --no-startup-id ~/run/subraum/hackbuzzer
-#bindsym $mod+Shift+Delete exec --no-startup-id ~/run/edi/sob hackbuzzer
+#bindsym $mod+Delete exec ~/run/subraum/hackbuzzer
+#bindsym $mod+Shift+Delete exec ~/run/edi/sob hackbuzzer
 
-#bindsym $mod+Delete exec --no-startup-id mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m sparkle && sleep 3s && mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m bubblegum
-#bindsym $mod+Shift+Delete exec --no-startup-id mosquitto_pub -h blinky.subraum.c3pb.de -t device/matryx/fullHour -m 1 && mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m rgb && sleep 3s && mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m bubblegum
+#bindsym $mod+Delete exec mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m sparkle && sleep 3s && mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m bubblegum
+#bindsym $mod+Shift+Delete exec mosquitto_pub -h blinky.subraum.c3pb.de -t device/matryx/fullHour -m 1 && mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m rgb && sleep 3s && mosquitto_pub -h blinky.subraum.c3pb.de -t illuminati/anim -m bubblegum
 
 # macro keys (bound to F14-F18, which is received as XF86Launch5-XF86Launch9)
 bindsym XF86Launch5 exec mosquitto_pub -h 10.0.2.1 -t component/G815/key/G1 -m G1
@@ -169,15 +169,15 @@ set $brightnessBright "xbacklight -fps 60 -set 50"
 set $brightnessNormal "xbacklight -fps 60 -set 20"
 set $brightnessDark "xbacklight -fps 60 -set 5"
 set $brightnessVeryDark "xbacklight -fps 60 -set 2"
-bindsym --locked XF86MonBrightnessDown exec --no-startup-id $brightnessDown
-bindsym --locked Shift+XF86MonBrightnessDown exec --no-startup-id $brightnessDownSmall
-bindsym --locked $mod+F11 exec --no-startup-id $brightnessDark
-bindsym --locked $mod+Shift+F11 exec --no-startup-id $brightnessVeryDark
-bindsym --locked XF86MonBrightnessUp exec --no-startup-id $brightnessUp
-bindsym --locked Shift+XF86MonBrightnessUp exec --no-startup-id $brightnessUpSmall
-bindsym --locked $mod+F12 exec --no-startup-id $brightnessNormal
-bindsym --locked $mod+Shift+F12 exec --no-startup-id $brightnessBright
-bindsym --locked $mod+Ctrl+F12 exec --no-startup-id $brightnessFull
+bindsym --locked XF86MonBrightnessDown exec $brightnessDown
+bindsym --locked Shift+XF86MonBrightnessDown exec $brightnessDownSmall
+bindsym --locked $mod+F11 exec $brightnessDark
+bindsym --locked $mod+Shift+F11 exec $brightnessVeryDark
+bindsym --locked XF86MonBrightnessUp exec $brightnessUp
+bindsym --locked Shift+XF86MonBrightnessUp exec $brightnessUpSmall
+bindsym --locked $mod+F12 exec $brightnessNormal
+bindsym --locked $mod+Shift+F12 exec $brightnessBright
+bindsym --locked $mod+Ctrl+F12 exec $brightnessFull
 
 # Toggle mumble mute
 # TODO: merge with mumble config (requires sway config merging)
@@ -225,8 +225,8 @@ bindsym $mod+Shift+p exec $terminal stack ghci --verbosity warning
 
 # start a browser
 # Ozone appears to work only when $DISPLAY is not set
-bindsym $mod+b exec --no-startup-id chromium --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland --force-dark-mode
-#bindsym $mod+Shift+b exec --no-startup-id qutebrowser
+bindsym $mod+b exec chromium --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland --force-dark-mode
+#bindsym $mod+Shift+b exec qutebrowser
 
 # start htop
 bindsym $mod+Escape exec $terminal htop
@@ -244,7 +244,7 @@ bindsym $mod+Ctrl+t workspace $workspace_telegram; exec telegram-desktop
 bindsym $mod+m workspace $workspace_music
 bindsym $mod+Shift+m move container to workspace $workspace_music
 # start spotify instead of mopidy web interface while mopidy is broken
-#bindsym $mod+Ctrl+m workspace $workspace_music; exec --no-startup-id chromium --app=http://stargate:6680/iris/#/
+#bindsym $mod+Ctrl+m workspace $workspace_music; exec chromium --app=http://stargate:6680/iris/#/
 bindsym $mod+Ctrl+m workspace $workspace_music; exec spotify
 bindsym $mod+Alt+m exec $terminal pulsemixer
 #bindsym $mod+Ctrl+m workspace $workspace_music; exec ~/run/spotify-singleton
