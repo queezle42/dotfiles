@@ -25,6 +25,7 @@ let
   layerImports = map layerPath dotfilesConfig.layers;
 
   normalSystemConfiguration = (lib.attrsets.optionalAttrs (!isIso) {
+    # TODO move to machine configuration?
     imports = [ (path + "/hardware-configuration.nix") ];
     # Bootloader
     boot.loader.systemd-boot.enable = (installResult.bootloader == "efi");

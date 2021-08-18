@@ -8,28 +8,12 @@ with flakeInputs.nixpkgs.lib;
 let
   finalFlakeInputs = flakeInputs // extraFlakeInputs;
   finalFlakeOutputs = flakeOutputs // extraFlakeOutputs;
-  # defaultChannel :: path (channel)
-  #defaultChannel = loadChannel "nixos-unstable";
 
   # helpers :: { *: ? }
   helpers = import ./helpers.nix;
 
-  # channelsDir :: path
-  #channelsDir = ./channels;
-  # loadChannel :: string -> path (channel)
-  #loadChannel = name: import (channelsDir + "/${name}") name;
-  # allChannels :: { *: path (channel) }
-  #allChannels = with helpers; keysToAttrs loadChannel (readFilterDir (filterAnd [(not filterDirHidden) filterDirDirs]) channelsDir);
   # getMachineChannel :: string -> path
   getMachineChannel = _: finalFlakeInputs.nixpkgs;
-  #getMachineChannel = { name, path }:
-  #  let
-  #    channelFile = path + "/channel.nix";
-  #  in
-  #    if (pathExists channelFile)
-  #      then (import channelFile) allChannels
-  #      else defaultChannel;
-  # machineChannels :: { *: path }
   machineChannels = withMachines getMachineChannel;
 
   machinesDirContents = readDir machinesDir;
