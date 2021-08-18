@@ -57,15 +57,15 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "qrpc": "qrpc"
+        "quasar-network": "quasar-network"
       },
       "locked": {
         "host": "git.c3pb.de",
-        "lastModified": 1625853843,
-        "narHash": "sha256-lEsACncCRVYHimQYe4phdCsXKN3XyXwDVpTrz8l53WU=",
+        "lastModified": 1629329348,
+        "narHash": "sha256-S6uhrhUE2s7AsC3gL0sbNx1ZmFvmVkgoH8ua4vr9cE0=",
         "owner": "jens",
         "repo": "q",
-        "rev": "4d8addff43a1c55da33c3fffaf614a4ffe69d66a",
+        "rev": "6030cf6649532dff0f1984962f75f04014503ea6",
         "type": "gitlab"
       },
       "original": {
@@ -97,7 +97,7 @@
         "type": "gitlab"
       }
     },
-    "qrpc": {
+    "quasar": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
@@ -105,17 +105,40 @@
       },
       "locked": {
         "host": "git.c3pb.de",
-        "lastModified": 1625850564,
-        "narHash": "sha256-ubB7L1MDiQyTikN7ocFrqhz9QZSUk5JC+h4yEm8f2/A=",
+        "lastModified": 1629328844,
+        "narHash": "sha256-4AiAjuSuTneWidipxxTu60xqztbum8OuTuKI9pWpUsQ=",
         "owner": "jens",
-        "repo": "qrpc",
-        "rev": "66ceccbb855df7e6048f70fb0790de47412c754a",
+        "repo": "quasar",
+        "rev": "67efa0e198ac78aaaf308c2067019574548acf7c",
         "type": "gitlab"
       },
       "original": {
         "host": "git.c3pb.de",
         "owner": "jens",
-        "repo": "qrpc",
+        "repo": "quasar",
+        "type": "gitlab"
+      }
+    },
+    "quasar-network": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "quasar": "quasar"
+      },
+      "locked": {
+        "host": "git.c3pb.de",
+        "lastModified": 1629328948,
+        "narHash": "sha256-PrksVC81dDbAsauBQp9ntllR7/SofYy91ls6wKLXyVE=",
+        "owner": "jens",
+        "repo": "quasar-network",
+        "rev": "4e05c83b74d678f67c10f8769b019eb6b148db10",
+        "type": "gitlab"
+      },
+      "original": {
+        "host": "git.c3pb.de",
+        "owner": "jens",
+        "repo": "quasar-network",
         "type": "gitlab"
       }
     },
