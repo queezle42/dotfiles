@@ -42,8 +42,14 @@
           index = "index.html";
           #extraConfig = "auth_request /auth;";
         };
+        "/tmp" = {
+          return  = ''301 /tmp/'';
+        };
         "/tmp/" = {
           alias = "/srv/tmp/";
+          extraConfig = ''
+            autoindex on;
+          '';
         };
         "/mqtt" = {
           proxyPass = "http://localhost:1884";
