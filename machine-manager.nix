@@ -38,8 +38,11 @@ let
   evaluateConfig = pkgs: args: (import "${pkgs}/nixos/lib/eval-config.nix" args).config;
   mkNixosSystemDerivations = { name, path }:
     let
+      installResult = builtins.fromJSON (builtins.readFile (path + "/install-result.json"));
       channel = finalFlakeInputs.nixpkgs;
-      system = "x86_64-linux";
+      system = installResult.system or "x86_64-linux";
+      mobileNixosDevice = installResult.mobileNixosDevice or null;
+      isMobileNixos = mobileNixosDevice != null;
       mkMachineConfig = { name, path, isIso }: {
         imports = [
           (import ./configuration.nix {
@@ -48,10 +51,11 @@ let
             flakeOutputs = finalFlakeOutputs;
             channel = machineChannels.${name};
           })
-        ];
+        ] ++ optional isMobileNixos (import "${flakeInputs.mobile-nixos}/lib/configuration.nix" { device = mobileNixosDevice; });
         _module.args.flakeInputs = finalFlakeInputs;
         _module.args.flakeOutputs = finalFlakeOutputs;
         _module.args.system = system;
+        _module.args.isMobileNixos = isMobileNixos;
       };
       configuration = mkMachineConfig { inherit name path; isIso = false; };
       isoConfiguration = mkMachineConfig { inherit name path; isIso = true; };

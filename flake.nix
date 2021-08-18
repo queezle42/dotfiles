@@ -14,6 +14,11 @@
       url = gitlab:jens/q?host=git.c3pb.de;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    mobile-nixos = {
+      url = github:NixOS/mobile-nixos;
+      flake = false;
+    };
   };
 
   outputs = inputs_@{ self, nixpkgs, ... }: {

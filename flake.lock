@@ -20,6 +20,22 @@
         "type": "github"
       }
     },
+    "mobile-nixos": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1628833891,
+        "narHash": "sha256-W+VjAt2Ky12HoIFS2ft7nPedeasi2pfICjz5Wbjq8dc=",
+        "owner": "NixOS",
+        "repo": "mobile-nixos",
+        "rev": "0f28212b73cc00bf6e3d071616a6b52ec1fe6837",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "mobile-nixos",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1628199198,
@@ -106,6 +122,7 @@
     "root": {
       "inputs": {
         "homemanager": "homemanager",
+        "mobile-nixos": "mobile-nixos",
         "nixpkgs": "nixpkgs",
         "q": "q",
         "qauth": "qauth"

@@ -1,6 +1,6 @@
 # Basic configuration for all machines
 
-{ pkgs, lib, ... }:
+{ pkgs, lib, isMobileNixos, ... }:
 
 with lib;
 
@@ -31,7 +31,7 @@ in
   nixpkgs.config.allowUnfree = true;
 
   # Always run the latest kernel
-  boot.kernelPackages = mkDefault pkgs.linuxPackages_latest;
+  boot.kernelPackages = mkIf (!isMobileNixos) (mkDefault pkgs.linuxPackages_latest);
 
   boot.tmpOnTmpfs = true;
 
