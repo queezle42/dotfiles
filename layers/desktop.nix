@@ -104,14 +104,7 @@ in
     };
   };
 
-  home-manager.users.jens = { pkgs, ... }: {
-    xdg.configFile."sway/config" = {
-      source = pkgs.writeText "sway-config" ''
-        include common
-        include local
-      '';
-    };
-  };
+  queezle.sway.enable = true;
 
 
   programs.sway.enable = true;
