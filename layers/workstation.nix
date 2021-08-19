@@ -6,11 +6,6 @@
     #./vscode.nix
   ];
 
-  nix.package = pkgs.nixUnstable;
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
-
   documentation.dev.enable = true;
 
   environment.systemPackages = with pkgs; [
