@@ -40,6 +40,7 @@ in
     #vimiv
     mpv-queezle
     wdisplays
+    squeekboard
 
     # screenshot utilities
     grim
