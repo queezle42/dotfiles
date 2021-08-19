@@ -124,6 +124,7 @@ in
     socat
     reptyr
     ldns
+    libfaketime
   ];
 
   users = {
