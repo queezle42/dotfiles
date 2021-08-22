@@ -3,10 +3,9 @@
 {
   imports = [
     ./desktop.nix
+    ./dev.nix
     #./vscode.nix
   ];
-
-  documentation.dev.enable = true;
 
   environment.systemPackages = with pkgs; [
     virtmanager
@@ -16,16 +15,7 @@
     spotify
     gimp
     mumble
-
-    # Dictionary (command `trans`)
-    translate-shell
-
-    posix_man_pages
   ];
-
-  users.users.jens = {
-    packages = with pkgs; [ direnv ];
-  };
 
 
   users.users.adobe = {
