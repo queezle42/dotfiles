@@ -129,7 +129,7 @@ bindsym Ctrl+Shift+Print exec grim -g "$(slurp)"
 
 # suspend
 bindsym $mod+Print exec systemctl suspend
-exec swayidle -w before-sleep "swaylock -f -i $lockscreen"
+${if cfg.autoLockBeforeSuspend then ''exec swayidle -w before-sleep "swaylock -f -i $lockscreen"'' else ""}
 
 # subraum
 #bindsym $mod+Delete exec ~/run/subraum/hackbuzzer

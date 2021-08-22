@@ -15,7 +15,12 @@ in
         type = types.str;
         default = "jens";
       };
+      autoLockBeforeSuspend = mkOption {
+        type = types.bool;
+        default = true;
+      };
     };
+
   };
   config = mkIf cfg.enable {
     home-manager.users."${cfg.user}" = { pkgs, ... }: {
