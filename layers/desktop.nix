@@ -115,8 +115,12 @@ in
     export XDG_CURRENT_DESKTOP=sway
 
     export SDL_VIDEODRIVER=wayland
+
+    export MOZ_ENABLE_WAYLAND=1
+
     # Creates problems with OBS
     #export QT_QPA_PLATFORM=wayland
+
     export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
 
     export QT_STYLE_OVERRIDE=adwaita-dark
