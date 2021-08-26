@@ -232,7 +232,8 @@ bindsym $mod+Shift+p exec $terminal stack ghci --verbosity warning
 
 # start a browser
 # Ozone appears to work only when $DISPLAY is not set
-bindsym $mod+b exec chromium --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland --force-dark-mode
+bindsym $mod+b exec "chromium --enable-features=WebRTCPipeWireCapturer --force-dark-mode"
+#bindsym $mod+b exec "chromium --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland --force-dark-mode"
 #bindsym $mod+Shift+b exec qutebrowser
 
 # start htop
