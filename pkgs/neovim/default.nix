@@ -177,9 +177,14 @@ pkgs.neovim.override {
         fzfWrapper
         fzf-vim
 
-        # Language server support
+        # non-neovim-native Language server support
         LanguageClient-neovim
         deoplete-nvim
+
+        # neovim native language server support
+        #nvim-lspconfig
+
+        nvim-gdb
 
         vim-highlightedyank
         #vim-numbertoggle
