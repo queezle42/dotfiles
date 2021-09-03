@@ -279,5 +279,22 @@ in
 
         $filter "$file" | curl -F'file=@-' "$pastebin"
     }
+
+    cd () {
+      if [ "$1" = - ] || [ -z "$1" ] || [ -d "$1" ]; then
+        # normal cd
+        builtin cd "$@"
+      elif command -v "$1" >/dev/null; then
+        # resolve commands and cd to the directory that contains them
+        local p="$(dirname "$(realpath "$(command -v "$1")")")"
+        # for nix store paths, go to derivation root instead of the bin directory
+        [[ "$p" =~ /nix/store/ ]] && p="$(cut -d "/" -f-4 <<< "$p")"
+        builtin cd "$p"
+      elif [ -e "$1" ]; then
+        builtin cd "$(dirname "$@")"
+      else
+        builtin cd "$@"
+      fi
+    }
   '';
 }
