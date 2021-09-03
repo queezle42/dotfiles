@@ -9,6 +9,8 @@
 
     # Dictionary (command `trans`)
     translate-shell
+
+    gdb
   ];
 
   users.users = {
