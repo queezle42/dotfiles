@@ -23,10 +23,8 @@ in
 
   };
   config = mkIf cfg.enable {
-    home-manager.users."${cfg.user}" = { pkgs, ... }: {
-      xdg.configFile."sway/config" = {
-        source = import ./config.nix inputs;
-      };
+    home-manager.users."${cfg.user}".xdg.configFile."sway/config" = {
+      source = import ./config.nix inputs;
     };
   };
 }
