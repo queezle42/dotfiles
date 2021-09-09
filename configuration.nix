@@ -2,6 +2,7 @@
 { name, path, channel, isIso, extraLayersDir, flakeInputs, flakeOutputs, system, extraOverlays }:
 { lib, config, pkgs, ... }:
 
+with lib;
 
 let
   installResult = builtins.fromJSON (builtins.readFile (path + "/install-result.json"));
@@ -83,4 +84,17 @@ in
 
   # Default hostname ist machine directory name
   networking.hostName = lib.mkDefault name;
+
+  queezle.qnet =
+    let
+      qnetFile = path + "/qnet.json";
+      exists = builtins.pathExists qnetFile;
+      qnet = if exists then builtins.fromJSON (builtins.readFile qnetFile) else null;
+    in if exists then {
+      enable = mkDefault true;
+      address = mkDefault qnet.address;
+      allowedIPs = mkDefault qnet.allowedIPs;
+      peerEndpoint = mkDefault qnet.peerEndpoint;
+      publicKey = mkDefault qnet.publicKey;
+    } else {};
 }

@@ -1,7 +1,7 @@
 # applied by this repositories flake
 { flakeInputs, flakeOutputs }:
 # applied by outer flake
-{ extraFlakeInputs, extraFlakeOutputs, machinesDir, extraLayersDir, extraOverlays ? [] }:
+{ extraFlakeInputs, extraFlakeOutputs, machinesDir, extraModules, extraLayersDir, extraOverlays ? [] }:
 
 with builtins;
 with flakeInputs.nixpkgs.lib;
@@ -35,6 +35,7 @@ let
             flakeOutputs = finalFlakeOutputs;
             channel = machineChannels.${name};
           })
+          extraModules
         ] ++ optional isMobileNixos (import "${flakeInputs.mobile-nixos}/lib/configuration.nix" { device = mobileNixosDevice; });
         _module.args.flakeInputs = finalFlakeInputs;
         _module.args.flakeOutputs = finalFlakeOutputs;

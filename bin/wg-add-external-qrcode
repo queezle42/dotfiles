@@ -32,7 +32,7 @@ fi
 
 hostname=$1
 
-readonly config_file_path="$MACHINES_PATH/external/$hostname/wg_gateway.json"
+readonly config_file_path="$MACHINES_PATH/external/$hostname/qnet.json"
 
 if [[ ! -f $config_file_path ]]
 then
