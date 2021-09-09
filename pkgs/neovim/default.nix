@@ -50,6 +50,9 @@ pkgs.neovim.override {
       " Wrap at word boundaries instead of splitting words at the end of the line.
       set linebreak
 
+      " Set colorcolumn to nudge me to stay below 120 characters per line
+      set colorcolumn=121
+
       " Shows the effects of a command incrementally, as you type. Also shows partial off-screen results in a preview window.
       set inccommand=split
 
