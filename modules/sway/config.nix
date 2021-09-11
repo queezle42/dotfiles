@@ -2,6 +2,20 @@
 with lib;
 let
   cfg = config.queezle.sway;
+  temperature-bin = pkgs.writeScript "temperature.zsh" ''
+    #!/usr/bin/env zsh
+
+    echo -n $'🔥\uFE0E '
+
+    result=$(sensors -j | jq --join-output '."coretemp-isa-0000"."Package id 0".temp1_input // ."k10temp-pci-00c3".Tctl.temp1_input // ."cpu0_thermal-virtual-0".temp1.temp1_input | tonumber | floor')
+    if [[ -n $result ]]
+    then
+      print "$result°C"
+      exit 0
+    fi
+
+    exit 42
+  '';
 in
 pkgs.writeText "sway-config" ''
 # sway config file
@@ -455,7 +469,7 @@ client.placeholder      $base00 $base00 $base05 $base00 $base00
 client.background       $base00
 
 bar {
-  status_command qbar server swaybar date squeekboard --auto-hide battery cpu script --poll ~/.config/qbar/blocks/memory script --poll ~/.config/qbar/blocks/temperature disk / networkmanager
+  status_command qbar server swaybar date squeekboard --auto-hide battery cpu script --poll ~/.config/qbar/blocks/memory script --poll ${temperature-bin} disk / ${if config.networking.networkmanager.enable then "networkmanager" else ""}
 
   id bar-0
   position top

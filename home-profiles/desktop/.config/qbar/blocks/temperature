@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-
-echo -n $'🔥\uFE0E '
-
-sensors -j "coretemp-isa-0000" | jq --join-output '."coretemp-isa-0000"."Package id 0".temp1_input'
-echo °C
