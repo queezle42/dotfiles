@@ -135,6 +135,7 @@
       ProtectSystem = "full";
       ProtectHome = true;
       PrivateDevices = true;
+      ProtectProc = "invisible";
       ProtectKernelTunables = true;
       ProtectControlGroups = true;
       ProtectKernelLogs = true;
