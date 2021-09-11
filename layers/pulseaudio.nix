@@ -8,8 +8,18 @@
       "remixing-produce-lfe" = "yes";
       "remixing-consume-lfe" = "yes";
     };
+    tcp = mkIf config.queezle.qnet.enable {
+      enable = true;
+      # TODO get ip range from config
+      anonymousClients.allowedIpRanges = ["10.0.0.0/24"];
+    };
   };
   users.groups.pulse-access = {};
+
+  # Open PulseAudio port to qnet
+  networking.firewall.interfaces.qnet = mkIf config.queezle.qnet.enable {
+    allowedTCPPorts = [ 4713 ];
+  };
 
   environment.systemPackages = with pkgs; [
     pulsemixer
