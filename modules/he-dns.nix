@@ -73,7 +73,7 @@ let
   '';
   ddnsV6Script = domainCfg: flags: ''
     # take the first global (should be routable) primary (to filter out privacy extension addresses) ipv6 address
-    myip="$(${pkgs.iproute2}/bin/ip -json -6 address show scope global primary | ${pkgs.jq}/bin/jq --raw-output '.[0].addr_info | map(.local | strings) | .[0]')"
+    myip="$(${pkgs.iproute2}/bin/ip -json -6 address show scope global primary | ${pkgs.jq}/bin/jq --raw-output '.[0].addr_info | map(.local | strings | select(startswith("fc") or startswith("fd") | not)) | .[0]')"
     # ensure we have a valid v6 address
     if ${pkgs.iproute2}/bin/ip route get "$myip" >/dev/null &>/dev/null
     then
