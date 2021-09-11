@@ -110,36 +110,36 @@ pkgs.neovim.override {
 
       " Configure language client
 
-      let g:LanguageClient_useVirtualText = "No"
-      " let g:LanguageClient_hideVirtualTextsOnInsert = 1
+      "let g:LanguageClient_useVirtualText = "No"
+      "" let g:LanguageClient_hideVirtualTextsOnInsert = 1
 
-      let g:LanguageClient_serverCommands = {
-      \   'haskell': ['haskell-language-server-wrapper', '--lsp'],
-      \   'cpp': ['clangd', '--background-index',]
-      \ }
+      "let g:LanguageClient_serverCommands = {
+      "\   'haskell': ['haskell-language-server-wrapper', '--lsp'],
+      "\   'cpp': ['clangd', '--background-index',]
+      "\ }
 
-      function SetupLanguageClient()
-        " Always show the sign column (to prevent jumps when loading git- or the language client)
-        set signcolumn=yes
+      "function SetupLanguageClient()
+      "  " Always show the sign column (to prevent jumps when loading git- or the language client)
+      "  set signcolumn=yes
 
-        nnoremap <Leader>la <Cmd>call LanguageClient_workspace_applyEdit()<CR>
-        nnoremap <Leader>lc <Cmd>call LanguageClient#textDocument_definition()<CR>
-        nnoremap <Leader>ld <Cmd>call LanguageClient#textDocument_definition()<CR>
-        nnoremap <Leader>le <Cmd>call LanguageClient#explainErrorAtPoint()<CR>
-        nnoremap <Leader>lf <Cmd>call LanguageClient#textDocument_formatting()<CR>
-        nnoremap <Leader>lh <Cmd>call LanguageClient#textDocument_hover()<CR>
-        nnoremap <Leader>lm <Cmd>call LanguageClient_contextMenu()<CR>
-        nnoremap <Leader>lr <Cmd>call LanguageClient#textDocument_rename()<CR>
-        nnoremap <Leader>ls <Cmd>call LanguageClient_textDocument_documentSymbol()<CR>
-        nnoremap <Leader>lt <Cmd>call LanguageClient#textDocument_typeDefinition()<CR>
-        nnoremap <Leader>lx <Cmd>call LanguageClient#textDocument_references()<CR>
-        nnoremap <Leader>lq <Cmd>LanguageClientStop<CR><Cmd>LanguageClientStart<CR>
-      endfunction()
+      "  nnoremap <Leader>la <Cmd>call LanguageClient_workspace_applyEdit()<CR>
+      "  nnoremap <Leader>lc <Cmd>call LanguageClient#textDocument_definition()<CR>
+      "  nnoremap <Leader>ld <Cmd>call LanguageClient#textDocument_definition()<CR>
+      "  nnoremap <Leader>le <Cmd>call LanguageClient#explainErrorAtPoint()<CR>
+      "  nnoremap <Leader>lf <Cmd>call LanguageClient#textDocument_formatting()<CR>
+      "  nnoremap <Leader>lh <Cmd>call LanguageClient#textDocument_hover()<CR>
+      "  nnoremap <Leader>lm <Cmd>call LanguageClient_contextMenu()<CR>
+      "  nnoremap <Leader>lr <Cmd>call LanguageClient#textDocument_rename()<CR>
+      "  nnoremap <Leader>ls <Cmd>call LanguageClient_textDocument_documentSymbol()<CR>
+      "  nnoremap <Leader>lt <Cmd>call LanguageClient#textDocument_typeDefinition()<CR>
+      "  nnoremap <Leader>lx <Cmd>call LanguageClient#textDocument_references()<CR>
+      "  nnoremap <Leader>lq <Cmd>LanguageClientStop<CR><Cmd>LanguageClientStart<CR>
+      "endfunction()
 
-      augroup LSP
-        autocmd!
-        autocmd FileType c,cpp,haskell call SetupLanguageClient()
-      augroup END
+      "augroup LSP
+      "  autocmd!
+      "  autocmd FileType c,cpp,haskell call SetupLanguageClient()
+      "augroup END
 
 
       " Use deoplete for autocompletion.
@@ -181,7 +181,7 @@ pkgs.neovim.override {
         fzf-vim
 
         # non-neovim-native Language server support
-        LanguageClient-neovim
+        #LanguageClient-neovim
         deoplete-nvim
 
         # neovim native language server support
@@ -208,7 +208,7 @@ pkgs.neovim.override {
         # Haskell syntax highlighting
         haskell-vim
         # Haskell alternative to language server (TODO: load on demand?)
-        ghcid
+        #ghcid
       ];
       opt = [
       ];
