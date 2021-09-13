@@ -8,8 +8,8 @@ let
     trap 'qctl set /g815/idle false; swaymsg "output * dpms on"' EXIT INT HUP TERM
 
     swayidle -w \
-      timeout 10 'qctl set /g815/idle true; swaymsg "output * dpms off"' \
-      resume 'qctl set /g815/idle false; swaymsg "output * dpms on"' \
+      timeout 10 'q system idle; swaymsg "output * dpms off"' \
+      resume 'q system not-idle; swaymsg "output * dpms on"' \
       &
 
     swaylock $@

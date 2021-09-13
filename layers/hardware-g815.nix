@@ -36,15 +36,39 @@
   });
 
   systemd.services.q-g815= {
-    enable = true;
     restartIfChanged = true;
     after = [ "g810-led.socket" ];
-    requires = [ "g810-led.socket" ];
-    script = "${pkgs.q}/bin/q g815 | ${pkgs.socat}/bin/socat stdin unix-connect:/run/g810-led.socket";
+    requires = [ "g810-led.socket" "q-system.socket" ];
+    script = "${pkgs.q}/bin/q g815 daemon | ${pkgs.socat}/bin/socat stdin unix-connect:/run/g810-led.socket";
     unitConfig = {
       Description = "g815 led control";
     };
     serviceConfig = {
+      Type = "simple";
+      User = "jens";
+    };
+  };
+
+  systemd.sockets.q-system = {
+    wantedBy = [ "multi-user.target" ];
+    partOf = [ "q-system.service" ];
+    unitConfig = {
+      Description = "queezles system daemon socket";
+    };
+    socketConfig = {
+      ListenStream = "/run/q/socket";
+      SocketUser = "jens";
+    };
+  };
+  systemd.services.q-system= {
+    restartIfChanged = true;
+    after = [ "q-system.socket" ];
+    requires = [ "q-system.socket" ];
+    unitConfig = {
+      Description = "queezles system daemon";
+    };
+    serviceConfig = {
+      ExecStart = "${pkgs.q}/bin/q system daemon";
       Type = "simple";
       User = "jens";
     };
