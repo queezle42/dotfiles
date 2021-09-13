@@ -1,5 +1,5 @@
 # This is the entry point for my NixOS configuration.
-{ name, path, channel, isIso, extraLayersDir, flakeInputs, flakeOutputs, system, extraOverlays }:
+{ name, path, nixpkgs, isIso, extraLayersDir, flakeInputs, flakeOutputs, system, extraOverlays }:
 { lib, config, pkgs, ... }:
 
 with lib;
@@ -67,11 +67,11 @@ in
     })
   ] ++ extraOverlays;
 
-  # Pin channel in nix path
-  nix.nixPath = [ "nixpkgs=${channel}" ];
-  nix.registry.nixpkgs.flake = channel;
+  # Pin nixpkgs in nix path
+  nix.nixPath = [ "nixpkgs=${nixpkgs}" ];
+  nix.registry.nixpkgs.flake = nixpkgs;
   # Make nixpkgs path available inside of the configuration
-  #_module.args.nixpkgsPath = channel;
+  #_module.args.nixpkgsPath = nixpkgs;
 
   # Let 'nixos-version --json' know about the Git revision
   # of this flake.

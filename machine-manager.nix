@@ -12,10 +12,6 @@ let
   # helpers :: { *: ? }
   helpers = import ./helpers.nix;
 
-  # getMachineChannel :: string -> path
-  getMachineChannel = _: finalFlakeInputs.nixpkgs;
-  machineChannels = withMachines getMachineChannel;
-
   machinesDirContents = readDir machinesDir;
   machineNames = filter (p: machinesDirContents.${p} == "directory") (attrNames machinesDirContents);
   withMachines = lambda: listToAttrs (map (m: {name = m; value = lambda { name = m; path = (machinesDir + "/${m}"); }; }) machineNames);
@@ -23,7 +19,7 @@ let
   mkNixosSystemDerivations = { name, path }:
     let
       installResult = builtins.fromJSON (builtins.readFile (path + "/install-result.json"));
-      channel = finalFlakeInputs.nixpkgs;
+      nixpkgs = finalFlakeInputs."${installResult.nixpkgs or "nixpkgs"}";
       system = installResult.system or "x86_64-linux";
       mobileNixosDevice = installResult.mobileNixosDevice or null;
       isMobileNixos = mobileNixosDevice != null;
@@ -33,7 +29,7 @@ let
             inherit name path isIso extraLayersDir system extraOverlays;
             flakeInputs = finalFlakeInputs;
             flakeOutputs = finalFlakeOutputs;
-            channel = machineChannels.${name};
+            nixpkgs = nixpkgs;
           })
           extraModules
         ] ++ optional isMobileNixos (import "${flakeInputs.mobile-nixos}/lib/configuration.nix" { device = mobileNixosDevice; });
@@ -44,21 +40,21 @@ let
       };
       configuration = mkMachineConfig { inherit name path; isIso = false; };
       isoConfiguration = mkMachineConfig { inherit name path; isIso = true; };
-      iso = (evaluateConfig channel {
+      iso = (evaluateConfig nixpkgs {
         inherit system;
         modules = [
           isoConfiguration
           (mkAdditionalIsoConfig name)
         ];
       }).system.build.isoImage;
-      sdImage = (evaluateConfig channel {
+      sdImage = (evaluateConfig nixpkgs {
         inherit system;
         modules = [
           isoConfiguration
           (mkAdditionalSdCardConfig name)
         ];
       }).system.build.sdImage;
-      systemDerivation = channel.lib.nixosSystem {
+      systemDerivation = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [ configuration ];
       };
@@ -93,11 +89,6 @@ let
 
 in
 {
-  # TODO remove
-  # configurations = withMachines mkMachineConfig;
-  # nixosIsoDerivations = withMachines mkNixosIsoDerivation;
-  # channels = machineChannels;
-
   nixosSystemDerivations = withMachines (x: (mkNixosSystemDerivations x).systemDerivation);
   isos = withMachines (x: (mkNixosSystemDerivations x).iso);
   sdImages = withMachines (x: (mkNixosSystemDerivations x).sdImage);
