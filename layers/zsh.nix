@@ -85,6 +85,8 @@ in
     "hist_ignore_all_dups"
     "inc_append_history"
     "hist_fcntl_lock"
+    "hist_ignore_space"
+    "hist_reduce_blanks"
   ];
 
   programs.zsh.shellInit = ''
