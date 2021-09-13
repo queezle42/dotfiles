@@ -38,11 +38,27 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1631118067,
-        "narHash": "sha256-tEcFvm3a6ToeBGwHdjfB2mVQwa4LZCZTQYE2LnY3ycA=",
-        "owner": "nixos",
+        "lastModified": 1631470189,
+        "narHash": "sha256-hkUPYlpNOY9nbG1ByRin9NzPAYnPtwq/nGxO/DoeZd0=",
+        "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "09cd65b33c5653d7d2954fef4b9f0e718c899743",
+        "rev": "364b5555ee04bf61ee0075a3adab4c9351a8d38c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-pinephone": {
+      "locked": {
+        "lastModified": 1630338749,
+        "narHash": "sha256-J1LsmwGtlYpqIMYEi/amMKkk0VfRrwHaEs/uylugGnE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "8a2ec31e224de9461390cdd03e5e0b0290cdad0b",
         "type": "github"
       },
       "original": {
@@ -61,11 +77,11 @@
       },
       "locked": {
         "host": "git.c3pb.de",
-        "lastModified": 1629329348,
-        "narHash": "sha256-S6uhrhUE2s7AsC3gL0sbNx1ZmFvmVkgoH8ua4vr9cE0=",
+        "lastModified": 1631564956,
+        "narHash": "sha256-OfqJoPsE9RbVvX9ejwVnN8KuvOzluLUz5PGlAZFOPec=",
         "owner": "jens",
         "repo": "q",
-        "rev": "6030cf6649532dff0f1984962f75f04014503ea6",
+        "rev": "a7a70f1bdd83b1a22c1bb1b0e943520035a441a2",
         "type": "gitlab"
       },
       "original": {
@@ -105,11 +121,11 @@
       },
       "locked": {
         "host": "git.c3pb.de",
-        "lastModified": 1629328844,
-        "narHash": "sha256-4AiAjuSuTneWidipxxTu60xqztbum8OuTuKI9pWpUsQ=",
+        "lastModified": 1631405205,
+        "narHash": "sha256-RGtY84ZmfeC4/syrG7T703rVaf7m7nXNJkdxBqEH55Y=",
         "owner": "jens",
         "repo": "quasar",
-        "rev": "67efa0e198ac78aaaf308c2067019574548acf7c",
+        "rev": "5be562b9acbce1a02b86cc52b4575b6d20d9c3ea",
         "type": "gitlab"
       },
       "original": {
@@ -128,11 +144,11 @@
       },
       "locked": {
         "host": "git.c3pb.de",
-        "lastModified": 1629328948,
-        "narHash": "sha256-PrksVC81dDbAsauBQp9ntllR7/SofYy91ls6wKLXyVE=",
+        "lastModified": 1631563195,
+        "narHash": "sha256-QbTo1BiQSoltM2UVddiWCoMShHAdnZ6LzKGoB7K6GKY=",
         "owner": "jens",
         "repo": "quasar-network",
-        "rev": "4e05c83b74d678f67c10f8769b019eb6b148db10",
+        "rev": "35e2c3be03550e207e1986d9d2d169374a37a430",
         "type": "gitlab"
       },
       "original": {
@@ -147,6 +163,7 @@
         "homemanager": "homemanager",
         "mobile-nixos": "mobile-nixos",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-pinephone": "nixpkgs-pinephone",
         "q": "q",
         "qauth": "qauth"
       }

@@ -2,6 +2,8 @@
   inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
 
+    nixpkgs-pinephone.url = github:nixos/nixpkgs/nixos-unstable;
+
     homemanager = {
       url = github:nix-community/home-manager;
       inputs.nixpkgs.follows = "nixpkgs";
