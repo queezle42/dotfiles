@@ -39,7 +39,6 @@ do
       ;;
     --substitute-on-destination|-s)
       substitute_on_destination="--substitute-on-destination"
-      shift
       ;;
     *)
       positional+=("$1")
