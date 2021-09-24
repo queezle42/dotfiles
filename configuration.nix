@@ -64,6 +64,9 @@ in
     #flakeInputs.q.overlay
     (self: super: {
       q = flakeInputs.q.packages.${system}.q;
+      #q = if system == "aarch64-multiplatform"
+      #  then flakeInputs.q.packages.x86_64-linux.aarch64-multiplatform.q;
+      #  else flakeInputs.q.packages.${system}.q;
     })
   ] ++ extraOverlays;
 

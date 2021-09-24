@@ -38,12 +38,13 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1631470189,
-        "narHash": "sha256-hkUPYlpNOY9nbG1ByRin9NzPAYnPtwq/nGxO/DoeZd0=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "364b5555ee04bf61ee0075a3adab4c9351a8d38c",
-        "type": "github"
+        "lastModified": 1632068562,
+        "narHash": "sha256-WFlC7108WYwQ5kyut3XGv3mVuHUt9a0Mh0Lk/RCJ6Yo=",
+        "ref": "master",
+        "rev": "8873299163a044bc9848a2ca0c011c3a11f4c131",
+        "revCount": 314558,
+        "type": "git",
+        "url": "file:///home/jens/dev/nixpkgs"
       },
       "original": {
         "owner": "nixos",
@@ -77,11 +78,11 @@
       },
       "locked": {
         "host": "git.c3pb.de",
-        "lastModified": 1631564956,
-        "narHash": "sha256-OfqJoPsE9RbVvX9ejwVnN8KuvOzluLUz5PGlAZFOPec=",
+        "lastModified": 1632180266,
+        "narHash": "sha256-+dXooG7W9mOOVich37UB07QJa9CJ7iwD87ASDNHkbeY=",
         "owner": "jens",
         "repo": "q",
-        "rev": "a7a70f1bdd83b1a22c1bb1b0e943520035a441a2",
+        "rev": "839c4db47563e3e9035bd38131570ca9822f3a21",
         "type": "gitlab"
       },
       "original": {
@@ -116,6 +117,7 @@
     "quasar": {
       "inputs": {
         "nixpkgs": [
+          "q",
           "nixpkgs"
         ]
       },
@@ -138,6 +140,7 @@
     "quasar-network": {
       "inputs": {
         "nixpkgs": [
+          "q",
           "nixpkgs"
         ],
         "quasar": "quasar"

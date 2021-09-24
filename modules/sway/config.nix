@@ -44,7 +44,7 @@ set $active #51c9ff
 set $wallpaper ~/pictures/background.png
 set $lockscreen ~/pictures/retrowave.png
 
-set $terminal PROMPT_NO_INITIAL_NEWLINE=1 ${config.queezle.terminal.executable}
+set $terminal terminal
 
 set $workspace_q 0:q
 set $workspace_irc 11:irc
@@ -234,6 +234,11 @@ bindsym $mod+Shift+asciicircum move container to workspace $workspace_q
 bindsym $mod+Return exec $terminal
 bindsym $mod+Shift+Return exec cool-retro-term --fullscreen --profile "Default Amber"
 
+# start program launcher
+bindsym $mod+Tab exec launcher
+#bindsym $mod+Tab exec rofi -show drun
+#bindsym $mod+Mod1+Tab exec rofi -show run
+
 # start an edi shell
 #bindsym $mod+o exec cool-retro-term --fullscreen --profile "Monochrome Green" -e run/edi/edish/edish
 bindsym $mod+o exec cool-retro-term --fullscreen --profile "Monochrome Green" -e ssh edi
@@ -278,10 +283,6 @@ bindsym $mod+Shift+y move scratchpad
 # kill focused window
 bindsym $mod+q kill
 bindsym $mod+Shift+q kill
-
-# start program launcher
-bindsym $mod+Tab exec rofi -show drun
-bindsym $mod+Mod1+Tab exec rofi -show run
 
 # change focus
 bindsym $mod+h focus left

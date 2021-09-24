@@ -1,4 +1,7 @@
-# vim:fileencoding=utf-8:ft=conf
+{ lib, pkgs, config, ... }:
+with lib;
+pkgs.writeText "kitty.conf" ''
+# kitty.conf
 
 font_family      PragmataPro Mono Liga
 
@@ -70,3 +73,4 @@ map kitty_mod+f run_kitten text hints
 map kitty_mod+u input_unicode_character
 
 map kitty_mod+enter new_os_window_with_cwd
+''

@@ -23,6 +23,10 @@ in
 
   };
   config = mkIf cfg.enable {
+    queezle.terminal.enable = true;
+    queezle.desktop.launcher.enable = true;
+    queezle.desktop.launcher.dmenu = true;
+
     home-manager.users."${cfg.user}".xdg.configFile."sway/config" = {
       source = import ./config.nix inputs;
     };

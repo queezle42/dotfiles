@@ -85,6 +85,7 @@ in
     root
 
     kitty.terminfo
+    foot.terminfo
     neovim-queezle
     git
     gitAndTools.tig

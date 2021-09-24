@@ -27,9 +27,12 @@ in
     ./pulseaudio.nix
   ];
 
+  queezle.desktop.enable = true;
+
   environment.systemPackages = with pkgs; [
     # desktop environment programs
     kitty
+    foot
     rxvt_unicode
     glxinfo
     gnome3.gnome-disk-utility

@@ -1,0 +1,62 @@
+#!/usr/bin/env zsh
+
+set -e
+set -u
+set -x
+set -o pipefail
+
+source $DOTFILES_PATH/bin/lib/util.zsh
+
+cmdname=$(basename $0)
+usage() {
+  print "Usage: $cmdname <machine>" >&2
+}
+readonly machine="$1"
+
+# Update nar-hash of dotfiles repository
+nix flake lock --update-input dotfiles "path:$MACHINES_PATH"
+
+readonly nix=(nix --log-format bar-with-logs)
+
+readonly system_installable="path:$MACHINES_PATH#nixosConfigurations.$machine.config.system.build.toplevel"
+readonly nixos_config_path=$($nix build --json --no-link $system_installable | jq --raw-output ".[0].outputs.out")
+
+readonly bootloader_partition="/dev/disk/by-partuuid/cfb21b5c-a580-de40-940f-b9644b4466e1"
+
+readonly luks_partition="/dev/disk/by-partuuid/b6713f6b-6674-7c43-a4e2-9c7ce73b1fcf"
+
+readonly luks_uuid="f3ace1e6-9f25-45d1-8988-3e9a2565f82c"
+
+
+readonly boot_partition_installable="path:$MACHINES_PATH#nixosConfigurations.$machine.config.system.build.boot-partition"
+
+readonly boot_partition_image=$($nix build --json --no-link $boot_partition_installable | jq --raw-output ".[0].outputs.out")
+
+sudo dd if="$boot_partition_image/mobile-nixos-boot.img" of="$bootloader_partition" bs=16M conv=fsync oflag=direct status=progress
+
+sudo cryptsetup luksFormat --type luks2 --uuid "${luks_uuid}" "${luks_partition}"
+
+sudo cryptsetup open --allow-discards --persistent "${luks_partition}" cryptvol_$machine
+
+sudo mkfs.btrfs --uuid d577f109-a0c0-4c96-9e9d-263e10dac085 -L btrfs_$machine /dev/mapper/cryptvol_$machine
+
+mount_point=/mnt/mnt
+sudo mount /dev/mapper/cryptvol_$machine $mount_point
+sudo btrfs subvolume create $mount_point/$machine
+sudo btrfs subvolume create $mount_point/$machine/nix
+
+# no remount
+mount_point=$mount_point/$machine
+
+sudo $nix copy --no-check-sigs --to "$mount_point" $nixos_config_path
+
+print "Setting system profile"
+sudo nix-env --store $mount_point --profile $mount_point/nix/var/nix/profiles/system --set $nixos_config_path
+
+print "Creating /etc/NIXOS"
+sudo mkdir -m 0755 -p "$mount_point/etc"
+sudo touch "$mount_point/etc/NIXOS"
+
+# Bootloader installation is not required (
+#sudo nixos-enter --root $mount_point -c "NIXOS_INSTALL_BOOTLOADER=1 $nixos_config_path/bin/switch-to-configuration boot"
+sync

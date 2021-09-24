@@ -3,6 +3,8 @@
 {
   imports = [
     #./loginctl-linger.nix
+    ./desktop
+    ./desktop/launcher.nix
     ./sway
     ./dotfiles.nix
     ./he-dns.nix

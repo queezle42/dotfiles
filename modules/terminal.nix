@@ -2,20 +2,29 @@
 
 with lib;
 let
-  softKitty = writeScript "kitty-always-software" ''
-    LIBGL_ALWAYS_SOFTWARE=true ${pkgs.kitty}/bin/kitty "$@"
+  terminal = pkgs.writeScriptBin "terminal" ''
+    PROMPT_NO_INITIAL_NEWLINE=1 ${config.queezle.terminal.executable} "$@"
   '';
 in
 {
   options = {
+    queezle.terminal.enable = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Install a 'terminal' wrapper script that launches the configured terminal emulator.";
+    };
+
     queezle.terminal.executable = mkOption {
       type = types.path;
-      default = if config.queezle.terminal.forceSoftwareRenderer then softKitty else "${pkgs.kitty}/bin/kitty";
+      default = if config.queezle.terminal.forceSoftwareRenderer then "${pkgs.foot}/bin/foot" else "${pkgs.kitty}/bin/kitty";
     };
 
     queezle.terminal.forceSoftwareRenderer = mkOption {
       type = types.bool;
       default = false;
     };
+  };
+  config = mkIf config.queezle.terminal.enable {
+    environment.systemPackages = [ terminal ];
   };
 }
