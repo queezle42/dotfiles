@@ -26,6 +26,7 @@ usage() {
 positional=()
 via_hostname=""
 substitute_on_destination=""
+show_trace=""
 while [[ $# -gt 0 ]]
 do
   case "$1" in
@@ -39,6 +40,9 @@ do
       ;;
     --substitute-on-destination|-s)
       substitute_on_destination="--substitute-on-destination"
+      ;;
+    --show-trace)
+      show_trace="--show-trace"
       ;;
     *)
       positional+=("$1")
@@ -114,7 +118,7 @@ fi
 
 print_info "Evaluating target system configuration"
 readonly system_installable="path:$MACHINES_PATH#nixosConfigurations.$hostname.config.system.build.toplevel"
-readonly nixos_config_path=$(nix path-info $common_nix_flags --json "$system_installable" | jq --raw-output ".[0].path")
+readonly nixos_config_path=$(nix path-info $common_nix_flags $show_trace --json "$system_installable" | jq --raw-output ".[0].path")
 print >&2 "$nixos_config_path"
 
 if [[ -z "$nixos_config_path" ]]
