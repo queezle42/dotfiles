@@ -25,6 +25,8 @@ in
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
+  nix.daemonNiceLevel = 13;
+  nix.daemonIONiceLevel = 7;
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
