@@ -43,6 +43,7 @@ in
     mpv-queezle
     wdisplays
     squeekboard
+    feh
 
     # screenshot utilities
     grim
