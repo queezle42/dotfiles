@@ -57,8 +57,10 @@ let
       };
       users.users."spotifyd-${user}" = {
         isSystemUser = true;
+        group = "spotifyd-${user}";
         extraGroups = [ "audio" ];
       };
+      users.groups."spotifyd-${user}" = {};
     };
 in
 {
