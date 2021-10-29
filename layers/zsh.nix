@@ -7,6 +7,7 @@ in
 {
   environment.systemPackages = with pkgs; [
     neovim-queezle
+    w3m
     less
     # required for neovim spellcheck
     aspell
@@ -32,6 +33,10 @@ in
 
   environment.shellAliases = {
     ".." = "cd ..";
+
+    # When using w3m as a pager, man pipes manpages into the pager. To get advanced functionality (e.g. man page
+    # hyperlinks) w3mman has to be used directly instead.
+    #man = "w3mman";
 
     ls = "ls --color=auto";
     l = "ls -l";
@@ -244,6 +249,26 @@ in
       # change cursor to bar before new prompt
       set-cursor-bar
     }
+
+    # required for osc7_cwd
+    _urlencode() {
+      local length="''${#1}"
+      for (( i = 0; i < length; i++ )); do
+        local c="''${1:$i:1}"
+        case $c in
+          %) printf '%%%02X' "'$c" ;;
+          *) printf "%s" "$c" ;;
+        esac
+      done
+    }
+
+    # Emits a OSC 7 escape sequence
+    # OSC 7 is used by foot to open terminals with the CWD
+    osc7_cwd() {
+      printf '\e]7;file://%s%s\e\\' "$HOSTNAME" "$(_urlencode "$PWD")"
+    }
+    autoload -Uz add-zsh-hook
+    add-zsh-hook -Uz chpwd osc7_cwd
 
     # use cd tab completion without cdpath if that gives a result
     _cd_try_without_cdpath () {

@@ -33,7 +33,6 @@ in
     # desktop environment programs
     kitty
     foot
-    rxvt_unicode
     glxinfo
     gnome3.gnome-disk-utility
     networkmanagerapplet

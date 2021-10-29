@@ -96,7 +96,6 @@ in
     fzf
     tree
     htop
-    killall
     # Enabled by zsh layer
     # tmux
     gotop

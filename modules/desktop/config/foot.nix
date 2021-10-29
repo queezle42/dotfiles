@@ -32,4 +32,7 @@ bright4=83a598   # bright blue
 bright5=d3869b   # bright magenta
 bright6=8ec07c   # bright cyan
 bright7=ebdbb2   # bright white
+
+[key-bindings]
+spawn-terminal=Control+Shift+Return
 ''

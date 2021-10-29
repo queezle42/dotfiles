@@ -83,6 +83,8 @@ output eDP-1 {
 output * bg $wallpaper fill
 
 # Run desktop daemons
+exec foot --server
+
 exec mako
 #exec CM_SELECTIONS=clipboard clipmenud
 #exec nm-applet --indicator
@@ -233,6 +235,7 @@ bindsym $mod+Shift+asciicircum move container to workspace $workspace_q
 # start a terminal
 bindsym $mod+Return exec $terminal
 bindsym $mod+Shift+Return exec cool-retro-term --fullscreen --profile "Default Amber"
+bindsym $mod+Alt+Return exec footclient
 
 # start program launcher
 bindsym $mod+Tab exec launcher
