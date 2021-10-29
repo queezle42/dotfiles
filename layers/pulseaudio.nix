@@ -18,6 +18,10 @@ in
       anonymousClients.allowedIpRanges = ["10.0.0.0/24"];
     };
   };
+  users.users.pulse = {
+    extraGroups = [ "bluetooth" ];
+  };
+  users.groups.bluetooth = {};
   users.groups.pulse-access = {};
 
   # Open PulseAudio port to qnet
