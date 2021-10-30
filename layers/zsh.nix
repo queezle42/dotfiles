@@ -213,15 +213,26 @@ in
     bindkey '^[^?' backward-kill-dir
 
 
-    set-cursor-bar () {
-      if [[ "$TERM" = xterm* || "$TERM" = tmux* || "$TERM" = screen* ]]; then
-          echo -ne "\e[6 q"
-      fi
+    if [[ -n $terminfo[Ss] ]]
+    then
+      _set_bar_cursor_sequence=$(echoti Ss 6)
+      _set_block_cursor_sequence=$(echoti Ss 2)
+    elif [[ $TERM = xterm-kitty || "$TERM" = screen* ]]
+    then
+      # For some reason kitty does not announce it's Ss/Se capabilities?
+      # TERM=screen might be tmux which has the capability or might be a screen which ignores these escapes
+      _set_bar_cursor_sequence="\e[6 q"
+      _set_block_cursor_sequence="\e[2 q"
+    else
+      _set_bar_cursor_sequence=""
+      _set_block_cursor_sequence=""
+    fi
+
+    set-bar-cursor () {
+      print -n $_set_bar_cursor_sequence
     }
-    set-cursor-block() {
-      if [[ "$TERM" = xterm* || "$TERM" = tmux* || "$TERM" = screen* ]]; then
-          echo -ne "\e[2 q"
-      fi
+    set-block-cursor() {
+      print -n $_set_block_cursor_sequence
     }
 
 
@@ -230,9 +241,9 @@ in
       # FIXME: Activating vi-command-mode (typing ":" in vicmd-keymap) results in incorrect bar cursor
       if [ $KEYMAP = vicmd ]; then
         # vi command mode
-        set-cursor-block
+        set-block-cursor
       else
-        set-cursor-bar
+        set-bar-cursor
       fi
       zle reset-prompt
       zle -R
@@ -241,13 +252,13 @@ in
 
     # runs before executing a command
     preexec() {
-      set-cursor-block
+      set-block-cursor
     }
 
     # runs before new prompt
     precmd(){
       # change cursor to bar before new prompt
-      set-cursor-bar
+      set-bar-cursor
     }
 
     # required for osc7_cwd
