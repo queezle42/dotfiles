@@ -45,6 +45,7 @@ set $wallpaper ~/pictures/background.png
 set $lockscreen ~/pictures/retrowave.png
 
 set $terminal terminal
+set $terminal_client footclient
 
 set $workspace_q 0:q
 set $workspace_irc 11:irc
@@ -83,7 +84,7 @@ output eDP-1 {
 output * bg $wallpaper fill
 
 # Run desktop daemons
-exec foot --server
+exec PROMPT_NO_INITIAL_NEWLINE=1 foot --server
 
 exec mako
 #exec CM_SELECTIONS=clipboard clipmenud
@@ -276,7 +277,7 @@ bindsym $mod+Shift+m move container to workspace $workspace_music
 # start spotify instead of mopidy web interface while mopidy is broken
 #bindsym $mod+Ctrl+m workspace $workspace_music; exec chromium --app=http://stargate:6680/iris/#/
 bindsym $mod+Ctrl+m workspace $workspace_music; exec spotify
-bindsym $mod+Alt+m exec $terminal pulsemixer
+bindsym $mod+Alt+m exec $terminal_client pulsemixer
 #bindsym $mod+Ctrl+m workspace $workspace_music; exec ~/run/spotify-singleton
 
 # scratchpad
