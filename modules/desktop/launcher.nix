@@ -5,12 +5,13 @@ let
   cfg = config.queezle.desktop.launcher;
   launcher = pkgs.writeScriptBin "launcher" ''
     ${pkgs.fuzzel}/bin/fuzzel \
+      --dpi-aware no \
+      --terminal terminal \
       --border-radius 0 \
       --background 111111e6 \
       --text-color ccccccff \
       --match-color dd5001ff \
       --selection-color 000000e6 \
-      --terminal terminal \
       --vertical-pad 20 \
       --font 'monospace:size=12' \
       --width 100 \
@@ -19,6 +20,7 @@ let
   dmenu = pkgs.writeScriptBin "dmenu" ''
     ${pkgs.fuzzel}/bin/fuzzel \
       --dmenu \
+      --dpi-aware no \
       --border-radius 0 \
       --background 111111e6 \
       --text-color ccccccff \

@@ -15,6 +15,16 @@ rec {
     scripts = [ self.mpvScripts.mpris ];
   };
 
+  fuzzel = super.fuzzel.overrideAttrs (old: old // {
+    src = self.fetchFromGitea {
+      domain = "codeberg.org";
+      owner = "dnkl";
+      repo = "fuzzel";
+      rev = "0014c0b2e33d4c967c26f2ccc34013a2a3cbb7bc";
+      sha256 = "sha256-fYPXKnJFZVh4vPq7g0qLBEPl/LPUC3By7bVmN9mwsJg=";
+    };
+  });
+
   haskell = super.haskell // {
     packageOverrides = hself: hsuper: super.haskell.packageOverrides hself hsuper // {
       #net-mqtt = self.haskell.lib.doJailbreak hsuper.net-mqtt;
