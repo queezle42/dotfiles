@@ -14,8 +14,8 @@ in {
     systemd.services.heisenbridge-generate = {
       description = "generate heisenbridge config";
       # Appconfig-file needs to exist before synapse is started
-      wantedBy = [ "matrix-synapse.service" ];
       before = [ "matrix-synapse.service" ];
+      wantedBy = [ "matrix-synapse.service" ];
 
       unitConfig = {
         # Only run once
@@ -57,7 +57,6 @@ in {
       serviceConfig = {
         Type = "exec";
         ExecStart =
-            # is a script to load environment variable
           let startScript = pkgs.writeShellScriptBin "heisenbridge" ''
             exec ${cfg.heisenbridge.package}/bin/heisenbridge --config $CREDENTIALS_DIRECTORY/config
           '';
@@ -74,12 +73,12 @@ in {
         Group = "heisenbridge";
 
         ProtectHome = true;
-        PrivateDevices = true;
         ProtectProc = "invisible";
         ProtectKernelTunables = true;
         ProtectControlGroups = true;
         ProtectKernelLogs = true;
         RestrictRealtime = true;
+        PrivateDevices = true;
       };
     };
   };

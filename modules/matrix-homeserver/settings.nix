@@ -8,6 +8,10 @@ in {
   # Allow to get more events during get and sync operation if requested by client
   filter_timeline_limit = 1000;
 
+  # Should be at least 1.1 to prevent TLS downgrade attacks
+  # But 1.2 should be supported by all homeservers, as well as the usual reverse proxies
+  federation_client_minimum_tls_version = 1.2;
+
   caches = {
     global_factor = 4.0;
   };

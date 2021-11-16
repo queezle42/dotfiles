@@ -43,21 +43,15 @@ in {
 
       serviceConfig = {
         Type = "notify";
-        # Running as script to access environment variable
-        # Exec is used to preserve main process pid for systemd
-        ExecStart =
-          let startScript = pkgs.writeShellScriptBin "synapse" ''
-            exec ${cfg.package}/bin/homeserver --config-path ${cfg.configFile} --config-path $CREDENTIALS_DIRECTORY/secrets --keys-directory ${cfg.dataDir}
-          '';
-          in "${startScript}/bin/synapse";
+        ExecStart = ''
+          ${cfg.package}/bin/homeserver --config-path ${cfg.configFile} --config-directory ''${CREDENTIALS_DIRECTORY} --keys-directory ${cfg.dataDir}
+        '';
 
         User = "matrix-synapse";
         Group = "matrix-synapse";
         WorkingDirectory = cfg.dataDir;
 
-        LoadCredential = [
-          "secrets:${cfg.secretsConfigFile}"
-        ];
+        LoadCredential = mapAttrsToList (name: path: "${name}:${path}") cfg.extraConfigFiles;
 
         ExecReload = "${pkgs.util-linux}/bin/kill -HUP $MAINPID";
         Restart = "on-failure";

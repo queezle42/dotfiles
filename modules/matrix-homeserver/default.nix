@@ -68,21 +68,25 @@ in {
       default = settingsFormat.generate "synapse-homeserver.yaml" cfg.settings;
       defaultText = ''settingsFormat.generate "synapse-homeserver.yaml" config.queezle.matrix-homeserver.configuration'';
       description = ''
-        Path to the config file. By default generated from queezle.matrix-homeserver.configuration.
+        Path to the config file. By default generated from queezle.matrix-homeserver.settings.
       '';
     };
 
-    secretsConfigFile = mkOption {
-      type = types.path;
-      default = "/etc/secrets/matrix-synapse/secrets.yaml";
+    extraConfigFiles = mkOption {
+      type = types.attrsOf types.path;
+      default = {};
+      example = { secrets = "/path/to/matrix-synapse/secrets.yaml"; };
       description = ''
-        A path to a file containing the 'registration_shared_secret' and other
-        secrets. Should only be readable by root (i.e. not in the Nix store).
+        Extra config files to include, e.g. as a way to include secrets without
+        publishing them to the nix store.
+        This is the recommended way to include the 'registration_shared_secret'
+        and other secrets.
+        Files will be read as root.
       '';
     };
 
     dataDir = mkOption {
-      type = types.str;
+      type = types.path;
       default = "/var/lib/matrix-synapse";
       description = ''
         The directory where matrix-synapse stores its stateful data such as
@@ -112,6 +116,7 @@ in {
       '';
     };
 
+    # .well-known configuration. Can be enabled on the same or on another another host.
     well-known = {
       enable = mkEnableOption ".well-known for queezles matrix homeserver";
 
@@ -121,6 +126,7 @@ in {
       };
     };
 
+    # Heisenbridge IRC bouncer. Has to run un the same host as synapse.
     heisenbridge = {
       enable = mkEnableOption "heisenbridge";
 
