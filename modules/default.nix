@@ -12,6 +12,9 @@
     ./mobile-nixos-bootloader.nix
     ./spotifyd.nix
     ./terminal.nix
+
+    # server
+    ./matrix-homeserver
     #./webserver.nix
   ];
 }
