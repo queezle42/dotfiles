@@ -44,14 +44,14 @@ in {
       serviceConfig = {
         Type = "notify";
         ExecStart = ''
-          ${cfg.package}/bin/homeserver --config-path ${cfg.configFile} --config-directory ''${CREDENTIALS_DIRECTORY} --keys-directory ${cfg.dataDir}
+          ${cfg.package}/bin/homeserver --config-path ${cfg.configFile} --config-path ''${CREDENTIALS_DIRECTORY} --keys-directory ${cfg.dataDir}
         '';
 
         User = "matrix-synapse";
         Group = "matrix-synapse";
         WorkingDirectory = cfg.dataDir;
 
-        LoadCredential = mapAttrsToList (name: path: "${name}:${path}") cfg.extraConfigFiles;
+        LoadCredential = mapAttrsToList (name: path: "${name}.yaml:${path}") cfg.extraConfigFiles;
 
         ExecReload = "${pkgs.util-linux}/bin/kill -HUP $MAINPID";
         Restart = "on-failure";
