@@ -1,5 +1,8 @@
 { config, lib, pkgs, ... }:
 
+# unused module, contains bad/invalid configuration
+# kept as reference
+
 with lib;
 
 let
@@ -45,7 +48,6 @@ in
           '';
           locations = {
             "=/" = {
-              # return  = "307 /ip";
               return  = ''200 "Hello World!"'';
             };
             "/auth" = {

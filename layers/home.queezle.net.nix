@@ -23,7 +23,6 @@
       '';
       locations = {
         "= /" = {
-          extraConfig = "default_type text/plain;";
           return  = ''307 /qapp/'';
         };
         "/ip" = {
@@ -112,11 +111,11 @@
   security.acme = {
     acceptTerms = true;
     email = "jens@nightmarestudio.de";
+    #server = "https://acme-staging-v02.api.letsencrypt.org/directory";
+    preliminarySelfsigned = false;
     certs."home.queezle.net" = {
-      dnsProvider = "hetzner";
-      # HACK acme-lego doesn't follow ns records correctly
-      dnsPropagationCheck = false;
-      credentialsFile = "/etc/secrets/dns/dns.hetzner.com_queezle.net";
+      dnsProvider = "hurricane";
+      credentialsFile = "/etc/secrets/dns/acme";
       group = "nginx";
     };
   };

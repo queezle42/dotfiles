@@ -41,8 +41,6 @@ in
   });
 
   systemd.services."actkbd-g11@" = {
-    enable = true;
-    restartIfChanged = true;
     unitConfig = {
       Description = "actkbd for G11 Gaming Keys on %I";
       ConditionPathExists = "/dev/input/%I";

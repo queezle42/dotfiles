@@ -40,7 +40,7 @@ in
   # Always run the latest kernel
   boot.kernelPackages = mkIf (!isMobileNixos) (mkDefault pkgs.linuxPackages_latest);
 
-  boot.tmpOnTmpfs = true;
+  boot.tmpOnTmpfs = mkDefault true;
 
   # schedutil is a modern replacement for ondemand and conservative that is tied to the scheduler
   # priority 100 is default; mkDefault is priority 1000; the goal here is to prefer schedutil over the auto-generated cpuFreqGovernor
@@ -99,6 +99,7 @@ in
     # Enabled by zsh layer
     # tmux
     gotop
+    btop
 
     (inxi.override { withRecommends = true; })
     lm_sensors
@@ -108,14 +109,15 @@ in
     hdparm
     wireguard-tools
 
+    ripgrep
+    fd
+
     pwgen
     mosquitto
     unzip
     file
     darkhttpd
     ncdu
-    ripgrep
-    fd
     fastmod
     loc
     gotty

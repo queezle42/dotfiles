@@ -36,7 +36,6 @@
   });
 
   systemd.services.q-g815= {
-    restartIfChanged = true;
     after = [ "g810-led.socket" ];
     requires = [ "g810-led.socket" "q-system.socket" ];
     script = "${pkgs.q}/bin/q g815 daemon | ${pkgs.socat}/bin/socat stdin unix-connect:/run/g810-led.socket";
@@ -61,7 +60,6 @@
     };
   };
   systemd.services.q-system= {
-    restartIfChanged = true;
     after = [ "q-system.socket" ];
     requires = [ "q-system.socket" ];
     unitConfig = {

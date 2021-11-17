@@ -23,7 +23,6 @@ do
       ;;
     --substitute-on-destination|-s)
       substitute_on_destination="--substitute-on-destination"
-      shift
       ;;
     *)
       positional+=("$1")
@@ -101,15 +100,15 @@ $nix copy $substitute_on_destination --no-check-sigs --to "ssh://root@$via_host?
 print_info "Activating target system configuration..."
 #ssh root@$via_host "nixos-install --system $nixos_config_path && sync"
 ssh root@$via_host '
-  print "Setting system profile" >&2 &&
+  echo "Setting system profile" >&2 &&
   nix-env --store /mnt --profile /mnt/nix/var/nix/profiles/system --set '$nixos_config_path' &&
-  print "Creating /etc/NIXOS" >&2 &&
+  echo "Creating /etc/NIXOS" >&2 &&
   mkdir -m 0755 -p "/mnt/etc" &&
   touch "/mnt/etc/NIXOS" &&
-  print "" >&2 &&
-  print "Linking mtab for grub" >&2 &&
+  echo "" >&2 &&
+  echo "Linking mtab for grub" >&2 &&
   ln -sfn /proc/mounts /mnt/etc/mtab &&
-  print "Installing bootloader" >&2 &&
+  echo "Installing bootloader" >&2 &&
   nixos-enter --root /mnt -c "NIXOS_INSTALL_BOOTLOADER=1 '$nixos_config_path'/bin/switch-to-configuration boot" &&
   sync
   '
