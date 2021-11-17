@@ -54,18 +54,17 @@ in {
 
     settings = mkOption {
       type = settingsFormat.type;
-      apply = recursiveUpdate cfg.defaultSettings;
       default = {};
       description = ''
         https://matrix-org.github.io/synapse/latest/usage/configuration/homeserver_sample_config.html
       '';
     };
 
-    defaultSettings = mkOption {
-      type = settingsFormat.type;
-      default = import ./settings.nix inputs;
+    recommendedSettings = mkOption {
+      type = types.bool;
+      default = false;
       description = ''
-        Default settings (i.e. *my* settings). Can be overwritten by setting them to '{}'.
+        Include recommended synapse settings, tuned for a small VPS instance with a few users (see 'recommended-settings.nix').
       '';
     };
 
@@ -189,14 +188,13 @@ in {
         assertion = !config.services.matrix-synapse.enable;
         message = "Cannot use services.matrix-synapse and queezle.matrix-homeserver at the same time.";
       }
-      {
-        assertion = config.queezle.matrix-homeserver.settings ? max_upload_size;
-        message = "queezle.matrix-homeserver.settings.max_upload_size not set";
-      }
     ];
 
-    queezle.matrix-homeserver.settings = {
-      server_name = cfg.serverName;
-    };
+    queezle.matrix-homeserver.settings = mkMerge [
+      (mkIf cfg.recommendedSettings (import ./recommended-settings.nix inputs))
+      {
+        server_name = cfg.serverName;
+      }
+    ];
   };
 }

@@ -16,9 +16,7 @@ in {
     global_factor = 4.0;
   };
 
-  # Set to default value because it needs to be configured on nginx
-  max_upload_size = "50M";
-
+  # Generate thumbnails matching the resolution requested by clients
   dynamic_thumbnails = true;
 
   url_preview_enabled = true;
@@ -44,14 +42,11 @@ in {
     "fec0::/10"
   ];
 
-  # TODO TURN
-
   enable_registration = true;
   registration_requires_token = true;
   bcrypt_rounds = 14; # Benchmarked to take >0.5s on an AMD Ryzen 9 5900X
 
-  # TODO Metrics
-
+  # Report anonymized usage statistics
   report_stats = false;
 
   trusted_key_servers = [
@@ -64,6 +59,4 @@ in {
       minimum_length = 16;
     };
   };
-
-  # TODO Push
 }

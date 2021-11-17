@@ -4,6 +4,7 @@ with lib;
 let
   cfg = config.queezle.matrix-homeserver;
 in {
+  # TODO dedicated enable
   config = mkIf cfg.enable {
     # postgresql database service
     services.postgresql = {
