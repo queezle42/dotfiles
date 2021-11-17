@@ -11,6 +11,7 @@ in {
     ./reverse-proxy.nix
     ./element.nix
     ./well-known.nix
+    ./coturn.nix
     ./heisenbridge.nix
   ];
 
@@ -39,6 +40,11 @@ in {
     elementDomain = mkOption {
       type = types.str;
       default = "element.${cfg.serverName}";
+    };
+
+    turnRealm = mkOption {
+      type = types.str;
+      default = "turn.${cfg.serverName}";
     };
 
     useACMEHost = mkOption {
@@ -123,6 +129,34 @@ in {
       nginxVirtualHost = mkOption {
         type = types.str;
         default = cfg.serverName;
+      };
+    };
+
+    # Configure a TURN server to run on the same host as synapse.
+    coturn = {
+      enable = mkEnableOption "matrix-homeserver TURN server";
+
+      useACMEHost = mkOption {
+        type = types.str;
+        default = cfg.turnRealm;
+      };
+
+      authSecretPath = mkOption {
+        type = types.path;
+        default = "/var/lib/matrix-homeserver/coturn-static-auth-secret";
+        description = ''
+          File path where the coturn static-auth-secret is stored. The secret will be automatically created.
+          Ensure the diretory exists and is not publicly readable when changing the path.
+        '';
+      };
+
+      package = mkOption {
+        type = types.package;
+        default = pkgs.coturn;
+        defaultText = literalExpression "pkgs.coturn";
+        description = ''
+          Overridable attribute of the coturn package to use.
+        '';
       };
     };
 
