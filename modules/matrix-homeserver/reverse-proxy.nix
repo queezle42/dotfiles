@@ -5,12 +5,15 @@ let
   cfg = config.queezle.matrix-homeserver;
   proxyLocationConfig = {
     # Add required headers, but only if recommendedProxySettings is disabled
-    extraConfig = mkIf (!config.services.nginx.recommendedProxySettings) ''
-      proxy_set_header Host $host;
-      proxy_set_header X-Forwarded-For $remote_addr;
-      proxy_set_header X-Forwarded-Proto $scheme;
-      client_max_body_size ${cfg.settings.max_upload_size};
-    '';
+    extraConfig = mkMerge [
+      (mkIf (!config.services.nginx.recommendedProxySettings) ''
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+      '')
+      # 50M is the current synapse default, update if that changes
+      "client_max_body_size ${cfg.settings.max_upload_size or "50M"};"
+    ];
     proxyPass = "http://127.0.0.1:8008";
   };
 in {
