@@ -43,18 +43,18 @@ readonly bootloader_partition="/dev/disk/by-partuuid/$bootloader_partition_uuid"
 readonly luks_partition="/dev/disk/by-partuuid/$luks_partition_uuid"
 
 
-sudo nix shell nixpkgs#vboot_reference -c cgpt create -p 20480 $(realpath $target_disk)
+# 2MB header hole
+sudo nix shell nixpkgs#vboot_reference -c cgpt create -p 4096 $(realpath $target_disk)
 
 sudo sfdisk $target_disk --append <<EOF
   unit: sectors
   sector-size: 512
 
-  start=20514, size=2048, type=EF32A33B-A409-486C-9141-9FFB711F6266, uuid=$misc_partition_uuid, name="misc"
-  start=22562, size=32768, type=EBC597D0-2053-4B15-8B64-E0AAC75F4DB1, uuid=$persist_partition_uuid, name="persist"
-  start=55330, size=262144, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, uuid=$bootloader_partition_uuid, name="boot", attrs="LegacyBIOSBootable"
-  start=317474, type=CA7D7CCB-63ED-4C53-861C-1742536059CC, uuid=$luks_partition_uuid, name="luks"
+  start=4224, size=2048, type=EF32A33B-A409-486C-9141-9FFB711F6266, uuid=$misc_partition_uuid, name="misc"
+  start=6272, size=32768, type=EBC597D0-2053-4B15-8B64-E0AAC75F4DB1, uuid=$persist_partition_uuid, name="persist"
+  start=39040, size=262144, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, uuid=$bootloader_partition_uuid, name="boot", attrs="LegacyBIOSBootable"
+  start=301184, type=CA7D7CCB-63ED-4C53-861C-1742536059CC, uuid=$luks_partition_uuid, name="luks"
 EOF
-# start=16, size=20480, type=8DA63339-0007-60C0-C436-083AC8230908, uuid=$uboot_partition_uuid, name="uboot"
 
 
 nix shell nixpkgs#busybox -c partprobe
@@ -103,6 +103,6 @@ print "Creating /etc/NIXOS"
 sudo mkdir -m 0755 -p "$mount_point/etc"
 sudo touch "$mount_point/etc/NIXOS"
 
-# Bootloader installation is not required (
+# Bootloader installation is not required
 #sudo nixos-enter --root $mount_point -c "NIXOS_INSTALL_BOOTLOADER=1 $nixos_config_path/bin/switch-to-configuration boot"
 sync
