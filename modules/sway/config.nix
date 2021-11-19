@@ -41,8 +41,8 @@ set $base0F #a3685a
 
 set $active #51c9ff
 
-set $wallpaper ~/pictures/background.png
-set $lockscreen ~/pictures/retrowave.png
+set $wallpaper ${config.queezle.sway.wallpaper}
+set $lockscreen ${config.queezle.sway.lockscreen}
 
 set $terminal terminal
 set $terminal_client footclient
