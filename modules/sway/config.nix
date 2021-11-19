@@ -83,7 +83,8 @@ output eDP-1 {
 
 output * bg $wallpaper fill
 
-# Run desktop daemons
+# Background processes
+
 exec PROMPT_NO_INITIAL_NEWLINE=1 foot --server
 
 exec mako
@@ -96,12 +97,6 @@ exec squeekboard
 
 # Fix XWayland DPI
 exec xrdb -load ~/.Xresources
-
-# Share wayland socket with other users
-# This should allocate a free socket instead
-# Also requires passwordless sudo, so it's currently disabled
-#set $wayland_socket /tmp/wayland-0
-#exec sh -c "if [ ! -S $wayland_socket ]; then touch $wayland_socket; sudo mount --bind $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY $wayland_socket; fi"
 
 #workspace_auto_back_and_forth yes
 
@@ -254,8 +249,8 @@ bindsym $mod+p exec $terminal python
 bindsym $mod+Shift+p exec $terminal stack ghci --verbosity warning
 
 # start a browser
-# Ozone appears to work only when $DISPLAY is not set
 bindsym $mod+b exec "chromium --enable-features=WebRTCPipeWireCapturer --force-dark-mode"
+# Ozone might work only when $DISPLAY is not set
 #bindsym $mod+b exec "chromium --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland --force-dark-mode"
 #bindsym $mod+Shift+b exec qutebrowser
 
