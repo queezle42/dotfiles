@@ -55,30 +55,19 @@ prompt_pure_check_cmd_exec_time() {
 prompt_pure_set_title() {
 	setopt localoptions noshwordsplit
 
-	# emacs terminal does not support settings the title
-	(( ${+EMACS} )) && return
+        # When the XT capability is available the window title (and sometimes the icon) can be set by using OSC 0.
+        # The XT capability was (probably?) introduced by xterm and is available in many terminals.
+        if [[ -z $terminfo[XT] ]]
+        then
+          return
+        fi
 
-	case $TTY in
-		# Don't set title over serial console.
-		/dev/ttyS[0-9]*) return;;
-	esac
-
-	# Show hostname if connected via ssh.
-	local hostname=
-	if [[ -n $prompt_pure_state[username] ]]; then
-		# Expand in-place in case ignore-escape is used.
-		hostname="${(%):-(%m) }"
-	fi
-
-	local -a opts
-	case $1 in
-		expand-prompt) opts=(-P);;
-		ignore-escape) opts=(-r);;
-	esac
+	# Always show user, host and path (current user/host detection fails e.g. when using machinectl shell)
+	local location="%n@%m %~"
 
 	# Set title atomically in one print statement so that it works
 	# when XTRACE is enabled.
-	print -n $opts $'\e]0;'${hostname}${2}$'\a'
+	print -Pn $'\e]0;'${location}${1}$'\a'
 }
 
 prompt_pure_preexec() {
@@ -94,8 +83,8 @@ prompt_pure_preexec() {
 
 	typeset -g prompt_pure_cmd_timestamp=$EPOCHSECONDS
 
-	# shows the current dir and executed command in the title while a process is active
-	prompt_pure_set_title 'ignore-escape' "$PWD:t: $2"
+	# show the executed command in the title while a process is active
+	prompt_pure_set_title ": $2"
 
 	# Disallow python virtualenv from updating the prompt, set it to 12 if
 	# untouched by the user to indicate that Pure modified it. Here we use
@@ -177,7 +166,7 @@ prompt_pure_precmd() {
 	unset prompt_pure_cmd_timestamp
 
 	# shows the full path in the title
-	prompt_pure_set_title 'expand-prompt' '%~'
+	prompt_pure_set_title
 
 	# preform async git dirty check and fetch
 	prompt_pure_async_tasks
@@ -210,7 +199,7 @@ prompt_pure_async_git_aliases() {
 	local -a gitalias pullalias
 
 	# list all aliases and split on newline.
-	gitalias=(${(@f)"$(command git config --get-regexp "^alias\.")"})
+	gitalias=(${(@f)"$(command git config --get-regexp "^aliaS\.")"})
 	for line in $gitalias; do
 		parts=(${(@)=line})           # split line on spaces
 		aliasname=${parts[1]#alias.}  # grab the name (alias.[name])
@@ -508,16 +497,8 @@ prompt_pure_reset_vim_prompt_widget() {
 prompt_pure_state_setup() {
 	setopt localoptions noshwordsplit
 
-	local username
-
-	if [[ $UID -eq 0 ]]
-	then
-		# show username@host if root, with username in white
-		username='%F{white}%n%f%F{242}@%m%f'
-	else
-		# show username@host
-		username='%F{242}%n@%m%f'
-	fi
+        # show username@host; highlight username if running with privileges
+	local username='%(!.%F{white}.%F{242})%n%f%F{242}@%m%f'
 
 	typeset -gA prompt_pure_state
 	prompt_pure_state=(
