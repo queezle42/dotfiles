@@ -11,6 +11,8 @@ in
     less
     # required for neovim spellcheck
     aspell
+    # used for icat
+    notcurses
   ];
 
   programs.tmux = {
@@ -43,6 +45,8 @@ in
     lh = "ls -lh";
     la = "ls -la";
     lah = "ls -lah";
+
+    icat = "print; ncplayer -k -t0 -q -b pixel -s none";
 
     # tree configured to ignore .gitignore
     gtree = "${pkgs.tree}/bin/tree --fromfile <(${pkgs.fd}/bin/fd -H -E .git)";
