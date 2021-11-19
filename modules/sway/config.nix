@@ -45,7 +45,7 @@ set $wallpaper ${config.queezle.sway.wallpaper}
 set $lockscreen ${config.queezle.sway.lockscreen}
 
 set $terminal terminal
-set $terminal_client footclient
+set $terminal2 terminal2
 
 set $workspace_q 0:q
 set $workspace_irc 11:irc
@@ -236,7 +236,7 @@ bindsym $mod+Shift+asciicircum move container to workspace $workspace_q
 # start a terminal
 bindsym $mod+Return exec $terminal
 bindsym $mod+Shift+Return exec cool-retro-term --fullscreen --profile "Default Amber"
-bindsym $mod+Alt+Return exec footclient
+bindsym $mod+Alt+Return exec $terminal2
 
 # start program launcher
 bindsym $mod+Tab exec launcher
@@ -247,10 +247,10 @@ bindsym $mod+Tab exec launcher
 #bindsym $mod+o exec cool-retro-term --fullscreen --profile "Monochrome Green" -e run/edi/edish/edish
 bindsym $mod+o exec cool-retro-term --fullscreen --profile "Monochrome Green" -e ssh edi
 
-# start an ipython terminal
+# start a python terminal
 bindsym $mod+p exec $terminal python
 
-# start an haskel ghci terminal
+# start an haskel ghci terminal (TODO)
 bindsym $mod+Shift+p exec $terminal stack ghci --verbosity warning
 
 # start a browser
@@ -277,7 +277,7 @@ bindsym $mod+Shift+m move container to workspace $workspace_music
 # start spotify instead of mopidy web interface while mopidy is broken
 #bindsym $mod+Ctrl+m workspace $workspace_music; exec chromium --app=http://stargate:6680/iris/#/
 bindsym $mod+Ctrl+m workspace $workspace_music; exec spotify
-bindsym $mod+Alt+m exec $terminal_client pulsemixer
+bindsym $mod+Alt+m exec $terminal pulsemixer
 #bindsym $mod+Ctrl+m workspace $workspace_music; exec ~/run/spotify-singleton
 
 # scratchpad
