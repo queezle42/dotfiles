@@ -114,12 +114,6 @@ in
     autoload -Uz compinit
     compinit
 
-    if (( $+commands[kitty] ))
-    then
-      kitty + complete setup zsh | source /dev/stdin
-      alias icat="kitty +kitten icat"
-    fi
-
     if (( $+commands[direnv] ))
     then
       eval "$(direnv hook zsh)"
