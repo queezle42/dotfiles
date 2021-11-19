@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, extraRC ? "", extraStartPlugins ? [], extraOptPlugins ? [] }:
 
 pkgs.neovim.override {
   configure = {
@@ -108,20 +108,7 @@ pkgs.neovim.override {
       let g:bufferline_echo = 0
 
 
-      " Configure language client
-
-      "let g:LanguageClient_useVirtualText = "No"
-      "" let g:LanguageClient_hideVirtualTextsOnInsert = 1
-
-      "let g:LanguageClient_serverCommands = {
-      "\   'haskell': ['haskell-language-server-wrapper', '--lsp'],
-      "\   'cpp': ['clangd', '--background-index',]
-      "\ }
-
-      "function SetupLanguageClient()
-      "  " Always show the sign column (to prevent jumps when loading git- or the language client)
-      "  set signcolumn=yes
-
+      " Old language client keybindings
       "  nnoremap <Leader>la <Cmd>call LanguageClient_workspace_applyEdit()<CR>
       "  nnoremap <Leader>lc <Cmd>call LanguageClient#textDocument_definition()<CR>
       "  nnoremap <Leader>ld <Cmd>call LanguageClient#textDocument_definition()<CR>
@@ -134,16 +121,12 @@ pkgs.neovim.override {
       "  nnoremap <Leader>lt <Cmd>call LanguageClient#textDocument_typeDefinition()<CR>
       "  nnoremap <Leader>lx <Cmd>call LanguageClient#textDocument_references()<CR>
       "  nnoremap <Leader>lq <Cmd>LanguageClientStop<CR><Cmd>LanguageClientStart<CR>
-      "endfunction()
-
-      "augroup LSP
-      "  autocmd!
-      "  autocmd FileType c,cpp,haskell call SetupLanguageClient()
-      "augroup END
 
 
       " Use deoplete for autocompletion.
       let g:deoplete#enable_at_startup = 1
+
+      nnoremap <Leader>gg <Cmd>Goyo<CR>
 
       " <Leader>n clears the last search highlighting.
       nnoremap <Leader>n <Cmd>nohlsearch<CR>
@@ -151,12 +134,58 @@ pkgs.neovim.override {
 
       " Shortcut to enable spellcheck (requires aspell installation)
       nnoremap <Leader>s <Cmd>setlocal spell spelllang=en_us<CR>
+      nnoremap <Leader>S <Cmd>setlocal spell spelllang=de_de<CR>
 
+      lua << EOF
+        local nvim_lsp = require('lspconfig')
+
+        local on_attach = function(client, bufnr)
+          local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+          local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+          -- Enable completion triggered by <c-x><c-o>
+          buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+          -- Mappings.
+          local opts = { noremap=true, silent=true }
+
+          -- See `:help vim.lsp.*` for documentation on any of the below functions
+          buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+          buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+          buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+          buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+          buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+          buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+          buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+          buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+          buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+          buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+          buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+          buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+          buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+          buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+          buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+          buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+          buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+        end
+
+        nvim_lsp.clangd.setup {
+          on_attach = on_attach
+        }
+        nvim_lsp.hls.setup  {
+          on_attach = on_attach
+        }
+      EOF
+
+      ${extraRC}
     '';
     packages.myVimPackage = with pkgs.vimPlugins; {
       start = [
         # Colorscheme
         gruvbox-community
+
+        # Distraction-free writing in Vim.
+        goyo-vim
 
         # Basics (VSCodeVim compatible)
         # Changes 's<char><char>' to motion that finds the next combination of the given characters (similar to 'f<char>')
@@ -180,12 +209,9 @@ pkgs.neovim.override {
         fzfWrapper
         fzf-vim
 
-        # non-neovim-native Language server support
-        #LanguageClient-neovim
-        deoplete-nvim
-
         # neovim native language server support
-        #nvim-lspconfig
+        nvim-lspconfig
+        deoplete-nvim
 
         nvim-gdb
 
@@ -207,11 +233,9 @@ pkgs.neovim.override {
 
         # Haskell syntax highlighting
         haskell-vim
-        # Haskell alternative to language server (TODO: load on demand?)
-        #ghcid
-      ];
+      ] ++ extraStartPlugins;
       opt = [
-      ];
+      ] ++ extraOptPlugins;
     };
   };
 }
