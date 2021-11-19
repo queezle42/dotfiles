@@ -20,6 +20,21 @@
         "type": "github"
       }
     },
+    "matrix-homeserver": {
+      "locked": {
+        "lastModified": 1637280661,
+        "narHash": "sha256-ruWnEEg/tOZqF3RKaGKjKU/KToQIQgHg5ts8Mu9XFEs=",
+        "owner": "queezle42",
+        "repo": "matrix-homeserver",
+        "rev": "4d49430eae3f86a5502b85490bb6feeabffd6bf1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "queezle42",
+        "repo": "matrix-homeserver",
+        "type": "github"
+      }
+    },
     "mobile-nixos": {
       "flake": false,
       "locked": {
@@ -174,6 +189,7 @@
     "root": {
       "inputs": {
         "homemanager": "homemanager",
+        "matrix-homeserver": "matrix-homeserver",
         "mobile-nixos": "mobile-nixos",
         "nixpkgs": "nixpkgs",
         "nixpkgs-pinephone": "nixpkgs-pinephone",

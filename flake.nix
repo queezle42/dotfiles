@@ -21,6 +21,8 @@
       url = github:NixOS/mobile-nixos;
       flake = false;
     };
+
+    matrix-homeserver.url = github:queezle42/matrix-homeserver;
   };
 
   outputs = inputs_@{ self, nixpkgs, ... }: {

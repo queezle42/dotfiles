@@ -14,7 +14,6 @@
     ./terminal.nix
 
     # server
-    ./matrix-homeserver
     #./webserver.nix
   ];
 }

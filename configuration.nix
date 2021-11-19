@@ -48,7 +48,7 @@ in
     (path + "/configuration.nix")
     normalSystemConfiguration
     flakeInputs.homemanager.nixosModules.home-manager
-    #flakeInputs.sample.nixosModules.sample
+    flakeInputs.matrix-homeserver.nixosModules.matrix-homeserver
   ] ++ layerImports;
 
   home-manager = {
