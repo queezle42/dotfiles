@@ -48,7 +48,7 @@ set $terminal terminal
 set $terminal2 terminal2
 
 set $workspace_q 0:q
-set $workspace_irc 11:irc
+set $workspace_messaging 11:msg
 set $workspace_telegram 12:t
 set $workspace_music 13:music
 
@@ -257,10 +257,10 @@ bindsym $mod+b exec "chromium --enable-features=WebRTCPipeWireCapturer --force-d
 # start htop
 bindsym $mod+Escape exec $terminal htop
 
-# open irc workspace
-bindsym $mod+i workspace $workspace_irc
-bindsym $mod+Shift+i move container to workspace $workspace_irc
-bindsym $mod+Ctrl+i workspace $workspace_irc; exec $terminal irc
+# Messaging workspace / open matrix client
+bindsym $mod+i workspace $workspace_messaging
+bindsym $mod+Shift+i move container to workspace $workspace_messaging
+bindsym $mod+Ctrl+i workspace $workspace_messaging; exec chromium --app=https://element.queezle.net/
 
 # start telegram
 bindsym $mod+t workspace $workspace_telegram
