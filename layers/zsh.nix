@@ -332,5 +332,15 @@ in
         builtin cd "$@"
       fi
     }
+
+    tmp () (
+      readonly tmpdir=$(mktemp -d ''${1:-})
+      [[ -z $tmpdir ]] && exit 1
+      TRAPEXIT() {
+        rm -rf $tmpdir
+      }
+      cd $tmpdir
+      zsh -is
+    )
   '';
 }
