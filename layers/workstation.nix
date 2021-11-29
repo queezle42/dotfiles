@@ -15,6 +15,7 @@
     spotify
     gimp
     mumble
+    godot
   ];
 
 

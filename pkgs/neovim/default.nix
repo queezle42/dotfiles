@@ -175,6 +175,9 @@ pkgs.neovim.override {
         nvim_lsp.hls.setup  {
           on_attach = on_attach
         }
+        nvim_lsp.gdscript.setup {
+          on_attach = on_attach
+        }
       EOF
 
       ${extraRC}
