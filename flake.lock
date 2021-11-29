@@ -22,11 +22,11 @@
     },
     "matrix-homeserver": {
       "locked": {
-        "lastModified": 1637280661,
-        "narHash": "sha256-ruWnEEg/tOZqF3RKaGKjKU/KToQIQgHg5ts8Mu9XFEs=",
+        "lastModified": 1637720736,
+        "narHash": "sha256-bO7rfzqyKUjF7FraBJuIRzG80eX8dT0NX+HJK7UI2iQ=",
         "owner": "queezle42",
         "repo": "matrix-homeserver",
-        "rev": "4d49430eae3f86a5502b85490bb6feeabffd6bf1",
+        "rev": "a9b94351650771f0cfc529a6a9099a11d0599718",
         "type": "github"
       },
       "original": {
