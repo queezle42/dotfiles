@@ -126,7 +126,7 @@ pkgs.neovim.override {
       " Use deoplete for autocompletion.
       let g:deoplete#enable_at_startup = 1
 
-      nnoremap <Leader>gg <Cmd>Goyo<CR>
+      nnoremap <Leader>go <Cmd>Goyo<CR>
 
       " <Leader>n clears the last search highlighting.
       nnoremap <Leader>n <Cmd>nohlsearch<CR>
