@@ -230,7 +230,7 @@ bindsym $mod+Shift+asciicircum move container to workspace $workspace_q
 
 # start a terminal
 bindsym $mod+Return exec $terminal
-bindsym $mod+Shift+Return exec cool-retro-term --fullscreen --profile "Default Amber"
+bindsym $mod+Shift+Return exec cool-retro-term --fullscreen --profile "Monochrome Green"
 bindsym $mod+Alt+Return exec $terminal2
 
 # start program launcher
@@ -239,8 +239,8 @@ bindsym $mod+Tab exec launcher
 #bindsym $mod+Mod1+Tab exec rofi -show run
 
 # start an edi shell
-#bindsym $mod+o exec cool-retro-term --fullscreen --profile "Monochrome Green" -e run/edi/edish/edish
-bindsym $mod+o exec cool-retro-term --fullscreen --profile "Monochrome Green" -e ssh edi
+#bindsym $mod+o exec cool-retro-term --fullscreen --profile "Default Amber" -e run/edi/edish/edish
+bindsym $mod+o exec cool-retro-term --fullscreen --profile "Default Amber" -e ssh edi
 
 # start a python terminal
 bindsym $mod+p exec $terminal python
