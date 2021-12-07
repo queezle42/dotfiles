@@ -129,6 +129,7 @@ in
     reptyr
     ldns
     libfaketime
+    moreutils
   ];
 
   users = {
