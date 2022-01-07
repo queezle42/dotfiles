@@ -51,6 +51,8 @@ in
     # tree configured to ignore .gitignore
     gtree = "${pkgs.tree}/bin/tree --fromfile <(${pkgs.fd}/bin/fd -H -E .git)";
 
+    tigs = "tig status";
+
     nix-zsh = "nix-shell --packages zsh --command \"exec zsh\"";
 
     cal = "cal --monday";
