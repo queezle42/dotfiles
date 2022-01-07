@@ -24,6 +24,10 @@ in
   users.groups.bluetooth = {};
   users.groups.pulse-access = {};
 
+  # Bluetooth SIM access profile
+  # Gives external devices (e.g. car radio) access to a SIM card (if available)
+  hardware.bluetooth.disabledPlugins = [ "sap" ];
+
   # Open PulseAudio port to qnet
   networking.firewall.interfaces.qnet = mkIf config.queezle.qnet.enable {
     allowedTCPPorts = [ 4713 ];
