@@ -2,7 +2,6 @@
 
 {
   imports = [
-    #./loginctl-linger.nix
     ./desktop
     ./desktop/launcher.nix
     ./sway
