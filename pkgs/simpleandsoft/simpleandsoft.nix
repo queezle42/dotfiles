@@ -20,6 +20,7 @@ stdenv.mkDerivation rec {
     mkdir -p "$out/share/icons/Simple-and-Soft"
     tree
     cp -R "cursors" "$out/share/icons/Simple-and-Soft/cursors"
+    ln -s "$out/share/icons/Simple-and-Soft/cursors/xterm" "$out/share/icons/Simple-and-Soft/cursors/text"
     install -Dm644 "$indexThemePath" "$out/share/icons/Simple-and-Soft/index.theme"
   '';
 }
