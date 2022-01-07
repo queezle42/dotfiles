@@ -47,19 +47,12 @@ let
           (mkAdditionalIsoConfig name)
         ];
       }).system.build.isoImage;
-      sdImage = (evaluateConfig nixpkgs {
-        inherit system;
-        modules = [
-          isoConfiguration
-          (mkAdditionalSdCardConfig name)
-        ];
-      }).system.build.sdImage;
       systemDerivation = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [ configuration ];
       };
     in {
-      inherit systemDerivation iso sdImage;
+      inherit systemDerivation iso;
     };
   mkAdditionalIsoConfig = name: { config, modulesPath, ... }: {
     imports = [
@@ -74,24 +67,11 @@ let
     boot.loader.grub.memtest86.enable = true;
     _module.args.isIso = true;
   };
-  mkAdditionalSdCardConfig = name: { config, modulesPath, ... }: {
-    imports = [
-      "${modulesPath}/installer/cd-dvd/sd-image.nix"
-      "${modulesPath}/profiles/all-hardware.nix"
-      "${modulesPath}/profiles/base.nix"
-    ];
-    sdImage.populateRootCommands = "";
-    sdImage.populateFirmwareCommands = "";
-    boot.loader.grub.enable = false;
-    boot.loader.generic-extlinux-compatible.enable = true;
-    _module.args.isIso = true;
-  };
 
 in
 {
   nixosSystemDerivations = withMachines (x: (mkNixosSystemDerivations x).systemDerivation);
   isos = withMachines (x: (mkNixosSystemDerivations x).iso);
-  sdImages = withMachines (x: (mkNixosSystemDerivations x).sdImage);
   installers = withMachines (
     {name, path}: import ./bin/lib/installation.nix {
       pkgs=flakeInputs.nixpkgs.legacyPackages.x86_64-linux;
