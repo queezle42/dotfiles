@@ -8,14 +8,27 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    virtmanager
+    # password manager
     keepassxc
 
+    # messaging
     tdesktop
-    spotify
-    gimp
     mumble
+
+    # music
+    spotify
+    sublime-music
+
+    # books
+    cozy
+    calibre
+
+    # content creation
+    gimp
     godot
+
+    # admin stuff
+    virtmanager
   ];
 
 

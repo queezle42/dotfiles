@@ -118,6 +118,7 @@ in
     file
     darkhttpd
     ncdu
+    duf
     fastmod
     loc
     gotty
