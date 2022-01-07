@@ -6,6 +6,7 @@
     ./desktop
     ./desktop/launcher.nix
     ./sway
+    ./project-manager
     ./dotfiles.nix
     ./he-dns.nix
     ./kea.nix

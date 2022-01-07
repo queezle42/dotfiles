@@ -235,18 +235,19 @@ bindsym $mod+Alt+Return exec $terminal2
 
 # start program launcher
 bindsym $mod+Tab exec launcher
-#bindsym $mod+Tab exec rofi -show drun
-#bindsym $mod+Mod1+Tab exec rofi -show run
+
+# start project launcher
+bindsym $mod+p exec project-launcher
 
 # start an edi shell
 #bindsym $mod+o exec cool-retro-term --fullscreen --profile "Default Amber" -e run/edi/edish/edish
-bindsym $mod+o exec cool-retro-term --fullscreen --profile "Default Amber" -e ssh edi
+#bindsym $mod+o exec cool-retro-term --fullscreen --profile "Default Amber" -e ssh edi
 
 # start a python terminal
-bindsym $mod+p exec $terminal python
+#bindsym $mod+p exec $terminal python
 
 # start an haskel ghci terminal (TODO)
-bindsym $mod+Shift+p exec $terminal stack ghci --verbosity warning
+#bindsym $mod+Shift+p exec $terminal stack ghci --verbosity warning
 
 # start a browser
 bindsym $mod+b exec "chromium --enable-features=WebRTCPipeWireCapturer --force-dark-mode"

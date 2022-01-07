@@ -21,6 +21,8 @@ in
   config = mkIf cfg.enable {
     queezle.terminal.enable = true;
 
+    queezle.project-manager.enable = true;
+
     home-manager.users."${cfg.user}".xdg = {
       configFile."foot/foot.ini" = {
         source = import ./config/foot.nix inputs;
