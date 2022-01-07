@@ -3,6 +3,7 @@
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
 
     nixpkgs-pinephone.url = github:nixos/nixpkgs/nixos-unstable;
+    nixpkgs-pinephone.follows = "nixpkgs";
 
     homemanager = {
       url = github:nix-community/home-manager;

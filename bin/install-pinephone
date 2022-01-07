@@ -60,14 +60,14 @@ EOF
 nix shell nixpkgs#busybox -c partprobe
 
 
-readonly uboot_installable="path:$MACHINES_PATH#nixosConfigurations.$machine.config.system.build.u-boot"
+readonly uboot_installable="path:$MACHINES_PATH#nixosConfigurations.$machine.config.mobile.outputs.u-boot.u-boot"
 readonly uboot=$($nix build --json --no-link $uboot_installable | jq --raw-output ".[0].outputs.out")
 
 #sudo dd if=$uboot/u-boot-sunxi-with-spl.bin of=$uboot_partition bs=16M conv=fsync oflag=direct status=progress
 sudo dd if=$uboot/u-boot-sunxi-with-spl.bin of=$target_disk bs=1024 seek=8 conv=fsync status=progress
 
 
-readonly boot_partition_installable="path:$MACHINES_PATH#nixosConfigurations.$machine.config.system.build.boot-partition"
+readonly boot_partition_installable="path:$MACHINES_PATH#nixosConfigurations.$machine.config.mobile.outputs.u-boot.boot-partition"
 
 readonly boot_partition_image=$($nix build --json --no-link $boot_partition_installable | jq --raw-output ".[0].outputs.out")
 

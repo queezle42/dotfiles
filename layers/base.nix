@@ -21,7 +21,7 @@ in
     ./ioschedulers.nix
   ];
 
-  nix.package = pkgs.nixUnstable;
+  nix.package = pkgs.nixFlakes; # noop in current nixpkgs
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
