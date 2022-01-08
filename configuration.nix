@@ -25,7 +25,12 @@ let
 
   layerImports = map layerPath dotfilesConfig.layers;
 
-  normalSystemConfiguration = (lib.optionalAttrs (!isIso) {
+  addInstallResultConfiguration =
+    if installResult ? addInstallResultConfiguration
+      then installResult.addInstallResultConfiguration
+      else true;
+
+  normalSystemConfiguration = (lib.optionalAttrs (!isIso && addInstallResultConfiguration) {
     # TODO move to machine configuration?
     imports = [ (path + "/hardware-configuration.nix") ];
     # Bootloader
@@ -56,8 +61,6 @@ in
     # disable home-managers usage of nix-env
     useUserPackages = true;
   };
-
-  _module.args.isIso = lib.mkDefault false;
 
   nixpkgs.overlays = [
     (import ./pkgs)
