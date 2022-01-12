@@ -43,10 +43,13 @@ readonly bootloader_partition="/dev/disk/by-partuuid/$bootloader_partition_uuid"
 readonly luks_partition="/dev/disk/by-partuuid/$luks_partition_uuid"
 
 
+sudo wipefs -a $target_disk
+
 # 2MB header hole
 sudo nix shell nixpkgs#vboot_reference -c cgpt create -p 4096 $(realpath $target_disk)
+sudo nix shell nixpkgs#vboot_reference -c cgpt boot -p $(realpath $target_disk)
 
-sudo sfdisk $target_disk --append <<EOF
+sudo nix shell nixpkgs/nixos-21.05#util-linux -c sfdisk $target_disk --append <<EOF
   unit: sectors
   sector-size: 512
 
