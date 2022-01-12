@@ -80,19 +80,6 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_3": {
-      "locked": {
-        "lastModified": 1640408860,
-        "narHash": "sha256-h2uF3+a8bVfM8SjcS4hLbsOzOuG3qsxuImC0BucWs1Q=",
-        "path": "/nix/store/m6p4m1rs0xi67kaa25bm1rqkm4633qjr-source",
-        "rev": "cb372c3b8880e504b06946e8fb2ca9777c685505",
-        "type": "path"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
     "q": {
       "inputs": {
         "nixpkgs": [
@@ -102,11 +89,11 @@
       },
       "locked": {
         "host": "git.c3pb.de",
-        "lastModified": 1638899358,
-        "narHash": "sha256-59XFlZmTF2/C2HT4lK2xi62Ju/vX1/ZzSONJmg/RnWU=",
+        "lastModified": 1641951740,
+        "narHash": "sha256-zXakWDKFROSNg6J5opIYCmp3bo6Xo8sawcl1vkFP97s=",
         "owner": "jens",
         "repo": "q",
-        "rev": "7e89331c742afea32a80159be7a54d3ecb1b3eec",
+        "rev": "9ecc87bb6bec339bb63f3a61e43b46d8953cb7e2",
         "type": "gitlab"
       },
       "original": {
@@ -140,7 +127,7 @@
     },
     "quasar": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "host": "git.c3pb.de",
@@ -160,7 +147,10 @@
     },
     "quasar-network": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": [
+          "q",
+          "nixpkgs"
+        ],
         "quasar": "quasar"
       },
       "locked": {
