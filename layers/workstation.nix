@@ -11,6 +11,9 @@
     # password manager
     keepassxc
 
+    # spaced repetition software
+    anki-bin
+
     # messaging
     tdesktop
     mumble
