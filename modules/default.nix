@@ -4,6 +4,7 @@
   imports = [
     ./desktop
     ./desktop/launcher.nix
+    ./emacs
     ./sway
     ./project-manager
     ./dotfiles.nix
