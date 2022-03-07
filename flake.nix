@@ -2,6 +2,8 @@
   inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
 
+    nixpkgs-master.url = github:nixos/nixpkgs/master;
+
     nixpkgs-pinephone.url = github:nixos/nixpkgs/nixos-unstable;
     nixpkgs-pinephone.follows = "nixpkgs";
 
@@ -11,15 +13,19 @@
     };
     qauth = {
       url = gitlab:jens/qauth?host=git.c3pb.de;
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     q = {
       url = gitlab:jens/q?host=git.c3pb.de;
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     mobile-nixos = {
       url = github:NixOS/mobile-nixos;
+      flake = false;
+    };
+
+    emacs-overlay.url = github:nix-community/emacs-overlay;
+    emacs-term-cursor = {
+      url = github:denrat/term-cursor.el;
       flake = false;
     };
 
