@@ -7,9 +7,14 @@
     #./vscode.nix
   ];
 
+  queezle.emacs.enable = true;
+
   environment.systemPackages = with pkgs; [
     # password manager
     keepassxc
+
+    # calculator
+    qalculate-gtk
 
     # spaced repetition software
     anki-bin
@@ -32,8 +37,11 @@
 
     # admin stuff
     virtmanager
-  ];
 
+    ### CLI
+    # Search unicode glyphs
+    unipicker
+  ];
 
   users.users.adobe = {
     isNormalUser = true;

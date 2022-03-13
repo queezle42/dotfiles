@@ -127,7 +127,7 @@ in
     picocom
     pv
     socat
-    reptyr
+    #reptyr
     ldns
     libfaketime
     moreutils
