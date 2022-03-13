@@ -68,6 +68,8 @@ readonly uboot=$($nix build --json --no-link $uboot_installable | jq --raw-outpu
 sudo dd if=$uboot/u-boot-sunxi-with-spl.bin of=$target_disk bs=1024 seek=8 conv=fsync status=progress
 
 
+sleep 2s
+
 sudo wipefs -a $root_partition
 
 # partprobe doesn't seem to be enough for symlinks to appear?
@@ -97,4 +99,8 @@ sudo touch "$mount_point/etc/NIXOS"
 # - look for "Install or update the bootloader."
 # - run extlinux-conf-builder.sh:
 #   /nix/store/[...]-extlinux-conf-builder.sh -d /mnt/mnt/boot -c $nixos_config_path -t 5
+print "Manual bootloader installation required"
+print "- Find bootloader installation in: $nixos_config_path/bin/switch-to-configuration"
+print "- Then run extlinux-builder: sudo /nix/store/[...]-extlinux-conf-builder.sh -d $mount_point/boot -c $nixos_config_path -t 5"
+
 sync
