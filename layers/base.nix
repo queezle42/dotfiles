@@ -70,7 +70,7 @@ in
     layout = "de";
     xkbModel = "pc105";
     xkbVariant = "nodeadkeys";
-    xkbOptions = "caps:escape_shifted_capslock";
+    xkbOptions = "caps:escape";
   };
 
   # I like to be able to carry my laptops with the lid closed while they are still running

@@ -56,7 +56,7 @@ input * {
   xkb_layout de
   xkb_variant nodeadkeys
   xkb_numlock enable
-  xkb_options caps:escape_shifted_capslock
+  xkb_options caps:escape
 }
 
 input 7805:12850:ROCCAT_ROCCAT_Ryos_MK_Pro {
