@@ -1,28 +1,28 @@
 { pkgs, lib, ... }:
 
 {
-  systemd.sockets.g810-led = {
+  systemd.sockets.g815-led = {
     wantedBy = [ "multi-user.target" ];
-    partOf = [ "g810-led.service" ];
+    partOf = [ "g815-led.service" ];
     unitConfig = {
       Description = "Logitech keyboard led socket";
     };
     socketConfig = {
-      ListenStream = "/run/g810-led.socket";
+      ListenStream = "/run/g815-led.socket";
       SocketUser = "jens";
       Accept = "yes";
       MaxConnections = 1;
     };
   };
-  systemd.services."g810-led@" = {
-    after = [ "g810-led.socket" ];
-    requires = [ "g810-led.socket" ];
-    bindsTo = [ "g810-led.socket" ];
+  systemd.services."g815-led@" = {
+    after = [ "g815-led.socket" ];
+    requires = [ "g815-led.socket" ];
+    bindsTo = [ "g815-led.socket" ];
     unitConfig = {
       Description = "Logitech keyboard led backend";
     };
     serviceConfig = {
-      ExecStart = "${pkgs.g810-led}/bin/g810-led -pp";
+      ExecStart = "${pkgs.g810-led}/bin/g815-led -dp c33f -pp";
       StandardInput = "socket";
     };
   };
@@ -36,9 +36,9 @@
   });
 
   systemd.services.q-g815= {
-    after = [ "g810-led.socket" ];
-    requires = [ "g810-led.socket" "q-system.socket" ];
-    script = "${pkgs.q}/bin/q g815 daemon | ${pkgs.socat}/bin/socat stdin unix-connect:/run/g810-led.socket";
+    after = [ "g815-led.socket" ];
+    requires = [ "g815-led.socket" "q-system.socket" ];
+    script = "${pkgs.q}/bin/q g815 daemon | ${pkgs.socat}/bin/socat stdin unix-connect:/run/g815-led.socket";
     unitConfig = {
       Description = "g815 led control";
     };
@@ -47,6 +47,7 @@
       User = "jens";
     };
   };
+
 
   systemd.sockets.q-system = {
     wantedBy = [ "multi-user.target" ];
