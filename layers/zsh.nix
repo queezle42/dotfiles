@@ -348,5 +348,25 @@ in
       cd $tmpdir
       zsh -is
     )
+
+    tmpenv () {
+      sudo systemd-run \
+        --system \
+        --uid=$UID \
+        --property=ProtectSystem=strict \
+        --property=ProtectHome=tmpfs \
+        --property=TemporaryFileSystem=$HOME:nodev,noatime,nosuid,mode=0755,uid=$UID \
+        --property=TemporaryFileSystem=/tmp:nodev,noatime,nosuid,mode=0755,uid=$UID \
+        --property=BindReadOnlyPaths=-$HOME/.nix-defexpr/channels \
+        --property=BindPaths=$PWD \
+        --property=ReadWritePaths=-/nix/var/nix/daemon-socket/socket \
+        --pty \
+        --same-dir \
+        --wait \
+        --collect \
+        --service-type=exec \
+        $@ \
+        zsh
+    }
   '';
 }
