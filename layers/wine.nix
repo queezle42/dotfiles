@@ -26,11 +26,7 @@
         wineBuild = "wineWow";
         wineRelease = "stable";
         pulseaudioSupport = true;
-        pngSupport = true;
-        jpegSupport = true;
-        colorManagementSupport = true;
         openalSupport = true;
-        tiffSupport = true;
         vaSupport = true;
         fontconfigSupport = true;
         alsaSupport = true;
