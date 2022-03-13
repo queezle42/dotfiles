@@ -120,10 +120,19 @@ in
     autoload -Uz compinit
     compinit
 
+    # Restore truecolor support over ssh
+    if [[ $TERM==foot && -z $COLORTERM ]] {
+      export COLORTERM=truecolor
+    }
+
     if (( $+commands[direnv] ))
     then
       eval "$(direnv hook zsh)"
     fi
+
+    woman() {
+      emacsclient -c -t -a "" -e "(woman \"''${(j:-:)@:q:q}\")"
+    }
 
     nman() {
       if [[ -n "$1" ]]

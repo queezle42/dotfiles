@@ -22,17 +22,17 @@ let
           rustPlatform.buildRustPackage {
             version = efinal.tsc.version;
             src = efinal.tsc.src;
-        
+
             pname = "tsc-dyn";
             commit = efinal.tsc.version;
-        
+
             nativeBuildInputs = [ llvmPackages.clang ];
             sourceRoot = "source/core";
-        
+
             configurePhase = ''
               export LIBCLANG_PATH="${llvmPackages.libclang.lib}/lib"
             '';
-        
+
             postInstall = ''
               LIB=($out/lib/libtsc_dyn.*)
               TSC_PATH=$out/share/emacs/site-lisp/elpa/tsc-${version}
@@ -41,8 +41,8 @@ let
               echo -n $version > $TSC_PATH/DYN-VERSION
               rm -r $out/lib
             '';
-        
-            cargoSha256 = "sha256-JHBIOVNRjOpFcUSzLlMrO4dmOdAY9RecglXrF9c3tRg=";    
+
+            cargoSha256 = "sha256-JHBIOVNRjOpFcUSzLlMrO4dmOdAY9RecglXrF9c3tRg=";
         }) {};
       }
     );
@@ -170,6 +170,7 @@ let
     (column-number-mode)
 
     (setq-default show-trailing-whitespace t)
+    (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
     (global-hl-line-mode)
 
@@ -294,6 +295,7 @@ let
 
     (set-face-attribute 'treemacs-root-face nil :height 1.0)
 
+    ;; I'm unhappy with this keybinding
     (keymap-global-set "<leader> t" #'treemacs)
 
 

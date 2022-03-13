@@ -65,12 +65,13 @@ in
   nixpkgs.overlays = [
     (import ./pkgs)
     #flakeInputs.q.overlay
-    (self: super: {
+    (final: prev: {
       q = flakeInputs.q.packages.${system}.q;
       #q = if system == "aarch64-multiplatform"
       #  then flakeInputs.q.packages.x86_64-linux.aarch64-multiplatform.q;
       #  else flakeInputs.q.packages.${system}.q;
     })
+    flakeInputs.emacs-overlay.overlay
   ] ++ extraOverlays;
 
   # Pin nixpkgs in nix path
