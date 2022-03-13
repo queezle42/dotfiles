@@ -15,7 +15,7 @@ in
     tcp = mkIf config.queezle.qnet.enable {
       enable = true;
       # TODO get ip range from config
-      anonymousClients.allowedIpRanges = ["10.0.0.0/24"];
+      anonymousClients.allowedIpRanges = ["10.0.0.0/24" "fd42:2a03:0099:ec13::/64"];
     };
   };
   users.users.pulse = {
