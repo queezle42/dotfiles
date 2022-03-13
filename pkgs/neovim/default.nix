@@ -1,5 +1,16 @@
 { pkgs, extraRC ? "", extraStartPlugins ? [], extraOptPlugins ? [] }:
 
+let
+  vim-godot = pkgs.vimUtils.buildVimPlugin {
+    name = "vim-godot";
+    src = pkgs.fetchFromGitHub {
+      owner = "habamax";
+      repo = "vim-godot";
+      rev = "c68ce5504fa64b31a5bc3029460faa84f84b598c";
+      sha256 = "sha256-Fvoh4Z1T8yr19kTqg0YG9xHBVibdFyWtIcSFB9TEQ7c=";
+    };
+  };
+in
 pkgs.neovim.override {
   configure = {
     customRC = ''
@@ -236,6 +247,9 @@ pkgs.neovim.override {
 
         # Haskell syntax highlighting
         haskell-vim
+
+        # Godot
+        vim-godot
       ] ++ extraStartPlugins;
       opt = [
       ] ++ extraOptPlugins;
