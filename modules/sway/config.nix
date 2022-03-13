@@ -44,9 +44,6 @@ set $active #51c9ff
 set $wallpaper ${config.queezle.sway.wallpaper}
 set $lockscreen ${config.queezle.sway.lockscreen}
 
-set $terminal terminal
-set $terminal2 terminal2
-
 set $workspace_q 0:q
 set $workspace_messaging 11:msg
 set $workspace_telegram 12:t
@@ -112,6 +109,8 @@ focus_wrapping yes
 for_window [class=qutebrowser] border pixel
 
 for_window [class="Vncviewer"] fullscreen enable
+
+for_window [app_id=.*-floating] floating enable
 
 # sway
 bindsym $mod+n bar mode toggle
@@ -229,9 +228,10 @@ bindsym $mod+asciicircum workspace $workspace_q
 bindsym $mod+Shift+asciicircum move container to workspace $workspace_q
 
 # start a terminal
-bindsym $mod+Return exec $terminal
+bindsym $mod+Return exec terminal
+bindsym $mod+numbersign exec terminal-floating
 bindsym $mod+Shift+Return exec cool-retro-term --fullscreen --profile "Monochrome Green"
-bindsym $mod+Alt+Return exec $terminal2
+bindsym $mod+Alt+Return exec terminal2
 
 # start program launcher
 bindsym $mod+Tab exec launcher
@@ -244,10 +244,10 @@ bindsym $mod+p exec project-launcher
 #bindsym $mod+o exec cool-retro-term --fullscreen --profile "Default Amber" -e ssh edi
 
 # start a python terminal
-#bindsym $mod+p exec $terminal python
+#bindsym $mod+p exec terminal python
 
 # start an haskel ghci terminal (TODO)
-#bindsym $mod+Shift+p exec $terminal stack ghci --verbosity warning
+#bindsym $mod+Shift+p exec terminal stack ghci --verbosity warning
 
 # start a browser
 bindsym $mod+b exec "chromium --enable-features=WebRTCPipeWireCapturer --force-dark-mode"
@@ -256,7 +256,7 @@ bindsym $mod+b exec "chromium --enable-features=WebRTCPipeWireCapturer --force-d
 #bindsym $mod+Shift+b exec qutebrowser
 
 # start htop
-bindsym $mod+Escape exec $terminal htop
+bindsym $mod+Escape exec terminal htop
 
 # Messaging workspace / open matrix client
 bindsym $mod+i workspace $workspace_messaging
@@ -273,7 +273,7 @@ bindsym $mod+Shift+m move container to workspace $workspace_music
 # start spotify instead of mopidy web interface while mopidy is broken
 #bindsym $mod+Ctrl+m workspace $workspace_music; exec chromium --app=http://stargate:6680/iris/#/
 bindsym $mod+Ctrl+m workspace $workspace_music; exec spotify
-bindsym $mod+Alt+m exec $terminal pulsemixer
+bindsym $mod+Alt+m exec terminal pulsemixer
 #bindsym $mod+Ctrl+m workspace $workspace_music; exec ~/run/spotify-singleton
 
 # scratchpad
@@ -449,7 +449,7 @@ mode $super_mode {
 	bindsym grave mode $goto_mark
 	bindsym acute mode $goto_mark
 
-        #bindsym Return exec $terminal; mode "default"
+        #bindsym Return exec terminal; mode "default"
         bindsym Return mode "default"
         bindsym Escape mode "default"
 
@@ -458,6 +458,9 @@ mode $super_mode {
 }
 
 #bindsym --release Super_L mode $super_mode
+
+
+for_window [app_id=qalculate-gtk] floating enable
 
 
 # Basic color configuration using the Base16 variables for windows and borders.

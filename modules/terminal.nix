@@ -8,6 +8,9 @@ let
   terminal2 = pkgs.writeScriptBin "terminal2" ''
     PROMPT_NO_INITIAL_NEWLINE=1 ${config.queezle.terminal.alt.executable} "$@"
   '';
+  terminal-floating = pkgs.writeScriptBin "terminal-floating" ''
+    PROMPT_NO_INITIAL_NEWLINE=1 ${config.queezle.terminal.executable} --app-id terminal-floating "$@"
+  '';
 in
 {
   options = {
@@ -36,6 +39,7 @@ in
     environment.systemPackages = [
       terminal
       terminal2
+      terminal-floating
       pkgs.foot
     ] ++ optional (!config.queezle.terminal.forceSoftwareRenderer) pkgs.kitty;
   };
