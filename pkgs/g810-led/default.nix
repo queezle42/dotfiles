@@ -18,6 +18,7 @@ stdenv.mkDerivation {
   installPhase = ''
     mkdir -p $out/bin
     cp bin/g810-led $out/bin/
+    ln -s $out/bin/g810-led $out/bin/g213-led
     ln -s $out/bin/g810-led $out/bin/g815-led
   '';
 }
