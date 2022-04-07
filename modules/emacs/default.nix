@@ -93,6 +93,7 @@ let
       #epkgs.tree-sitter-langs
 
       lsp-haskell
+      rustic
       nix-mode
       #zoom-frm       # ; increase/decrease font size for all buffers %lt;C-x C-+>
     ]) ++ (with epkgs.elpaPackages; [
@@ -267,6 +268,8 @@ let
     (setq lsp-haskell-plugin-import-lens-code-lens-on nil)
     (add-hook 'haskell-mode-hook #'lsp)
     (keymap-global-set "<leader> h" #'lsp-ui-doc-show)
+    ;; Known issue - enables code execution but is required for the `derive`-feature (e.g. used by matrix-sdk)
+    (setq lsp-rust-analyzer-proc-macro-enable t)
 
 
     ;;; helm
