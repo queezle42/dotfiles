@@ -4,6 +4,7 @@
   imports = [
     ./desktop
     ./desktop/launcher.nix
+    ./distraction-blocker
     ./emacs
     ./sway
     ./project-manager

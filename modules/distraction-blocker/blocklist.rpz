@@ -1,0 +1,7 @@
+youtube.com               600 IN          CNAME .
+*.youtube.com             600 IN          CNAME .
+twitch.tv                 600 IN          CNAME .
+*.twitch.tv               600 IN          CNAME .
+reddit.com                600 IN          CNAME .
+*.reddit.com              600 IN          CNAME .
+news.ycombinator.com      600 IN          CNAME .
