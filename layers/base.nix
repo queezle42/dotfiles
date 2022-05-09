@@ -144,7 +144,6 @@ in
       isNormalUser = true;
       passwordFile = "/etc/secrets/passwords/jens";
       extraGroups = [ "wheel" "audio" "dialout" "networkmanager" ];
-      dotfiles.profiles = [ "base" ];
     };
   };
 }

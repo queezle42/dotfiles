@@ -103,7 +103,6 @@ in
         "video"
         "pulse-access"
       ];
-      dotfiles.profiles = [ "kitty" "vscode" "desktop" ];
     };
   };
 

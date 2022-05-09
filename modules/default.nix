@@ -6,9 +6,9 @@
     ./desktop/launcher.nix
     ./distraction-blocker
     ./emacs
+    ./git
     ./sway
     ./project-manager
-    ./dotfiles.nix
     ./he-dns.nix
     ./kea.nix
     ./mobile-nixos-bootloader.nix

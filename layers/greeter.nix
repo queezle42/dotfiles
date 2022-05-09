@@ -37,8 +37,10 @@ in
     isSystemUser = true;
     home = "/var/run/greeter";
     createHome = true;
-    # TODO only apply theming
-    dotfiles.profiles = [ "desktop" ];
+
+    # Profiles no longer exist
+    #dotfiles.profiles = [ "desktop" ];
+    # TODO Add theming configuration to greeter
   };
 
   services.greetd = {

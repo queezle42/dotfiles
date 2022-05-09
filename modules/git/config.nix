@@ -1,3 +1,6 @@
+{ lib, pkgs, config, ... }:
+with lib;
+pkgs.writeText "git-config" ''
 [user]
   email = git@queezle.net
   name = Jens Nolte
@@ -14,6 +17,7 @@
   g = !git graph
 
   changes = "!f() { \
-          { git --no-pager log --max-count=1 --shortstat --color=always ${1:-HEAD};\
-          echo; git --no-pager diff --color=always "${1:-HEAD}^" "${1:-HEAD}"; } \
+          { git --no-pager log --max-count=1 --shortstat --color=always ''${1:-HEAD};\
+          echo; git --no-pager diff --color=always "''${1:-HEAD}^" "''${1:-HEAD}"; } \
           | $PAGER -r; }; f"
+''
