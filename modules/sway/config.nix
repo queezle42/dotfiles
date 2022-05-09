@@ -250,9 +250,7 @@ bindsym $mod+p exec project-launcher
 #bindsym $mod+Shift+p exec terminal stack ghci --verbosity warning
 
 # start a browser
-bindsym $mod+b exec "chromium --enable-features=WebRTCPipeWireCapturer --force-dark-mode"
-# Ozone might work only when $DISPLAY is not set
-#bindsym $mod+b exec "chromium --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland --force-dark-mode"
+bindsym $mod+b exec "chromium --force-dark-mode --ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer"
 #bindsym $mod+Shift+b exec qutebrowser
 
 # start htop
