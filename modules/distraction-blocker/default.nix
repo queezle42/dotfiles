@@ -30,6 +30,10 @@ in {
           { '2606:4700:4700::1111', hostname='cloudflare-dns.com' },
           { '1.1.1.1', hostname='cloudflare-dns.com' },
         })))
+
+        trust_anchors.set_insecure({
+          'gnome.org'
+        })
       '';
     };
 
