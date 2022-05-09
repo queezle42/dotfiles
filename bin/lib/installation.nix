@@ -21,7 +21,6 @@ let
   lvcreate-bin = "${lvm2.bin}/bin/lvcreate";
   vgcreate-bin = "${lvm2.bin}/bin/vgcreate";
   mkfs-fat-bin = "${dosfstools}/bin/mkfs.fat";
-  mkfs-ext4-bin = "${e2fsprogs}/bin/mkfs.ext4";
   mkfs-btrfs-bin = "${btrfsProgs}/bin/mkfs.btrfs";
   btrfs-bin = "${btrfsProgs}/bin/btrfs";
   fzf-bin = "${fzf}/bin/fzf";
