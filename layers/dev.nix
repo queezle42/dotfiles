@@ -13,6 +13,15 @@
     gdb
   ];
 
+  nix.extraOptions = ''
+    keep-outputs = true
+    keep-derivations = true
+  '';
+
+  home-manager.users.jens.xdg.configFile."direnv/direnvrc" = {
+    source = "${pkgs.nix-direnv}/share/nix-direnv";
+  };
+
   users.users = {
     jens = {
       packages = with pkgs; [ direnv ];
