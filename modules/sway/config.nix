@@ -3,7 +3,7 @@ with lib;
 let
   cfg = config.queezle.sway;
   temperature-bin = pkgs.writeScript "temperature.zsh" ''
-    #!/usr/bin/env zsh
+    #!${pkgs.zsh}/bin/zsh
 
     echo -n $'🔥\uFE0E '
 
@@ -15,6 +15,12 @@ let
     fi
 
     exit 42
+  '';
+  toggle-microphone-mute = pkgs.writeScript "toggle-microphone-mute.zsh" ''
+    #!${pkgs.zsh}/bin/zsh
+    pamixer --default-source --toggle-mute
+    readonly ismuted=$(pamixer --default-source --get-mute || true)
+    busctl --user set-property net.sourceforge.mumble.mumble / net.sourceforge.mumble.Mumble mute b $ismuted
   '';
 in
 pkgs.writeText "sway-config" ''
@@ -199,7 +205,8 @@ bindsym --locked $mod+Ctrl+F12 exec $brightnessFull
 
 # Toggle mumble mute
 # TODO: merge with mumble config (requires sway config merging)
-bindsym --locked Pause exec ~/.local/bin/mumble-toggle-mute
+bindsym --locked Pause exec ${toggle-microphone-mute}
+bindsym --locked XF86AudioMicMute exec ${toggle-microphone-mute}
 
 # The middle button over a titlebar kills the window
 bindsym button2 kill
@@ -380,6 +387,12 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "swaymsg exit"
 
 # resize window (you can also use the mouse for that)
+
+bindsym $mod+Alt+ resize shrink width 10 px or 10 ppt
+bindsym $mod+Alt+j resize shrink height 10 px or 10 ppt
+bindsym $mod+Alt+k resize grow height 10 px or 10 ppt
+bindsym $mod+Alt+l resize grow width 10 px or 10 ppt
+
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
 

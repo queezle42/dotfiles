@@ -35,11 +35,9 @@ in
     foot
     glxinfo
     gnome3.gnome-disk-utility
-    networkmanagerapplet
     wayvnc
     tigervnc
     dfeet
-    #vimiv
     mpv-queezle
     wdisplays
     squeekboard
@@ -80,7 +78,6 @@ in
     sysstat
     zsh
     bash
-    wirelesstools
     lm_sensors
     jq
   ];
@@ -110,7 +107,7 @@ in
 
 
   programs.sway.enable = true;
-  programs.sway.extraPackages = with pkgs; [ swaylock swayidle xwayland kitty cool-retro-term xorg.xrdb ];
+  programs.sway.extraPackages = with pkgs; [ swaylock swayidle xwayland kitty cool-retro-term xorg.xrdb slurp ];
   # QT_QPA_PLATFORM=wayland requires qt5.qtwayland in systemPackages
   programs.sway.extraSessionCommands = ''
     export XDG_SESSION_TYPE=wayland
