@@ -42,6 +42,7 @@ in
     wdisplays
     squeekboard
     feh
+    networkmanagerapplet # Also contains connection editor ui
 
     # screenshot utilities
     grim
