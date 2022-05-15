@@ -47,6 +47,9 @@ in
     grim
     slurp
 
+    # debug/development utilities
+    wev # similar to xev, but for wayland
+
     # cursor theme (installed via `home-profiles/desktop/.local/share/icons/default/index.theme`)
     simpleandsoft
 
