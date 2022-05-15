@@ -48,7 +48,7 @@ let
     );
   };
 
-  emacsWithPackages = (pkgs.emacsPackagesFor pkgs.emacsPgtkGcc).withPackages;
+  emacsWithPackages = (pkgs.emacsPackagesFor pkgs.emacsPgtkNativeComp).withPackages;
 
   emacs-queezle = emacsWithPackages (epkgs: [(config-queezle epkgs)]);
 
@@ -270,7 +270,6 @@ let
     (keymap-global-set "<leader> h" #'lsp-ui-doc-show)
     ;; Known issue - enables code execution but is required for the `derive`-feature (e.g. used by matrix-sdk)
     (setq lsp-rust-analyzer-proc-macro-enable t)
-
 
     ;;; helm
 

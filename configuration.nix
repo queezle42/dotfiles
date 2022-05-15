@@ -70,6 +70,7 @@ in
       #q = if system == "aarch64-multiplatform"
       #  then flakeInputs.q.packages.x86_64-linux.aarch64-multiplatform.q;
       #  else flakeInputs.q.packages.${system}.q;
+      qbar = flakeInputs.qbar.packages.${system}.qbar;
     })
     flakeInputs.emacs-overlay.overlay
   ] ++ extraOverlays;

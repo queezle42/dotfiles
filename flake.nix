@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
 
-    nixpkgs-master.url = github:nixos/nixpkgs/master;
+    #nixpkgs-master.url = github:nixos/nixpkgs/master;
 
     nixpkgs-pinephone.url = github:nixos/nixpkgs/nixos-unstable;
     nixpkgs-pinephone.follows = "nixpkgs";
@@ -17,6 +17,8 @@
     q = {
       url = gitlab:jens/q?host=git.c3pb.de;
     };
+
+    qbar.url = gitlab:jens/qbar?host=git.c3pb.de;
 
     mobile-nixos = {
       url = github:NixOS/mobile-nixos;
