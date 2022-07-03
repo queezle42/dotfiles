@@ -26,6 +26,7 @@ usage() {
 positional=()
 via_hostname=""
 substitute_on_destination=""
+keep_going=""
 show_trace=""
 while [[ $# -gt 0 ]]
 do
@@ -40,6 +41,9 @@ do
       ;;
     --substitute-on-destination|-s)
       substitute_on_destination="--substitute-on-destination"
+      ;;
+    --keep-going)
+      keep_going="--keep-going"
       ;;
     --show-trace)
       show_trace="--show-trace"
@@ -75,7 +79,7 @@ fi
 operation=$original_operation
 set_profile=""
 reboot=""
-readonly common_nix_flags=(--log-format bar-with-logs)
+readonly common_nix_flags=(--log-format bar-with-logs $keep_going)
 
 if [[ "$operation" = "switch" || "$operation" = "boot" ]]
 then
