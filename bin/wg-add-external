@@ -32,7 +32,7 @@ fi
 
 hostname=$1
 
-readonly config_file_path="$MACHINES_PATH/external/$hostname/wg_gateway.json"
+readonly config_file_path="$MACHINES_PATH/external/$hostname/qnet.json"
 
 if [[ ! -f $config_file_path ]]
 then
@@ -42,7 +42,7 @@ fi
 
 config=$(<$config_file_path)
 
-address=$(jq --raw-output .address <<<$config)
+address=$(jq --raw-output '.address[0]' <<<$config)
 
 key=$(wg genkey)
 pubkey=$(wg pubkey <<<$key)
@@ -53,13 +53,12 @@ config=$(jq ".publicKey = \"$pubkey\"" <<<$config)
 
 print "[Interface]
 Address=$address
+DNS=fd42:2a03:0099:ec13::1
 PrivateKey=$key
 ListenPort=55542
 
 [Peer]
 PublicKey=lzKM49e5AqKLd232wLtVSrnKLvb/qV6LKZ3rrpLB+AQ=
 Endpoint=gateway.queezle.net:55542
-AllowedIPs=10.0.0.0/16
-
-PersistentKeepalive=25
+AllowedIPs=fd42:2a03:0099:ec13::/64
 "
