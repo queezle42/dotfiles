@@ -14,6 +14,7 @@
     ./mobile-nixos-bootloader.nix
     ./spotifyd.nix
     ./terminal.nix
+    ./tts
 
     # server
     #./webserver.nix
