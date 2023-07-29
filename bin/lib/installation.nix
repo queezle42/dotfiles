@@ -21,8 +21,8 @@ let
   lvcreate-bin = "${lvm2.bin}/bin/lvcreate";
   vgcreate-bin = "${lvm2.bin}/bin/vgcreate";
   mkfs-fat-bin = "${dosfstools}/bin/mkfs.fat";
-  mkfs-btrfs-bin = "${btrfsProgs}/bin/mkfs.btrfs";
-  btrfs-bin = "${btrfsProgs}/bin/btrfs";
+  mkfs-btrfs-bin = "${btrfs-progs}/bin/mkfs.btrfs";
+  btrfs-bin = "${btrfs-progs}/bin/btrfs";
   fzf-bin = "${fzf}/bin/fzf";
   jq-bin = "${jq}/bin/jq";
   partprobe-bin = "${busybox}/bin/partprobe";
@@ -131,8 +131,12 @@ assert (typeOf swap) == "string";
     print_info "Wiping partition table"
     dd if=/dev/zero of=$block_device bs=1M count=1 conv=fsync
 
+    sleep 2s
+
     # Ensure partition table changes have been registered by the kernel
     ${partprobe-bin} $block_device
+
+    sleep 2s
 
     print_info "Discarding disk contents"
     if ${blkdiscard-bin} $block_device
