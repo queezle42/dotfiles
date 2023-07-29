@@ -1,6 +1,21 @@
 { config, lib, pkgs, flakeInputs, ... }:
 with lib;
 
+# Related flake inputs:
+#    emacs-overlay.url = github:nix-community/emacs-overlay;
+#    emacs-term-cursor = {
+#      url = github:denrat/term-cursor.el;
+#      flake = false;
+#    };
+#    #emacs-haskell-tng = {
+#    #  url = gitlab:tseenshe/haskell-tng.el;
+#    #  flake = false;
+#    #};
+
+# Required overlay:
+# flakeInputs.emacs-overlay.overlay
+
+
 let
   cfg = config.queezle.emacs;
 
@@ -12,6 +27,11 @@ let
   extraEmacsPackages = final: prev: {
     emacsPackagesFor = emacs: (prev.emacsPackagesFor emacs).overrideScope' (
       efinal: eprev: {
+        #haskell-tng = efinal.trivialBuild ({
+        #  pname = "haskell-tng";
+        #  src = flakeInputs.emacs-haskell-tng;
+        #});
+
         term-cursor = efinal.trivialBuild ({
           pname = "term-cursor";
           src = flakeInputs.emacs-term-cursor;
@@ -59,6 +79,7 @@ let
       epkgs.term-cursor
       #epkgs.tsc-dyn
       #pkgs.notmuch   # From main packages set
+      #epkgs.haskell-tng
     ] ++
     (with epkgs.melpaStablePackages; [
       magit
@@ -93,6 +114,7 @@ let
       #epkgs.tree-sitter-langs
 
       lsp-haskell
+      haskell-mode
       rustic
       nix-mode
       #zoom-frm       # ; increase/decrease font size for all buffers %lt;C-x C-+>
@@ -203,6 +225,7 @@ let
     (keymap-set evil-normal-state-map "C-s" #'save-buffer)
 
     (global-undo-tree-mode)
+    (add-to-list 'undo-tree-history-directory-alist '("." . "~/.emacs.d/undo-tree"))
 
     ;; easymotion
     (evilem-default-keybindings "<leader> SPC")

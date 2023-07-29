@@ -25,12 +25,6 @@
       flake = false;
     };
 
-    emacs-overlay.url = github:nix-community/emacs-overlay;
-    emacs-term-cursor = {
-      url = github:denrat/term-cursor.el;
-      flake = false;
-    };
-
     matrix-homeserver.url = github:queezle42/matrix-homeserver;
   };
 

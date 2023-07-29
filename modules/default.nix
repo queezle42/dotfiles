@@ -5,7 +5,6 @@
     ./desktop
     ./desktop/launcher.nix
     ./distraction-blocker
-    ./emacs
     ./git
     ./sway
     ./project-manager

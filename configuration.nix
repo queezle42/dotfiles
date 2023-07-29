@@ -72,7 +72,6 @@ in
       #  else flakeInputs.q.packages.${system}.q;
       qbar = flakeInputs.qbar.packages.${system}.qbar;
     })
-    flakeInputs.emacs-overlay.overlay
   ] ++ extraOverlays;
 
   # Pin nixpkgs in nix path
