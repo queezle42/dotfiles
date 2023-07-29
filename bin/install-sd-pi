@@ -45,42 +45,43 @@ readonly disk_id="13000001"
 
 
 # Derived paths
-#readonly boot_partition="/dev/disk/by-partuuid/$boot_partition_uuid"
-#readonly root_partition="/dev/disk/by-partuuid/$root_partition_uuid"
+readonly boot_partition="/dev/disk/by-partuuid/$boot_partition_uuid"
+readonly root_partition="/dev/disk/by-partuuid/$root_partition_uuid"
 
-readonly boot_partition="/dev/disk/by-partuuid/$disk_id-01"
-readonly root_partition="/dev/disk/by-partuuid/$disk_id-02"
+#readonly boot_partition="/dev/disk/by-partuuid/$disk_id-01"
+#readonly root_partition="/dev/disk/by-partuuid/$disk_id-02"
 
 
 sudo wipefs -a $target_disk
 
-# nested gpt/dos doesn't seem to work
-#sudo nix shell nixpkgs#util-linux -c sfdisk $target_disk <<EOF
-#  label: gpt
-#  unit: sectors
-#  sector-size: 512
-#
-#  start=2048, size=512MiB, type=0fc63daf-8483-4772-8e79-3d69d8477de4, uuid=$boot_partition_uuid, name="boot"
-#  type=69dad710-2ce4-4e3c-b16c-21a1d49abed3, uuid=$root_partition_uuid, name="root"
-#EOF
-#
-#sudo nix shell nixpkgs#util-linux -c sfdisk --label-nested dos $target_disk <<EOF
-#  label: dos
-#  sector-size: 512
-#
-#  start=2048, size=512MiB, type=0c, bootable
-#  start=1, size=2047, type=ee
-#EOF
-
+# nested gpt/dos setup
 sudo nix shell nixpkgs#util-linux -c sfdisk $target_disk <<EOF
-  label: dos
-  label-id: 0x$disk_id
+  label: gpt
   unit: sectors
   sector-size: 512
 
-  start=2048, size=512MiB, type=0c, bootable
-  type=83
+  start=2048, size=512MiB, type=0fc63daf-8483-4772-8e79-3d69d8477de4, uuid=$boot_partition_uuid, name="boot"
+  type=69dad710-2ce4-4e3c-b16c-21a1d49abed3, uuid=$root_partition_uuid, name="root"
 EOF
+
+sudo nix shell nixpkgs#util-linux -c sfdisk --label-nested dos $target_disk <<EOF
+  label: dos
+  sector-size: 512
+
+  start=2048, size=512MiB, type=0c, bootable
+  start=1, size=2047, type=ee
+EOF
+
+# alternative: dos only
+#sudo nix shell nixpkgs#util-linux -c sfdisk $target_disk <<EOF
+#  label: dos
+#  label-id: 0x$disk_id
+#  unit: sectors
+#  sector-size: 512
+#
+#  start=2048, size=512MiB, type=0c, bootable
+#  type=83
+#EOF
 
 sleep 2s
 
@@ -126,4 +127,4 @@ sudo touch "$mount_point/etc/NIXOS"
 #   /nix/store/[...]-extlinux-conf-builder.sh -d /mnt/mnt/boot -c $nixos_config_path -t 5
 echo "Manual bootloader installation required"
 echo "- Find bootloader installation in: $nixos_config_path/bin/switch-to-configuration"
-echo "- Then run extlinux-builder: sudo /nix/store/[...]-extlinux-conf-builder.sh -d $mount_point/boot -c $nixos_config_path -t 5"
+echo "- Then run extlinux-builder: sudo /nix/store/[...]-raspberrypi-builder.sh -d $mount_point/boot -c $nixos_config_path"
