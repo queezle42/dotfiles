@@ -97,11 +97,11 @@ in
       qnetFile = path + "/qnet.json";
       exists = builtins.pathExists qnetFile;
       qnet = if exists then builtins.fromJSON (builtins.readFile qnetFile) else null;
-    in if exists then {
+    in mkIf exists {
       enable = mkDefault true;
       address = mkDefault qnet.address;
       allowedIPs = mkDefault qnet.allowedIPs;
       peerEndpoint = mkDefault qnet.peerEndpoint;
       publicKey = mkDefault qnet.publicKey;
-    } else {};
+    };
 }
