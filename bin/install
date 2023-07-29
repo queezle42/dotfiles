@@ -57,11 +57,15 @@ local_temp_dir=$(mktemp --tmpdir --directory install-$hostname.XXXXXXXXXX)
 trap "rm -rf $local_temp_dir" EXIT INT HUP TERM
 
 
+print "Testing ssh connection to $via_host" >&2
+
 if ! ssh -o VisualHostKey=yes root@$via_host true
 then
   print "Cannot connect to host '$via_host'" >&2
   exit 1
 fi
+
+print "Testing connection to nix store on $via_host" >&2
 
 if ! nix store ping --store ssh://root@$via_host
 then
@@ -70,10 +74,11 @@ then
 fi
 
 # Generate config file
+print "Generating config file" >&2
 local_config_file=$local_temp_dir/config
 $nix run $installer.configure > $local_config_file
 
-# Copy 'format' binary to target host
+print "Copy 'format' binary to target host" >&2
 $nix copy --to ssh://root@$via_host $installer.format
 readonly format_helper=$($nix path-info $installer.format)
 
@@ -82,8 +87,10 @@ remote_temp_dir=$(ssh root@$via_host mktemp --tmpdir --directory install-$hostna
 scp -r $local_temp_dir/* root@$via_host:$remote_temp_dir/
 scp $DOTFILES_PATH/bin/message root@$via_host:$remote_temp_dir/
 
+print "Starting busy screen" >&2
 ssh root@$via_host "$remote_temp_dir/message" &
 
+print "Starting installation" >&2
 # -t: Force pseudo-terminal allocation
 ssh -t root@$via_host "$format_helper/bin/format" "$remote_temp_dir/config" "$remote_temp_dir/output.json"
 scp "root@$via_host:$remote_temp_dir/output.json" "$MACHINES_PATH/machines/$hostname/install-result.json"
