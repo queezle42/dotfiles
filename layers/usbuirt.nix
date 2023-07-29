@@ -1,6 +1,8 @@
 { pkgs, lib, ... }:
 with lib;
 
+# To send use `irsend` from `pkgs.lirc`
+# > irsend send_once TeufelConceptF KEY_FOOBAR
 {
   services.lirc = {
     enable = true;

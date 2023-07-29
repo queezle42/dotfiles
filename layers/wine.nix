@@ -20,13 +20,12 @@
     isNormalUser = true;
     uid = 1101;
     passwordFile = "/etc/secrets/passwords/steam";
-    extraGroups = [ "audio" "pulse-access" ];
+    extraGroups = [ "pipewire" ];
     packages = with pkgs; [
       (wine.override {
         wineBuild = "wineWow";
         wineRelease = "stable";
         pulseaudioSupport = true;
-        openalSupport = true;
         vaSupport = true;
         fontconfigSupport = true;
         alsaSupport = true;

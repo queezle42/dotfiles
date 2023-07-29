@@ -21,15 +21,14 @@ with lib;
     uid = 1100;
     passwordFile = "/etc/secrets/passwords/steam";
     extraGroups = [
-      "audio"
-      "pulse-access"
+      "pipewire"
       # FIXME a better workaround for gamepads not being accessible is required
       "input"
     ];
     packages = [
       #pkgs.steam
       pkgs.steam-run-native
-      #pkgs.gamescope
+      pkgs.gamescope
     ];
   };
 }

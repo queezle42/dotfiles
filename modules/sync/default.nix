@@ -77,7 +77,7 @@ in {
           ${config.services.syncthing.package}/bin/syncthing \
             generate \
             --home=${config.services.syncthing.configDir} \
-            --gui-user=jens \
+            --gui-user=${config.queezle.common.user} \
             --gui-password=- \
             --skip-port-probing \
             --no-default-folder \

@@ -1,0 +1,5 @@
+set mouse = yes
+
+color cursor black white
+color title-focus black blue
+color title-blur black blue

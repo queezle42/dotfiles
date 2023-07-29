@@ -39,14 +39,14 @@ in {
   services.udev.packages = lib.singleton (pkgs.writeTextFile {
     name = "depthai-udev-rules";
     destination = "/etc/udev/rules.d/90-depthai.rules";
-    text = ''
-      SUBSYSTEM=="usb", ACTION=="bind", ENV{ID_VENDOR_ID}=="03e7", MODE="0666", RUN+="${scriptBin}"
-      SUBSYSTEM=="usb", ACTION=="remove", ENV{PRODUCT}=="3e7/2485/1", ENV{DEVTYPE}=="usb_device", MODE="0666", RUN+="${scriptBin}"
-      SUBSYSTEM=="usb", ACTION=="remove", ENV{PRODUCT}=="3e7/f63b/100", ENV{DEVTYPE}=="usb_device", MODE="0666", RUN+="${scriptBin}"
-    '';
     #text = ''
-    #  SUBSYSTEM=="usb", ATTRS{idVendor}=="03e7", MODE="0666"
+    #  SUBSYSTEM=="usb", ACTION=="bind", ENV{ID_VENDOR_ID}=="03e7", MODE="0666", RUN+="${scriptBin}"
+    #  SUBSYSTEM=="usb", ACTION=="remove", ENV{PRODUCT}=="3e7/2485/1", ENV{DEVTYPE}=="usb_device", MODE="0666", RUN+="${scriptBin}"
+    #  SUBSYSTEM=="usb", ACTION=="remove", ENV{PRODUCT}=="3e7/f63b/100", ENV{DEVTYPE}=="usb_device", MODE="0666", RUN+="${scriptBin}"
     #'';
+    text = ''
+      SUBSYSTEM=="usb", ATTRS{idVendor}=="03e7", MODE="0666"
+    '';
   });
 
   #systemd.services.depthai = {

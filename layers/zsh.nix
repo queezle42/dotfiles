@@ -1,18 +1,29 @@
-{ pkgs, config, ... }:
+{ lib, pkgs, config, flakeInputs, system, ... }:
+with lib;
 
 let
   promptPath = ../zsh/prompt;
-
+  qed_local = pkgs.writeScriptBin "qed_local" ''
+    nix run -L /srv/sync/dev/jens/qed -- "$@"
+  '';
 in
 {
   environment.systemPackages = with pkgs; [
-    neovim-queezle
+    # my customized neovim configuration
+    flakeInputs.qed.packages.${system}.qed
     w3m
+    bat
     less
     # required for neovim spellcheck
     aspell
     # used for icat
     notcurses
+    # shell history database
+    atuin
+    # run qed from local sync repository
+    qed_local
+    # reconnect to shell sessions from another device
+    abduco
   ];
 
   programs.tmux = {
@@ -20,6 +31,8 @@ in
     terminal = "tmux-256color";
     clock24 = true;
   };
+
+  services.openssh.extraConfig = "AcceptEnv SSH_CONNECT_WAYLAND";
 
   programs.zsh.enable = true;
   programs.zsh.enableGlobalCompInit = false;
@@ -46,14 +59,20 @@ in
     la = "ls -la";
     lah = "ls -lah";
 
+    cat = "bat --wrap never --paging never --style snip";
+
+    wlssh = "ssh -o SetEnv=SSH_CONNECT_WAYLAND=1";
+
     icat = "print; ncplayer -k -t0 -q -b pixel -s none";
 
     # tree configured to ignore .gitignore
     gtree = "${pkgs.tree}/bin/tree --fromfile <(${pkgs.fd}/bin/fd -H -E .git)";
 
-    tigs = "tig status";
+    # Requires `.git/` in the global gitignore - see git/default.nix
+    rg = "${pkgs.ripgrep}/bin/rg --smart-case --hidden";
 
-    nix-zsh = "nix-shell --packages zsh --command \"exec zsh\"";
+    tigs = "tig status";
+    lg = "lazygit";
 
     cal = "cal --monday";
 
@@ -103,6 +122,11 @@ in
   programs.zsh.shellInit = ''
     # Disable new-user configuration
     zsh-newuser-install() { :; }
+
+
+    if [[ -n SSH_CONNECT_WAYLAND && -n $SSH_CONNECTION && -z $WAYLAND_DISPLAY && -z $DISPLAY ]] {
+      source /run/user/$UID/sway.env 2>/dev/null
+    }
   '';
 
   programs.zsh.interactiveShellInit = ''
@@ -143,6 +167,21 @@ in
       fi
     }
 
+    project-launcher-cli () {
+      readonly index_file=/srv/sync/dev/projects.json
+      projects=$(jq --raw-output '.projects | keys | .[]' $index_file)
+      project=$(fzf --layout reverse <<<$projects)
+      projectpath=$(jq --raw-output ".projects[\"$project\"].path" $index_file)
+      cd $projectpath
+    }
+    run-project-launcher-cli () {
+      zle push-input
+      BUFFER="project-launcher-cli"
+      zle accept-line
+    }
+    zle -N run-project-launcher-cli
+    bindkey '^P' run-project-launcher-cli
+
     # "The time the shell waits, in hundredths of seconds, for another key to be pressed when reading bound multi-character sequences."
     # This is for vim-style multi-letter commands (<f><d> is mapped to <Esc>)
     # TODO verify this can be removed
@@ -150,6 +189,10 @@ in
 
     HISTSIZE=100000
     SAVEHIST=100000
+
+    if [[ -n $SSH_CONNECTION && -z $WAYLAND_DISPLAY && -z $DISPLAY ]] {
+      source /run/user/$UID/sway.env 2>/dev/null
+    }
 
     unsetopt flow_control
 
@@ -178,19 +221,20 @@ in
     bindkey '\ev' edit-command-line
     bindkey '^X^E' edit-command-line
 
-    # pos1, end, ctrl+arrow word navigation
-    bindkey '^[[H' beginning-of-line
-    bindkey '^[[F' end-of-line
+    # pos1, end (set by NixOS in /etc/zinputrc)
+    #bindkey '^[[H' beginning-of-line
+    #bindkey '^[[F' end-of-line
+
+    # ctrl+arrow word navigation
     bindkey '^[[1;5D' emacs-backward-word
     bindkey '^[[1;5C' emacs-forward-word
 
     # vi mode
     bindkey -v
-    #bindkey 'fd' vi-cmd-mode
     # backspace
     bindkey '^?' backward-delete-char
-    # delete key
-    bindkey '^[[3~' delete-char
+    # delete (set by NixOS in /etc/zinputrc)
+    #bindkey '^[[3~' delete-char
 
     # ctrl-j, ctrl-k, alt-p, alt-n: search for commands starting with the current input
     bindkey '\ep' history-search-backward
@@ -205,9 +249,9 @@ in
     bindkey '^W' backward-kill-word
     bindkey '^U' backward-kill-line
 
-    # ctrl-p, ctrl-n for history navigation (standard behavior)
-    bindkey '^P' up-history
-    bindkey '^N' down-history
+    # ctrl-p, ctrl-n for history navigation (standard behavior) (disabled and reused for project launcher)
+    #bindkey '^P' up-history
+    #bindkey '^N' down-history
 
     # bind ctrl-a and ctrl-e to move to beginning/end of line
     bindkey '^a' beginning-of-line
@@ -297,7 +341,7 @@ in
     compdef _cd_try_without_cdpath cd pushd
 
     # colored man output
-    man() {
+    manman() {
       LESS_TERMCAP_md=$'\e[01;31m' \
       LESS_TERMCAP_me=$'\e[0m' \
       LESS_TERMCAP_se=$'\e[0m' \
@@ -307,11 +351,16 @@ in
       command man "$@"
     }
 
+    man() {
+      MANPAGER='nvim +Man!' \
+      command man "$@"
+    }
+
     # submit file/stdin to pastebin, optionally signing it
     pastebin () {
         local -r pastebin='https://0x0.st'
 
-        if [ "$1" = '--sign' ]; then
+        if [[ "$1" = '--sign' ]]; then
             local -r filter='gpg --clearsign --output -'
             shift
         else

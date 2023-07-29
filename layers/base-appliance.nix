@@ -20,7 +20,8 @@ in
     ./ioschedulers.nix
   ];
 
-  nix.package = pkgs.nixFlakes; # noop in current nixpkgs
+  queezle.common.enable = true;
+
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
@@ -31,7 +32,7 @@ in
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = mkDefault "20.09"; # Did you read the comment?
+  system.stateVersion = "20.09"; # Did you read the comment?
 
   # Is it worth to specify this where it is needed instead of configuring it globally? Not sure yet.
   nixpkgs.config.allowUnfree = true;
@@ -39,7 +40,7 @@ in
   # Always run the latest kernel
   boot.kernelPackages = mkIf (!isMobileNixos) (mkDefault pkgs.linuxPackages_latest);
 
-  boot.tmpOnTmpfs = mkDefault true;
+  boot.tmp.useTmpfs = mkDefault true;
 
   # schedutil is a modern replacement for ondemand and conservative that is tied to the scheduler
   # priority 100 is default; mkDefault is priority 1000; the goal here is to prefer schedutil over the auto-generated cpuFreqGovernor
@@ -64,6 +65,10 @@ in
     # Gruvbox tty colors
     colors = [ "000000" "cc241d" "98971a" "d79921" "458588" "b16286" "689d6a" "a89984" "928374" "fb4934" "b8bb26" "fabd2f" "83a598" "d3869b" "8ec07c" "ebdbb2" ];
   };
+
+  # Bluetooth SIM access profile
+  # Gives external devices (e.g. car radio) access to a SIM card (if available)
+  hardware.bluetooth.disabledPlugins = [ "sap" ];
 
   services.xserver = {
     layout = "de";
@@ -103,7 +108,8 @@ in
       isNormalUser = true;
       passwordFile = "/etc/secrets/passwords/jens";
       extraGroups = [ "wheel" "audio" "dialout" "networkmanager" ];
-      dotfiles.profiles = [ "base" ];
     };
   };
+
+  home-manager.users.jens.home.stateVersion = "22.05";
 }

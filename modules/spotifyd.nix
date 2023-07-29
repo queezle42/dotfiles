@@ -10,14 +10,14 @@ let
         password_cmd = "cat $CREDENTIALS_DIRECTORY/password"
         use_keyring = false
         use_mpris = false
-        backend = "pulseaudio"
+        backend = "alsa"
         device_name = "${config.networking.hostName}"
         bitrate = 320
         cache_path = "/var/cache/spotifyd-${user}"
         # This variable's type will change in v0.4, to a number (instead of string)
-        initial_volume = "60"
+        initial_volume = "50"
         zeroconf_port = ${toString port}
-        device_type = "a_v_r"
+        device_type = "speaker"
       '';
     in {
       systemd.services."spotifyd-${user}" = {
@@ -34,9 +34,7 @@ let
           Restart = "on-failure";
           RestartSec = 30;
           CacheDirectory = "spotifyd-${user}";
-          Environment = [
-            "PULSE_SERVER=/run/pulse/native"
-          ];
+          RuntimeDirectory = "spotifyd-${user}";
 
           LoadCredential = [
             "user:/etc/secrets/spotify/${user}/user"
@@ -58,7 +56,7 @@ let
       users.users."spotifyd-${user}" = {
         isSystemUser = true;
         group = "spotifyd-${user}";
-        extraGroups = [ "audio" ];
+        extraGroups = [ "pipewire" ];
       };
       users.groups."spotifyd-${user}" = {};
     };

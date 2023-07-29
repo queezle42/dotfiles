@@ -3,7 +3,7 @@ with lib;
 
 let
   boot-partition = config.mobile.outputs.u-boot.boot-partition;
-  cfg = config.mobile-nixos.install-bootloader;
+  cfg = config.queezle.mobile-nixos.install-bootloader;
   install-bootloader-script = pkgs.writeScript "install-bootloader" ''
     #!${pkgs.zsh}/bin/zsh
 
@@ -37,7 +37,7 @@ let
   '';
 
 in {
-  options.mobile-nixos.install-bootloader = {
+  options.queezle.mobile-nixos.install-bootloader = {
     enable = mkOption {
       type = types.bool;
       default = false;

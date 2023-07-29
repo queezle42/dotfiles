@@ -4,7 +4,7 @@ with lib;
 
 let
 
-  cfg = config.services.he-dns;
+  cfg = config.services.dyndns.he-dns;
   cfgs = attrValues cfg;
 
   perDomainConfig = {name, ...}: {
@@ -114,7 +114,7 @@ let
 
 in {
 
-  options.services.he-dns = mkOption {
+  options.services.dyndns.he-dns = mkOption {
     type = with types; loaOf (submodule perDomainConfig);
     default = {};
     description = ''

@@ -10,14 +10,17 @@ pkgs.writeText "git-config" ''
 
 [commit]
   verbose = true
+  template = ~/.config/git/commit-template
 
 [alias]
   graph = log --graph --decorate --all --format=format:'%C(yellow)%h%C(reset) %C(red)%aN%C(reset) %C(dim cyan)(%ar)%C(reset)%C(dim magenta)%d%C(reset)%n%C(white)%s%C(reset)'
 
   g = !git graph
 
-  changes = "!f() { \
-          { git --no-pager log --max-count=1 --shortstat --color=always ''${1:-HEAD};\
-          echo; git --no-pager diff --color=always "''${1:-HEAD}^" "''${1:-HEAD}"; } \
-          | $PAGER -r; }; f"
+[diff]
+  colorMoved = true
+  colorMovedWS = ignore-space-change
+
+[blame]
+  coloring = highlightRecent
 ''

@@ -3,6 +3,9 @@
 with lib;
 let
   cfg = config.queezle.desktop.launcher;
+
+  font = "monospace:size=${toString (config.queezle.desktop.font.monospace.size + 2)}";
+
   launcher = pkgs.writeScriptBin "launcher" ''
     ${pkgs.fuzzel}/bin/fuzzel \
       --dpi-aware no \
@@ -13,10 +16,11 @@ let
       --match-color dd5001ff \
       --selection-color 000000e6 \
       --vertical-pad 20 \
-      --font 'monospace:size=12' \
+      --font '${font}' \
       --width 100 \
       --lines 25
   '';
+
   dmenu = pkgs.writeScriptBin "dmenu" ''
     ${pkgs.fuzzel}/bin/fuzzel \
       --dmenu \
@@ -27,7 +31,7 @@ let
       --match-color dd5001ff \
       --selection-color 000000e6 \
       --vertical-pad 20 \
-      --font 'monospace:size=12' \
+      --font '${font}' \
       --width 100 \
       --lines 25
   '';

@@ -5,12 +5,16 @@
 
   environment.systemPackages = with pkgs; [
     man-pages
-    posix_man_pages
+    man-pages-posix
+
+    rnix-lsp
 
     # Dictionary (command `trans`)
     translate-shell
 
     gdb
+
+    github-cli
   ];
 
   nix.extraOptions = ''

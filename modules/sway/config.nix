@@ -2,6 +2,20 @@
 with lib;
 let
   cfg = config.queezle.sway;
+  theme = pkgs.runCommand "sway-theme" { nativeBuildInputs = [ pkgs.zsh ]; } ''
+    zsh ${./swaytheme} > $out
+  '';
+  lock = pkgs.writeScript "lock" ''
+    exec swaylock-with-idle -i ${config.queezle.sway.lockscreen} -c 000000 -s fit
+  '';
+  unlock = pkgs.writeScript "unlock" ''
+    exec pkill -USR1 swaylock
+  '';
+  suspend = pkgs.writeScript "suspend" ''
+    (${lock})&
+    sleep 1s
+    swaylock -f -i $lockscreen -c 000000 -s fit
+  '';
   temperature-bin = pkgs.writeScript "temperature.zsh" ''
     #!${pkgs.zsh}/bin/zsh
 
@@ -21,6 +35,18 @@ let
     pamixer --default-source --toggle-mute
     readonly ismuted=$(pamixer --default-source --get-mute || true)
     busctl --user set-property net.sourceforge.mumble.mumble / net.sourceforge.mumble.Mumble mute b $ismuted
+  '';
+  export-wayland-env = pkgs.writeScript "export-wayland-env" ''
+    #!${pkgs.zsh}/bin/zsh
+    set -eu
+
+    if [[ $XDG_VTNR == 1 && -z ''${NESTED_SWAY:-} ]] {
+    > /run/user/$UID/sway.env <<EOF
+    export WAYLAND_DISPLAY=''${WAYLAND_DISPLAY:q}
+    export DISPLAY=''${DISPLAY:q}
+    export SWAYSOCK=''${SWAYSOCK:q}
+    EOF
+    }
   '';
 in
 pkgs.writeText "sway-config" ''
@@ -55,7 +81,7 @@ set $workspace_messaging 11:msg
 set $workspace_telegram 12:t
 set $workspace_music 13:music
 
-input * {
+input type:keyboard {
   xkb_layout de
   xkb_variant nodeadkeys
   xkb_numlock enable
@@ -67,28 +93,31 @@ input 7805:12850:ROCCAT_ROCCAT_Ryos_MK_Pro {
   xkb_layout us
 }
 
-input 2:7:SynPS/2_Synaptics_TouchPad {
+input type:touchpad {
   tap enabled
   natural_scroll enabled
 }
 
-input 1739:5841:SYNA7501:00_06CB:16D1 {
-  map_to_output eDP-1
-}
+#input 1739:5841:SYNA7501:00_06CB:16D1 {
+#  map_to_output eDP-1
+#}
 
 output * {
   scale 1
+  background #16161D solid_color
 }
 
 output eDP-1 {
   pos 0 0
 }
 
-output * bg $wallpaper fill
+# Export environment variables
+exec ${export-wayland-env}
 
 # Background processes
 
-exec PROMPT_NO_INITIAL_NEWLINE=1 foot --server
+# footserver crashed, disabling for now
+#exec PROMPT_NO_INITIAL_NEWLINE=1 foot --server
 
 exec mako
 #exec CM_SELECTIONS=clipboard clipmenud
@@ -103,20 +132,22 @@ exec xrdb -load ~/.Xresources
 
 #workspace_auto_back_and_forth yes
 
-hide_edge_borders both
-smart_gaps off
-#gaps inner 10
-
 # The window under the cursor will always be focused, even after switching between workspaces.
 focus_follows_mouse always
 
 focus_wrapping yes
+
+for_window [shell=.*] shortcuts_inhibitor disable
 
 for_window [class=qutebrowser] border pixel
 
 for_window [class="Vncviewer"] fullscreen enable
 
 for_window [app_id=.*-floating] floating enable
+
+for_window [app_id=qalculate-gtk] floating enable
+
+for_window [title="KeePassXC - Browser Access Request"] floating enable
 
 # sway
 bindsym $mod+n bar mode toggle
@@ -135,7 +166,7 @@ bindsym $mod+plus exec CM_LAUNCHER=rofi CM_HISTLENGTH=15 clipmenu -p clipboard
 #bindsym $mod+numbersign exec passmenu && sleep 0.1 && clipdel -d ".*" && sleep 1 && clipdel -d ".*"
 
 # lock
-bindsym Print exec swaylock-with-idle -i $lockscreen
+bindsym Print exec ${lock}
 bindsym Shift+Print exec swaylock -c 00000000
 #bindsym Shift+Print exec ~/run/lock/winlock
 #bindsym Ctrl+Print exec ~/run/lock/blurlock
@@ -145,8 +176,9 @@ bindsym Ctrl+Print exec grim -g "$(slurp -o)"
 bindsym Ctrl+Shift+Print exec grim -g "$(slurp)"
 
 # suspend
-bindsym $mod+Print exec systemctl suspend
-${if cfg.autoLockBeforeSuspend then ''exec swayidle -w before-sleep "swaylock -f -i $lockscreen"'' else ""}
+bindsym --locked $mod+Print exec systemctl suspend
+${if cfg.autoLockBeforeSuspend then ''exec swayidle -w before-sleep "${suspend}"'' else ""}
+exec swayidle lock ${lock} unlock ${unlock}
 
 # subraum
 #bindsym $mod+Delete exec ~/run/subraum/hackbuzzer
@@ -184,15 +216,15 @@ bindsym --locked XF86AudioPrev exec "playerctl --player=%any,chromium previous"
 bindsym --locked XF86AudioNext exec "playerctl --player=%any,chromium next"
 
 # brightness
-set $brightnessUp "xbacklight -fps 60 -inc 5"
-set $brightnessUpSmall "xbacklight -fps 60 -inc 1"
-set $brightnessDown "xbacklight -fps 60 -dec 5"
-set $brightnessDownSmall "xbacklight -fps 60 -dec 1"
-set $brightnessFull "xbacklight -fps 60 -set 100"
-set $brightnessBright "xbacklight -fps 60 -set 50"
-set $brightnessNormal "xbacklight -fps 60 -set 20"
-set $brightnessDark "xbacklight -fps 60 -set 5"
-set $brightnessVeryDark "xbacklight -fps 60 -set 2"
+set $brightnessUp "xbacklight -perceived -fps 60 -inc 5"
+set $brightnessUpSmall "xbacklight -perceived -fps 60 -inc 1"
+set $brightnessDown "xbacklight -perceived -fps 60 -dec 5"
+set $brightnessDownSmall "xbacklight -perceived -fps 60 -dec 1"
+set $brightnessFull "xbacklight -perceived -fps 60 -set 100"
+set $brightnessBright "xbacklight -perceived -fps 60 -set 50"
+set $brightnessNormal "xbacklight -perceived -fps 60 -set 20"
+set $brightnessDark "xbacklight -perceived -fps 60 -set 5"
+set $brightnessVeryDark "xbacklight -perceived -fps 60 -set 2"
 bindsym --locked XF86MonBrightnessDown exec $brightnessDown
 bindsym --locked Shift+XF86MonBrightnessDown exec $brightnessDownSmall
 bindsym --locked $mod+F11 exec $brightnessDark
@@ -333,7 +365,7 @@ bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
-#bindsym $mod+w layout tabbed
+bindsym $mod+w layout tabbed
 bindsym $mod+x layout toggle split
 
 # toggle tiling / floating
@@ -388,35 +420,35 @@ bindsym $mod+Shift+e exec "swaymsg exit"
 
 # resize window (you can also use the mouse for that)
 
-bindsym $mod+Alt+ resize shrink width 10 px or 10 ppt
+bindsym $mod+Alt+h resize shrink width 10 px or 10 ppt
 bindsym $mod+Alt+j resize shrink height 10 px or 10 ppt
 bindsym $mod+Alt+k resize grow height 10 px or 10 ppt
 bindsym $mod+Alt+l resize grow width 10 px or 10 ppt
 
-mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+#mode "resize" {
+#        # These bindings trigger as soon as you enter the resize mode
+#
+#        # Pressing left will shrink the window’s width.
+#        # Pressing right will grow the window’s width.
+#        # Pressing up will shrink the window’s height.
+#        # Pressing down will grow the window’s height.
+#        bindsym h resize shrink width 10 px or 10 ppt
+#        bindsym j resize shrink height 10 px or 10 ppt
+#        bindsym k resize grow height 10 px or 10 ppt
+#        bindsym l resize grow width 10 px or 10 ppt
+#
+#        # same bindings, but for the arrow keys
+#        bindsym Left resize shrink width 10 px or 10 ppt
+#        bindsym Down resize shrink height 10 px or 10 ppt
+#        bindsym Up resize grow height 10 px or 10 ppt
+#        bindsym Right resize grow width 10 px or 10 ppt
+#
+#        # back to normal: Enter or Escape
+#        bindsym Return mode "default"
+#        bindsym Escape mode "default"
+#}
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize shrink height 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
-
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize shrink height 10 px or 10 ppt
-        bindsym Up resize grow height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-
-bindsym $mod+r mode "resize"
+#bindsym $mod+r mode "resize"
 
 
 # marks POC
@@ -471,17 +503,15 @@ mode $super_mode {
 #bindsym --release Super_L mode $super_mode
 
 
-for_window [app_id=qalculate-gtk] floating enable
-
-
 # Basic color configuration using the Base16 variables for windows and borders.
 # Property Name         Border  BG      Text    Indicator Child Border
-client.focused          $base01 $base01 $active $active $base01
-client.focused_inactive $base00 $base00 $base05 $base03 $base01
-client.unfocused        $base00 $base00 $base03 $base01 $base00
-client.urgent           $base00 $base0A $base00 $base09 $base09
-client.placeholder      $base00 $base00 $base05 $base00 $base00
-client.background       $base00
+#client.focused          $base01 $base01 $active $active $base01
+#client.focused_inactive $base00 $base00 $base05 $base03 $base01
+#client.unfocused        $base00 $base00 $base03 $base01 $base00
+#client.urgent           $base00 $base0A $base00 $base09 $base09
+#client.placeholder      $base00 $base00 $base05 $base00 $base00
+#client.background       $base00
+
 
 bar {
   status_command qbar server swaybar date squeekboard --auto-hide battery cpu script --poll ~/.config/qbar/blocks/memory script --poll ${temperature-bin} disk / ${if config.networking.networkmanager.enable then "networkmanager" else ""}
@@ -489,21 +519,23 @@ bar {
   id bar-0
   position top
   strip_workspace_numbers yes
-  colors {
-    background $base00
-    separator  $base01
-    statusline $base04
-
-    # State             Border  BG      Text
-    focused_workspace   $active $base01 $base05
-    active_workspace    $base05 $base03 $base00
-    inactive_workspace  $base01 $base01 $base05
-    urgent_workspace    $base09 $base0A $base00
-    binding_mode        $base00 $base0D $base00
-  }
+#  colors {
+#    background $base00
+#    separator  $base01
+#    statusline $base04
+#
+#    # State             Border  BG      Text
+#    focused_workspace   $active $base01 $base05
+#    active_workspace    $base05 $base03 $base00
+#    inactive_workspace  $base01 $base01 $base05
+#    urgent_workspace    $base09 $base0A $base00
+#    binding_mode        $base00 $base0D $base00
+#  }
   bindsym button4 nop
   bindsym button5 nop
 }
+
+include ${theme}
 
 include local
 

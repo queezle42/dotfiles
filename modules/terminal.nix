@@ -8,8 +8,9 @@ let
   terminal2 = pkgs.writeScriptBin "terminal2" ''
     PROMPT_NO_INITIAL_NEWLINE=1 ${config.queezle.terminal.alt.executable} "$@"
   '';
+  # FIXME foot-specific config is used to change the background color of floating terminals
   terminal-floating = pkgs.writeScriptBin "terminal-floating" ''
-    PROMPT_NO_INITIAL_NEWLINE=1 ${config.queezle.terminal.executable} --app-id terminal-floating "$@"
+    PROMPT_NO_INITIAL_NEWLINE=1 ${config.queezle.terminal.executable} --app-id terminal-floating --config ~/.config/foot/foot-floating.ini "$@"
   '';
 in
 {
@@ -22,7 +23,7 @@ in
 
     queezle.terminal.executable = mkOption {
       type = types.path;
-      default = "${pkgs.foot}/bin/footclient";
+      default = "${pkgs.foot}/bin/foot";
     };
 
     queezle.terminal.alt.executable = mkOption {

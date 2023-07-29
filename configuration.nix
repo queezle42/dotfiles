@@ -52,6 +52,7 @@ in
     ./modules
     (path + "/configuration.nix")
     normalSystemConfiguration
+    flakeInputs.nftables-firewall.nixosModules.default
     flakeInputs.homemanager.nixosModules.home-manager
     flakeInputs.matrix-homeserver.nixosModules.matrix-homeserver
   ] ++ layerImports;

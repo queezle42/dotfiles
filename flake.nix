@@ -6,16 +6,24 @@
 
     nixpkgs-pinephone.url = github:nixos/nixpkgs/nixos-unstable;
     nixpkgs-pinephone.follows = "nixpkgs";
+    #tow-boot.url = github:Tow-Boot/Tow-Boot/released;
+    #tow-boot.flake = false;
+
+    nftables-firewall.url = github:thelegy/nixos-nftables-firewall;
 
     homemanager = {
       url = github:nix-community/home-manager;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    qed.url = github:queezle42/qed;
+    matrix-homeserver.url = github:queezle42/matrix-homeserver;
+
     qauth = {
       url = gitlab:jens/qauth?host=git.c3pb.de;
     };
     q = {
-      url = gitlab:jens/q?host=git.c3pb.de;
+      url = github:queezle42/q;
     };
 
     qbar.url = gitlab:jens/qbar?host=git.c3pb.de;
@@ -24,8 +32,6 @@
       url = github:NixOS/mobile-nixos;
       flake = false;
     };
-
-    matrix-homeserver.url = github:queezle42/matrix-homeserver;
   };
 
   outputs = inputs_@{ self, nixpkgs, ... }: {
