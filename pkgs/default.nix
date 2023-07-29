@@ -7,8 +7,6 @@ rec {
   netevent = self.callPackage ./netevent {};
   g810-led = self.callPackage ./g810-led {};
 
-  libliftoff = self.callPackage ./libliftoff {};
-  gamescope = self.callPackage ./gamescope {};
 
   pragmatapro = self.callPackage ./pragmatapro {};
 
