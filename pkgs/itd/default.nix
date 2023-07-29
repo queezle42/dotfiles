@@ -1,25 +1,29 @@
-{ lib, buildGoModule, fetchFromGitea, pkg-config, xorg, libglvnd }:
+{ lib, buildGoModule, fetchFromGitea, pkg-config, xorg, libGL }:
 
 buildGoModule rec {
   pname = "itd";
-  version = "unstable";
+  version = "1.1.0";
 
   src = fetchFromGitea {
-    domain = "gitea.arsenm.dev";
-    owner = "Arsen6331";
+    domain = "gitea.elara.ws";
+    owner = "Elara6331";
     repo = pname;
-    rev = "365414f951fab2ca378855beeef6a624a4158186";
-    sha256 = "sha256-Hosg8ftyxs7HFNrPRBVM8NTJBXMc65mXnrxNN8qyU7g=";
+    rev = "v${version}";
+    sha256 = "sha256-95/9Qy0HhrX+ORuv6g1T4/Eq1hf539lYG5fTkLeY6B0=";
   };
 
-  buildInputs = [ xorg.libX11 xorg.libXcursor xorg.libXrandr xorg.libXinerama xorg.libXi xorg.libXext xorg.libXxf86vm libglvnd ];
+  buildInputs = [ xorg.libX11 xorg.libXcursor xorg.libXrandr xorg.libXinerama xorg.libXi xorg.libXext xorg.libXxf86vm libGL ];
   nativeBuildInputs = [ pkg-config ];
 
-  vendorSha256 = "sha256-wi8GIXPeAD3RRcNNJgULoeUt9fURsRBVbaizl++ux7Q=";
+  vendorSha256 = "sha256-ZkAxNs4yDUFBhhmIRtzxQlEQtsa/BTuHy0g3taFcrMM=";
+
+  preConfigure = ''
+    echo "v${version}" > version.txt
+  '';
 
   meta = with lib; {
-    homepage = "https://gitea.arsenm.dev/Arsen6331/itd";
-    description = "itd is a daemon that uses my infinitime library to interact with the PineTime snartwatch running InfiniTime.";
+    homepage = "https://gitea.elara.ws/Elara6331/itd";
+    description = "itd is a daemon that uses my infinitime library to interact with the PineTime smartwatch running InfiniTime.";
     license = with licenses; [ gpl3 ];
   };
 }
