@@ -48,6 +48,12 @@ in
     fi
   '';
 
+  environment.etc."atuin/config.toml".text = ''
+    update_check = false
+    sync_address = "https://atuin.queezle.xyz"
+    style = "compact"
+  '';
+
   environment.shellAliases = {
     ".." = "cd ..";
 
@@ -419,5 +425,8 @@ in
         $@ \
         zsh
     }
+
+    export ATUIN_CONFIG_DIR=/etc/atuin
+    eval "$(atuin init zsh)"
   '';
 }
