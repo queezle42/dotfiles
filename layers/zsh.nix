@@ -14,6 +14,8 @@ in
     w3m
     bat
     less
+    # json pager with vim-style keybindings
+    jless
     # required for neovim spellcheck
     aspell
     # used for icat
