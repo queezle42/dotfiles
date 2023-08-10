@@ -31,6 +31,7 @@ with lib;
 
     # notes
     joplin-desktop
+    obsidian
 
     # calculator
     qalculate-gtk
