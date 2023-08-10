@@ -26,6 +26,8 @@ with lib;
 
     # password manager
     keepassxc
+    # `secret-tool` cli
+    libsecret
 
     # notes
     joplin-desktop
