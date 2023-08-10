@@ -147,6 +147,9 @@ for_window [app_id=.*-floating] floating enable
 
 for_window [app_id=qalculate-gtk] floating enable
 
+for_window [title="KeePassXC - Access Request"] floating enable
+# Typo in window title, can be removed once fixed
+for_window [title="KeePassXC -  Access Request"] floating enable
 for_window [title="KeePassXC - Browser Access Request"] floating enable
 
 # sway
