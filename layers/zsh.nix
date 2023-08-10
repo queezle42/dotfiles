@@ -6,6 +6,15 @@ let
   qed_local = pkgs.writeScriptBin "qed_local" ''
     nix run -L /srv/sync/dev/jens/qed -- "$@"
   '';
+  atuinConfigDir = pkgs.writeTextFile {
+    name = "atuin-config";
+    destination = "/config.toml";
+    text = ''
+      update_check = false
+      sync_address = "https://atuin.queezle.xyz"
+      style = "compact"
+    '';
+  };
 in
 {
   environment.systemPackages = with pkgs; [
@@ -46,12 +55,6 @@ in
 
       source ${promptPath}/load_prompt
     fi
-  '';
-
-  environment.etc."atuin/config.toml".text = ''
-    update_check = false
-    sync_address = "https://atuin.queezle.xyz"
-    style = "compact"
   '';
 
   environment.shellAliases = {
@@ -426,7 +429,9 @@ in
         zsh
     }
 
-    export ATUIN_CONFIG_DIR=/etc/atuin
-    eval "$(atuin init zsh)"
+    export ATUIN_CONFIG_DIR=${atuinConfigDir}
+    source ${pkgs.runCommand "atuin-init.zsh" {} ''
+      ${pkgs.atuin}/bin/atuin init zsh > $out
+    ''}
   '';
 }
