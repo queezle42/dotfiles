@@ -1,6 +1,9 @@
 { lib, config, pkgs, ... }:
 with lib;
 
+# Initial setup (login):
+# > sudo -u tailscale tailscale up
+
 let
   cfg = config.queezle.tailscale;
 in {
