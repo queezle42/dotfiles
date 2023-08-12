@@ -26,6 +26,7 @@
     ./sync
     ./terminal.nix
     ./usbuirt.nix
+    ./tailscale
 
     # server
     #./webserver.nix
