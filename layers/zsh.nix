@@ -98,6 +98,8 @@ in
     msub = "mosquitto_sub";
     mpub = "mosquitto_pub";
 
+    ipr = "ip route list table all";
+
     myip = "drill @resolver1.opendns.com any myip.opendns.com";
     myipv4 = "drill -4 @resolver1.opendns.com any myip.opendns.com";
     myipv6 = "drill -6 @resolver1.opendns.com any myip.opendns.com";
