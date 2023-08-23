@@ -60,7 +60,7 @@ rec {
     };
   }));
 
-  foot = (prev.foot.overrideAttrs (attrs: {
+  foot = (flakes.nixpkgs-foot.legacyPackages.${final.system}.foot.overrideAttrs (attrs: {
     # Colored and styled underlines
     # https://codeberg.org/dnkl/foot/pulls/1099
     src = final.fetchFromGitea {

@@ -9,6 +9,8 @@
     #tow-boot.url = github:Tow-Boot/Tow-Boot/released;
     #tow-boot.flake = false;
 
+    nixpkgs-foot.url = "github:nixos/nixpkgs/684c17c429c42515bafb3ad775d2a710947f3d67";
+
     nftables-firewall.url = github:thelegy/nixos-nftables-firewall;
 
     homemanager = {
