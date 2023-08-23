@@ -64,7 +64,7 @@ in
   };
 
   nixpkgs.overlays = [
-    (import ./pkgs)
+    (import ./pkgs flakes)
     #flakes.q.overlay
     (final: prev: {
       q = flakes.q.packages.${system}.q;

@@ -1,4 +1,4 @@
-final: prev:
+flakes: final: prev:
 
 rec {
   #terraria-server = prev.terraria-server.overrideAttrs (attrs: {
