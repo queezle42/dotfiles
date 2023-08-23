@@ -40,7 +40,7 @@ in {
       inherit (cfg) user group dataDir;
       overrideDevices = false;
       overrideFolders = false;
-      extraOptions = {
+      settings = {
         options = {
           urAccepted = -1;
           crashReportingEnabled = false;
