@@ -1,5 +1,5 @@
 # This is the entry point for my NixOS configuration.
-{ name, path, nixpkgs, isIso, extraLayersDir, flakeInputs, flakeOutputs, system, extraOverlays }:
+{ name, path, nixpkgs, isIso, extraLayersDir, flakes, system, extraOverlays }:
 { lib, config, pkgs, ... }:
 
 with lib;
@@ -52,9 +52,9 @@ in
     ./modules
     (path + "/configuration.nix")
     normalSystemConfiguration
-    flakeInputs.nftables-firewall.nixosModules.default
-    flakeInputs.homemanager.nixosModules.home-manager
-    flakeInputs.matrix-homeserver.nixosModules.matrix-homeserver
+    flakes.nftables-firewall.nixosModules.default
+    flakes.homemanager.nixosModules.home-manager
+    flakes.matrix-homeserver.nixosModules.matrix-homeserver
   ] ++ layerImports;
 
   home-manager = {
@@ -65,13 +65,13 @@ in
 
   nixpkgs.overlays = [
     (import ./pkgs)
-    #flakeInputs.q.overlay
+    #flakes.q.overlay
     (final: prev: {
-      q = flakeInputs.q.packages.${system}.q;
+      q = flakes.q.packages.${system}.q;
       #q = if system == "aarch64-multiplatform"
-      #  then flakeInputs.q.packages.x86_64-linux.aarch64-multiplatform.q;
-      #  else flakeInputs.q.packages.${system}.q;
-      qbar = flakeInputs.qbar.packages.${system}.qbar;
+      #  then flakes.q.packages.x86_64-linux.aarch64-multiplatform.q;
+      #  else flakes.q.packages.${system}.q;
+      qbar = flakes.qbar.packages.${system}.qbar;
     })
   ] ++ extraOverlays;
 
@@ -83,7 +83,7 @@ in
 
   # Let 'nixos-version --json' know about the Git revision
   # of this flake.
-  system.configurationRevision = lib.mkIf (flakeInputs.self ? rev) flakeInputs.self.rev;
+  system.configurationRevision = lib.mkIf (flakes.self ? rev) flakes.self.rev;
 
   environment.shellAliases = {
     # nixos-option won't run without a configuration. With an empty config it does not show configured values, but can at least be used to search options and show default values.

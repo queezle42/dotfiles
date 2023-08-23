@@ -27,14 +27,15 @@ let
         imports = [
           (import ./configuration.nix {
             inherit name path isIso extraLayersDir system extraOverlays;
-            flakeInputs = finalFlakeInputs;
-            flakeOutputs = finalFlakeOutputs;
+            flakes = finalFlakeInputs;
             nixpkgs = nixpkgs;
           })
           extraModules
         ] ++ optional isMobileNixos (import "${flakeInputs.mobile-nixos}/lib/configuration.nix" { device = mobileNixosDevice; });
+        # TODO remove (replaced by "flakes")
         _module.args.flakeInputs = finalFlakeInputs;
         _module.args.flakeOutputs = finalFlakeOutputs;
+        _module.args.flakes = finalFlakeInputs;
         _module.args.system = system;
         _module.args.isMobileNixos = isMobileNixos;
       };
