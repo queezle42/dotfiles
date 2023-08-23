@@ -40,6 +40,8 @@ in
         "git/commit-template".source = pkgs.writeText "git-commit-template" ''
 
 
+          #Co-authored-by: Jan Beinke <git@janbeinke.com>
+          #Co-authored-by: J. Konrad Tegtmeier-Rottach <jktr@0x16.de>
         '';
       };
     };
