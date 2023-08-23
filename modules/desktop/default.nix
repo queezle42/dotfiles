@@ -31,7 +31,7 @@ in
     queezle.project-manager.enable = true;
 
     fonts = {
-      fonts = with pkgs; [
+      packages = with pkgs; [
         pragmatapro
 
         #fira-code
