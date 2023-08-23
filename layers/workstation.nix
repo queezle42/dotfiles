@@ -67,7 +67,7 @@ with lib;
     virt-manager
 
     # QR code scanner
-    cobang
+    #cobang
     zbar
 
     ### CLI
