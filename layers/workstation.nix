@@ -62,7 +62,6 @@ with lib;
 
     # content creation
     gimp
-    godot
 
     # admin stuff
     virt-manager
