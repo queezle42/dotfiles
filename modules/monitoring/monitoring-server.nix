@@ -94,7 +94,7 @@ in {
         "prometheus" = {
           listen = [
             {
-              # TODO limit to vpn-only ip?
+              # TODO limit to vpn-only ip? (currently limited in host firewall)
               addr = "[::]";
               port = 99;
             }
