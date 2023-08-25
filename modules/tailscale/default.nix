@@ -2,7 +2,7 @@
 with lib;
 
 # Initial setup (login):
-# > sudo -u tailscale tailscale up
+# > sudo -u tailscale tailscale up --netfilter-mode=off --accept-dns=false
 
 let
   cfg = config.queezle.tailscale;
@@ -18,7 +18,7 @@ in {
 
     interfaceName = mkOption {
       type = types.str;
-      default = "tailscale0";
+      default = "tailscale";
       description = lib.mdDoc ''The interface name for tunnel traffic. Use "userspace-networking" (beta) to not use TUN.'';
     };
   };
@@ -55,6 +55,10 @@ in {
         NoNewPrivileges = true;
         RestrictSUIDSGID = true;
         ProtectSystem = "strict";
+        SystemCallArchitecture = "native";
+        MemoryDenyWriteExecute = true;
+        LockPersonality = true;
+        ProtectKernelModules = true;
 
         DeviceAllow = "/dev/net/tun";
 
@@ -65,6 +69,24 @@ in {
         CacheDirectory = "tailscale";
         CacheDirectoryMode = "0750";
         Type = "notify";
+      };
+    };
+
+    networking.nftables.firewall = {
+      zones.tailscale-range = {
+        ipv6Addresses = [ "fd7a:115c:a1e0:ab12::/64" ];
+      };
+      zones.tailscale = {
+        parent = "tailscale-range";
+        interfaces = [ cfg.interfaceName ];
+      };
+      rules.tailscale-spoofing = {
+        from = [ "tailscale-range" ];
+        to = "all";
+        extraLines = [
+          "iifname \"${cfg.interfaceName}\" return"
+          "counter drop"
+        ];
       };
     };
 
