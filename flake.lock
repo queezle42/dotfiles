@@ -43,10 +43,12 @@
     },
     "matrix-homeserver": {
       "locked": {
-        "lastModified": 1675582847,
-        "narHash": "sha256-YOaC5M4+igkXdqRGNp0kTTHcYWvl7Z3TIoowyLVuf+E=",
-        "type": "git",
-        "url": "file:///srv/sync/dev/jens/matrix-homeserver"
+        "lastModified": 1692942624,
+        "narHash": "sha256-+tnv7tCMOYAF1p1aiR6KdkwXyM0MQiUoZFjXjCY4hko=",
+        "owner": "queezle42",
+        "repo": "matrix-homeserver",
+        "rev": "6a76db02511c342028fdd1378e3e41ff13661f0c",
+        "type": "github"
       },
       "original": {
         "owner": "queezle42",
