@@ -29,8 +29,8 @@ in {
     networking.firewall.allowedUDPPorts = [
       # syncthing quic
       22000
-      # syncthing announce
-      21027
+      # syncthing announce (unused, since I connect via VPN)
+      #21027
     ];
 
     systemd.tmpfiles.rules = [ "d ${cfg.dataDir} 0700 ${cfg.user} ${cfg.group}" ];
