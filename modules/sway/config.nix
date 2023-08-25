@@ -194,8 +194,8 @@ exec swayidle lock ${lock} unlock ${unlock}
 bindsym XF86Launch5 exec mosquitto_pub -h 10.0.2.1 -t component/G815/key/G1 -m G1
 bindsym XF86Launch6 exec mosquitto_pub -h 10.0.2.1 -t component/G815/key/G2 -m G2
 bindsym XF86Launch7 exec mosquitto_pub -h 10.0.2.1 -t component/G815/key/G3 -m G3
-bindsym XF86Launch8 exec mosquitto_pub -h 10.0.2.1 -t device/desk-lamp/set/white -m 1
-bindsym XF86Launch9 exec mosquitto_pub -h 10.0.2.1 -t device/desk-lamp/set/white -m 0
+bindsym --locked XF86Launch8 exec mosquitto_pub -h 10.0.2.1 -t device/desk-lamp/set/white -m 1
+bindsym --locked XF86Launch9 exec mosquitto_pub -h 10.0.2.1 -t device/desk-lamp/set/white -m 0
 
 # audio volume
 set $audioRaiseVolume "pamixer --unmute --increase 1"
