@@ -58,7 +58,7 @@ let
     then
     else
       echo "No global primary ipv6 address available"
-      exit 1
+      exit 0
     fi
 
     set +e
@@ -73,7 +73,9 @@ let
     echo "Using IPv6 address $myip"
 
     config="--user ${domainCfg.domain}:$(<${domainCfg.keyfile})"
+    set +e
     response=$(${pkgs.curl}/bin/curl --silent -X GET "https://update6.dedyn.io/?ipv6=$myip" --config - <<<$config)
+    set -e
     echo $response
 
     if [[ $response == good ]] {
