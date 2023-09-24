@@ -7,7 +7,8 @@
     man-pages
     man-pages-posix
 
-    rnix-lsp
+    nil
+    alejandra
 
     # Dictionary (command `trans`)
     translate-shell
