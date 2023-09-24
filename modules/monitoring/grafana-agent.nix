@@ -24,11 +24,20 @@ in {
         freeformType = settingsFormat.type;
       };
     };
+
+    scrapeConfigs = mkOption {
+      description = lib.mkDoc ''
+        https://prometheus.io/docs/prometheus/2.45/configuration/configuration/#scrape_config
+      '';
+      type = lib.types.listOf settingsFormat.type;
+      default = [];
+    };
   };
 
   config = mkIf cfg.enable {
 
     queezle.monitoring.grafana-agent.settings = {
+      # : [metrics_config]
       metrics = {
         wal_directory = "\${STATE_DIRECTORY}";
 
@@ -36,9 +45,13 @@ in {
           url = cfg.remoteWriteUrl;
         }];
 
-        #configs = [{
-        #  scrape_configs = ...
-        #}];
+        # : [metrics_instance_config]
+        configs = [{
+          # default prometheus-compatible agent
+          name = "default";
+          # : [scrape_config]
+          scrape_configs = cfg.scrapeConfigs;
+        }];
       };
       integrations = {
         # Scrape metrics about the agent itself
