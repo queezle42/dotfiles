@@ -13,6 +13,7 @@ let
       update_check = false
       sync_address = "https://atuin.queezle.xyz"
       style = "compact"
+      filter_mode_shell_up_key_binding = "session"
     '';
   };
 in
