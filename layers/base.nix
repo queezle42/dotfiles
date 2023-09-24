@@ -139,6 +139,7 @@ in
     darkhttpd
     ncdu
     duf
+    du-dust
     fastmod
     loc
     gotty
@@ -153,6 +154,7 @@ in
     moreutils
     viddy
     wol
+    uhubctl
   ];
 
   users = {
